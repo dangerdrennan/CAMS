@@ -1,0 +1,174 @@
+.wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    max-height: 36.625rem;
+    max-width: 23.75rem;
+    
+    top: 8.6875rem;
+    bottom: 8.6875rem;
+    margin: 0 auto;
+    left: 33.125rem;
+    right: 33.125rem;
+    background-color: var(--card-color_one);
+    border: 0.0625rem solid var(--card-one_stroke);
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    
+}
+
+.uaa_logo {
+    position: absolute;
+    width: 7.3125rem;
+    height: 7.4375rem;
+    left: 8.25rem;
+    top: 0.5625rem;
+}
+
+.login_title {
+    position: absolute;
+    height: 1.5rem;
+    left: 2rem;
+    right: 2rem;
+    top: 8.75rem;
+
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 1.1875rem;
+    line-height: 1.5rem;
+
+    text-align: center;
+    letter-spacing: 0.4px;
+    color: var(--lightgray_font_color_one);
+    opacity: 0.7;
+}
+
+.login_subtitle {
+    position: absolute;
+    height: 4.6875rem;
+    left: 2rem;
+    right: 2rem;
+    top: 11rem;
+
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 1.875rem;
+    text-align: center;
+    letter-spacing: 0.3px;
+    color: #252733;
+}
+
+.instructions {
+    position: absolute;
+    height: 1.25rem;
+    left: 2rem;
+    right: 2rem;
+    top: 15.6875rem;
+
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+
+    text-align: center;
+    letter-spacing: 0.3px;
+    color: var(--lightgray_font_color_two);
+}
+
+.email_container {
+    position: absolute;
+    height: 4rem;
+    left: 2rem;
+    right: 2rem;
+    top: 18.1875rem;
+}
+
+.email_container label {
+    position: absolute;
+    height: 1rem;
+    left: 0rem;
+    right: 0rem;
+    top: 0rem;
+
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.75rem;
+    line-height: 0.9375rem;
+    letter-spacing: 00.3px;
+    text-transform: uppercase;
+    color: var(--lightgray_font_color_two);
+}
+
+.textarea_bg {
+    position: absolute;
+    left: 0rem;
+    right: 0rem;
+    top: 1.375rem;
+    bottom: 0rem;
+
+    background: #FCFDFE;
+    border: 0.0625rem solid #F0F1F7;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+}
+
+.password_container {
+    position: absolute;
+    height: 4rem;
+    left: 2rem;
+    right: 2rem;
+    top: 23.5625rem;
+}
+
+.password_container label {
+    position: absolute;
+    height: 1rem;
+    left: 0rem;
+    right: 0rem;
+    top: 0rem;
+
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.75rem;
+    line-height: 0.9375rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: var(--lightgray_font_color_two);
+}
+
+.btn_bg {
+    position: absolute;
+    height: 3rem;
+    left: 2rem;
+    right: 2rem;
+    top: 29.3125rem;
+
+    background: #02804b;
+    box-shadow: 0px 4px 12px rgba(55, 81, 255, 0.24);
+    border-radius: 0.5rem;
+}
+
+.btn_bg label {
+    position: absolute;
+    height: 1.25rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    top: calc(50% - 20px/2 + 1px);
+
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 00.875rem;
+    line-height: 1.25rem;
+
+    text-align: center;
+    letter-spacing: 0.2px;
+
+    color: var(--card-color_one);
+}
