@@ -1,0 +1,6 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <input type="text" placeholder="email" formControlName="email">
+    <input type="text" placeholder="password" formControlName="password">
+    <button type="submit" (click) = (onSubmit())>Sign on</button>
+</form>
+<button (click)= "navToHome()">nav to home</button>
