@@ -13,29 +13,31 @@ export class HomeComponent implements OnInit {
 
   msg = "didn't work"
   prof: Professor[] = [];
-  email = 'rowling@potter.co.uk'
 
   constructor(public loginService: LoginService) {
     if( this.loginService.isLoggedIn$.value){
       this.msg = "worked"
     }
-    
-    console.log("what this.prof = in constructor", this.prof)
-   }
+    this.loginService.getAll().subscribe(res => {
+      this.prof = res
+    })   
+
+    console.log(this.prof)
+  }
 
   ngOnInit(): void {
     if( this.loginService.isLoggedIn$.value){
       this.msg = "worked"
     }
-    this.loginService.getAll().subscribe(res => {
-      this.prof = res
-    })
+
+    
   }
 
   onClick(){
     console.log('in on click, this.prof = ', this.prof)
-    console.log('in on click, this.prof = ', this.prof[0].email)
+    console.log('in on click, this.prof = ', this.prof[1].email)
     console.log('in on click, this.prof type = ', typeof(this.prof))
+    //console.log('behavior subject test2: ',this.loginService.email$.value)
     //console.log('grabbing first prof = ', this.loginService.prof.filter( x=> (x.prof_id == 1)))
   }
 

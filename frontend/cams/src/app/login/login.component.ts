@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit {
   });
   prof$!: Observable<Professor>;
   prof!: Professor[];
-  x: any;
 
 
   constructor(
@@ -30,16 +29,18 @@ export class LoginComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    console.log('in home init' + this.prof)
+    //console.log('in login init' + this.prof)
   }
 
 
   onSubmit(){
-    console.log(typeof(this.form.value.email))
-    console.log(this.form.value.password)
+    //console.log(typeof(this.form.value.email))
+    //console.log(this.form.value.password)
     const email = this.form.value.email
     const password = this.form.value.password
     this.loginService.setAuth(email, password)
+    //console.log(a)
+    //console.log('behavior subject test: ',this.loginService.email$.value)
   }
 
   navToHome(){
