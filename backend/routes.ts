@@ -11,11 +11,11 @@ const pool = new Pool({
     port: 5432
 });
 
-usersRouter.get('/login', async (req, res) => {
+usersRouter.get('/login/:email', async (req, res) => {
     try{
-        console.log('hello')
+        const {email} = req.params
         const confirm_user = await pool.query(
-            `SELECT * FROM prof WHERE email = 'rowling@potter.co.uk';`)
+            "SELECT * FROM prof WHERE email = ($1)", [email])
         console.log(confirm_user.rows)
         res.json(confirm_user.rows)
     }

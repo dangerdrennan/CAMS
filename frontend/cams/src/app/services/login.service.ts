@@ -39,7 +39,7 @@ export class LoginService {
   }
 
   checkDatabase(auth: Auth ): Observable<Professor[]>{
-    return this.http.get<Professor[]>(this.apiURL +'login');
+    return this.http.get<Professor[]>(`${this.apiURL}login/${auth.email}`);
   }
   
   setAuth(login_email:string, login_password:string){
