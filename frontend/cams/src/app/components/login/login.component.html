@@ -1,0 +1,5 @@
+<div *ngIf= "(auth.isAuthenticated$ | async) === false" class="container">
+</div>
+<div *ngIf= "(auth.isAuthenticated$ | async) === true" class="container">
+    <app-logout-button></app-logout-button>
+</div>
