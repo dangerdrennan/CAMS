@@ -4,7 +4,7 @@
     left: 285px;
     right: 40px;
     top: 128px;
-    overflow: hidden;
+    overflow: hidden !important;
 }
 
 .table {
@@ -19,7 +19,7 @@
     border: 1px solid #DFE0EB;
     box-sizing: border-box;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden !important;
 }
 
 .table_name {

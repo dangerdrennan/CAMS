@@ -9,43 +9,25 @@ export class ProjectsComponent implements OnInit {
 
   Projectss = [
     {
-      p_name: "Course Prerequisite Checker",
+      p_name: "Achieving The Singularity",
       s_name: "Bobby",
       term: 'Fall 2021',
       status: 'not graded'
     },
     {
-      p_name: "Assessment thing",
+      p_name: "Roko's Basilisk",
       s_name: "Bobby Jr",
       term: 'Spring 2021',
       status: 'in progress'
     },
     {
-      p_name: "AI roboto",
+      p_name: "Can an AI Fill the Void Vanessa Left?",
       s_name: "Bobby jr III",
       term: 'Summer 2021',
       status: 'graded'
     },
     {
-      p_name: "AI roboto",
-      s_name: "Bobby jr III",
-      term: 'Summer 2021',
-      status: 'graded'
-    },
-    {
-      p_name: "AI roboto",
-      s_name: "Bobby jr III",
-      term: 'Summer 2021',
-      status: 'graded'
-    },
-    {
-      p_name: "AI roboto",
-      s_name: "Bobby jr III",
-      term: 'Summer 2021',
-      status: 'graded'
-    },
-    {
-      p_name: "AI roboto",
+      p_name: "Building a Robot to Play Backgammon with my Pee Paw",
       s_name: "Bobby jr III",
       term: 'Summer 2021',
       status: 'graded'
