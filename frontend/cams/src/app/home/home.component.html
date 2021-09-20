@@ -1,0 +1,52 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<!-- admin dashboard -->
+<div class="dashboard_admin" *ngIf="this.loginService.userAdmin;else prof">
+    <app-sidebar></app-sidebar>
+    <app-header></app-header>
+
+    <div class="main">
+        <div class="card_one">
+            <div class="border"></div>
+            <div class="title">Current Assessments</div>
+            <div class="subtitle">Term: Fall 2021</div>
+            <a routerLink="/projects" routerLinkActive="active">
+                <div class="viewDetails">View Details</div></a>
+
+            <div class="entry">
+                <div class="entryText">Not graded</div>
+            </div>
+            <div class="entry">
+                <div class="entryText">In progress</div>
+            </div>
+            <div class="entry">
+                <div class="entryText">Graded</div>
+            </div>
+            <div class="entry">
+                <div class="entryText">Total assessments</div>
+            </div>
+        </div>
+
+        <div class="card_two">
+            <div class="border"></div>
+            <div class="title">Past Assessments</div>
+            <a routerLink="/assessment/history" routerLinkActive="active"> <!-- get correct link to where past assessments will be-->
+                <div class="viewAll">View All</div></a>
+            <div class="entry">
+                <div class="uploadFiles">Upload *.csv file</div>
+                <div class="plusIcon">
+                    <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+
+
+<!-- professor dashboard -->
+<ng-template #prof class="dashboard_prof">
+    <!-- <h1>in prof page</h1> -->
+    <app-projects></app-projects>
+    
+</ng-template>

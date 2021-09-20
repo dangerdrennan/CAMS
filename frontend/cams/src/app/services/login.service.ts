@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Auth } from '../Auth'
-
-
-
 
 const httpOptions =
 {
@@ -15,15 +12,25 @@ const httpOptions =
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class LoginService {
-  private apiURL = 'http://localhost:4201/'
+  
+  public userAdmin: boolean = true;
+
+  private apiURL = 'http://localhost:4200/'
   auth:Auth ={
     email: '',
     password: ''
   };
 
-  constructor(private http:HttpClient) { }
+  constructor() { 
+    
+  }
+    
+  
 
+  
 
   // Auth(): Observable<Auth[]>{
   //   return this.http.get<Auth[]>(this.apiURL +'login');
