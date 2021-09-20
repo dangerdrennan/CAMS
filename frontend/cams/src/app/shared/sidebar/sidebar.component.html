@@ -1,0 +1,41 @@
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">  -->
+<div class="sidebar">
+    <img class="uaa_logo" src="../../../assets/images/uaa.png" alt="uaa_logo">
+    <span class="dashboard-title">Dashboard</span>
+
+    <!-- sidebar admin -->
+    <div *ngIf="this.loginService.userAdmin;else prof">
+        <div class="tabs">
+            <!-- 'Assessment' link stays as home for admin since it starts there. -->
+            <a routerLink="/home" class="nav-link" routerLinkActive="active">
+                <div class="tabs_title ">Assessments</div></a>
+            <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
+            
+        </div>
+        <div class="tabs">
+            <a routerLink="/projects" class="nav-link" routerLinkActive="active">
+                <div class="tabs_title ">Projects</div></a>
+            <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
+            
+        </div>
+        <div class="tabs">
+            <img class="tabs_icon" src="../../../assets/images/groups_white_24dp.svg" alt="admin_icon">
+            <div class="tabs_title ">Admins</div>
+        </div>
+    </div>
+
+    <!-- sidebar prof -->
+    <ng-template #prof>
+        <div class="tabs">
+            <!-- 'Projects' link stays as home for prof since it starts there. -->
+            <a routerLink="/home" class="nav-link" routerLinkActive="active">
+                <div class="tabs_title ">Projects</div></a>
+            <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
+        </div>
+        <div class="tabs">
+            <a routerLink="/assessment" class="nav-link" routerLinkActive="active">
+                <div class="tabs_title ">Assessments</div></a>
+            <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
+        </div>
+    </ng-template>
+</div>

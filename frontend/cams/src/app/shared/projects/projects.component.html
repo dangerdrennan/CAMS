@@ -1,0 +1,36 @@
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">  -->
+
+<app-sidebar></app-sidebar>
+<app-header></app-header>
+<div class="main_prof">
+    <div class="table">
+        <div class="table_name">Fall 2020 Capstone - Dr. Mock</div>
+        <div class="filter">
+            <img src="../../assets/images/filter_list_black_24dp.svg" alt="filter_icon">
+            <label for="filter">Filter</label> 
+        </div>
+
+        <div class="table_top">
+            <div class="divider"></div>
+            <div class="project_name">Project Name</div>
+            <div class="student_name">Student Name</div>
+            <div class="term">Term</div>
+            <div class="status">Status</div>
+        </div>
+
+        <!-- list of projects, creators, date, status -->
+        <div class="entry" *ngFor="let proj of Projectss">
+            <div class="contents">
+                <div class="p_name">{{proj.p_name}}</div>
+                <div class="s_name">{{proj.s_name}}</div>
+                <div class="content_term">{{proj.term}}</div>
+                <div class="content_status">
+                    <div class="priority">
+                        <div class="danger">{{proj.status}}</div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>

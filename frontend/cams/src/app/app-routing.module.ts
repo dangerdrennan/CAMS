@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component'; // change this to see login-component branch additions to the same path, sans 'components/'
-import { LogoutButtonComponent } from './components/logout-button/logout-button.component';
-
+import { AssessmentComponent } from './assessment/assessment.component';
+import { HomeComponent } from './home/home.component';
+import { ProjectsComponent } from './shared/projects/projects.component';
 
 const routes: Routes = [
-  {path: '', component: LoginComponent},
-  {path: 'logout_button', component: LogoutButtonComponent}
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'home', component: HomeComponent},
+  {path: 'assessment', component: AssessmentComponent},
+  {path: 'projects', component: ProjectsComponent}
+
 ];
 
 @NgModule({
