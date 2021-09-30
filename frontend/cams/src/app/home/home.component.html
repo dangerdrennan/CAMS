@@ -1,11 +1,44 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<app-sidebar></app-sidebar>
+<app-header></app-header>
+
 <!-- admin dashboard -->
 <div class="dashboard_admin" *ngIf="this.loginService.userAdmin;else prof">
-    <app-sidebar></app-sidebar>
-    <app-header></app-header>
+
 
     <div class="main">
+      <div class="card_container">
         <div class="card_one">
+          <div class="border"></div>
+          <div class="title">Past Assessments</div>
+          <div class="select-container">
+            <div class="dropdown" style="margin-right: 15px;">
+              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Term
+              </a>
+
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="#">Fall</a></li>
+                <li><a class="dropdown-item" href="#">Spring</a></li>
+              </ul>
+            </div>
+
+            <div class="dropdown">
+              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Year
+              </a>
+
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="#">2020</a></li>
+                <li><a class="dropdown-item" href="#">2019</a></li>
+                <li><a class="dropdown-item" href="#">2018</a></li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="card_two">
             <div class="border"></div>
             <div class="title">Current Assessments</div>
             <div class="subtitle">Term: Fall 2021</div>
@@ -25,22 +58,8 @@
                 <div class="entryText">Total assessments</div>
             </div>
         </div>
-
-        <div class="card_two">
-            <div class="border"></div>
-            <div class="title">Past Assessments</div>
-            <a routerLink="/assessment/history" routerLinkActive="active"> <!-- get correct link to where past assessments will be-->
-                <div class="viewAll">View All</div></a>
-            <div class="entry">
-                <div class="uploadFiles">Upload *.csv file</div>
-                <div class="plusIcon">
-                    <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
-                </div>
-            </div>
-            
-        </div>
+      </div>
     </div>
-
 </div>
 
 
@@ -48,5 +67,5 @@
 <ng-template #prof class="dashboard_prof">
     <!-- <h1>in prof page</h1> -->
     <app-projects></app-projects>
-    
+
 </ng-template>

@@ -1,3 +1,35 @@
+@media (max-width: 768px) {
+  .header {
+    position: absolute;
+    z-index: 1;
+    height: 80px !important;
+    margin-left: 100px !important;
+    left: 0px !important;
+    margin-top: -30px !important;
+    padding-top: 20px;
+    background-color: #F7F8FC;
+  }
+
+  .header_title {
+    position: relative;
+  }
+
+  .divider {
+    position: relative;
+    height: 32px;
+    top: calc(50% - 32px/2 + 4px);
+    left: 350px;
+  }
+
+  .vertical_line {
+    position: relative;
+    height: 32px;
+    top: calc(50% - 32px/2 + 4px);
+    left: 350px;
+    border: 1px solid #DFE0EB;
+  }
+}
+
 .header {
     position: absolute;
     height: 44px;

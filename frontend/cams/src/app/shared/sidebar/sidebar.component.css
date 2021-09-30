@@ -1,8 +1,46 @@
-.sidebar {
+@media (max-width: 768px){
+  .sidebar {
+    min-width: 85px;
+    max-width: 85px;
+    height: 100%;
+    text-align: center;
+    z-index: 1;
+    background-color: #363740;
+  }
+
+  .uaa_logo {
+    position: relative;
+  }
+
+  .dashboard-title {
+    display: none;
+  }
+
+  .tabs {
+    position: relative;
+    align-content: center;
+    max-width: 80px;
+    min-width: 80px;
+    height: 56px;
+  }
+
+  .tabs_title {
+    display: none;
+  }
+
+  .tabs_icon {
     position: absolute;
+    top: calc(50% - 20px/2);
+    right: 13%;
+  }
+}
+
+.sidebar {
+    position: fixed;
     background-color: #363740;
     width: 255px;
     height: 100%;
+    z-index: 1;
 }
 
 .uaa_logo {
@@ -11,7 +49,7 @@
     height: 41px;
     left: 25px;
     top: 28px;
-    
+
 }
 
 .dashboard-title {
