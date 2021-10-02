@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login.service';
+import { AuthService } from '@auth0/auth0-angular';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,7 +10,11 @@ import { LoginService } from '../../services/login.service';
 })
 export class SidebarComponent {
   // public userAdmin: boolean = true
-  constructor(public loginService: LoginService) { }
+  constructor(public loginService: LoginService,
+    public auth: AuthService,
+    @Inject(DOCUMENT) private doc: Document) { }
 
-  
+  logout(){
+    this.auth.logout({returnTo: this.doc.location.origin})
+  }
 }
