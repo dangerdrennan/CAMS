@@ -1,3 +1,1 @@
 For the database portion, you should be good to run 'npm build', and the database should pop up in postgres. Password for 'cams' is 'pswd'. We can change it later, but for now it's good to have something you can type quickly.
-
-The databases are populated with 3 in cs_student, 3 rows in cse_student, and 4 in prof. Any more than that and the assessment tables quickly become unwieldy. Right now they're at 12 entries each.
