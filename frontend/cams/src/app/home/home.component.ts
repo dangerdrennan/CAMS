@@ -12,10 +12,16 @@ import { LoginService } from '../services/login.service';
 export class HomeComponent {
 
   // public userAdmin: boolean = true
+  user?: string
   
-  constructor(public loginService: LoginService) {}
   
-
+  constructor(public loginService: LoginService) {
+  }
+  
+  ngOnInit(){
+    this.user = this.loginService.user
+    console.log('in home: ', this.user)
+  }
     
 
 }
