@@ -1,41 +1,24 @@
-import { Injectable, Input } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Auth } from '../Auth'
-
-const httpOptions =
-{
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-}
+import { Injectable } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Injectable({
   providedIn: 'root'
 })
 
-
 export class LoginService {
   
-  public userAdmin: boolean = true;
+  public userAdmin: boolean = true
+  public user?: string
+  public isLoggedIn?: boolean
 
-  private apiURL = 'http://localhost:4200/'
-  auth:Auth ={
-    email: '',
-    password: ''
-  };
-
-  constructor() { 
-    
+  constructor(auth:AuthService) { 
+    auth.user$.subscribe(res => {
+      this.user = res!.email
+      console.log(res)
+    })
+    auth.isAuthenticated$.subscribe(res => {
+      this.isLoggedIn = res!
+    })
   }
-    
-  
-
-  
-
-  // Auth(): Observable<Auth[]>{
-  //   return this.http.get<Auth[]>(this.apiURL +'login');
-  // }
-
-
 
 }
