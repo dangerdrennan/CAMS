@@ -1,5 +1,6 @@
-﻿EMAIL,PSWD,F_NAME,L_NAME,DEPARTMENT,IS_ADMIN
-rowling@potter.co.uk,454349E422F05297191EAD13E21D3DB520E5ABEF52055E4964B82FB213F593A1,JK,Rowling,English,0
-ginandjuice@fbi.gov,CD0AA9856147B6C5B4FF2B7DFEE5DA20AA38253099EF1B4A64ACED233C9AFE29,Snoop,Dogg,Botany,0
-malibu_cush@proton.mail,62C66A7A5DD70C3146618063C344E531E6D4B59E379808443CE962B3ABD63C5A,Alan,Turing,Computer Science,1
-favabeanfreak@gmail.com,252F10C83610EBCA1A059C0BAE8255EBA2F95BE4D1D7BCFA89D7248A82D9F111,Hannibal,Lecter,Psychology,0
+﻿EMAIL,F_NAME,L_NAME,DEPARTMENT,IS_ADMIN,IS_GRADER
+rowling@potter.co.uk,JK,Rowling,English,0,0
+ginandjuice@fbi.gov,Snoop,Dogg,Botany,0,1
+malibu_cush@proton.mail,Alan,Turing,Computer Science,1,1
+favabeanfreak@gmail.com,Hannibal,Lecter,Psychology,1,0
+kenrick_mock@ak.edu,Kenrick,Mock,Computer Science,1,1
