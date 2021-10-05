@@ -13,6 +13,7 @@ export class HomeComponent {
 
   // public userAdmin: boolean = true
   user?: string
+  isLoggedIn?: boolean
   
   
   constructor(public loginService: LoginService) {
@@ -20,7 +21,8 @@ export class HomeComponent {
   
   ngOnInit(){
     this.user = this.loginService.user
-    console.log('in home: ', this.user)
+    this.isLoggedIn = this.loginService.isLoggedIn
+    console.log('in home: ', this.user + ' is logged in?: ' + this.isLoggedIn)
   }
     
 
