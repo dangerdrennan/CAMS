@@ -5,21 +5,26 @@ import { AuthService } from '@auth0/auth0-angular';
   providedIn: 'root'
 })
 
-export class LoginService {
+export class LoginService{
+
 
   public userAdmin: boolean = false;
   public user?: string
   public isLoggedIn?: boolean
+  public auth: AuthService
+  public email?: string
 
-  constructor(auth:AuthService) { 
-    auth.user$.subscribe(res => {
+  constructor(auth0:AuthService) { 
+    this.auth = auth0
+    this.auth.user$.subscribe(res => {
       this.user = res!.email
-      console.log(res)
     })
-    auth.isAuthenticated$.subscribe(res => {
+    this.auth.isAuthenticated$.subscribe(res => {
       this.isLoggedIn = res!
     })
   }
+
+    
 
 
 }

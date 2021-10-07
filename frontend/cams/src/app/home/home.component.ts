@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
 import { Professor } from '../prof';
 import { LoginService } from '../services/login.service';
 import { ProfDashboardService } from '../services/prof-dashboard.service';
@@ -12,12 +11,17 @@ import { ProfDashboardService } from '../services/prof-dashboard.service';
 
 
 export class HomeComponent implements OnInit {
+  user?: string
 
-  constructor(public loginService: LoginService, public profService: ProfDashboardService) {}
+  constructor(public loginService: LoginService, public profService: ProfDashboardService) {
+
+  }
   
   ngOnInit() {
+    this.user = this.loginService.user
     this.grabAllProfs();
-    this.grabProfByEmail('rowling@potter.co.uk') // this would be set with loginService
+    this.grabProfByEmail(this.user!) // this would be set with loginService
+
   }
 
   setAll(email: string, fname: string, lname: string, department: string, isAdmin: boolean, isGrader: boolean) {
