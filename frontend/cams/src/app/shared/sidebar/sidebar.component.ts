@@ -9,7 +9,8 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-  // public userAdmin: boolean = true
+
+  public isAssessing: boolean = true;
   constructor(public loginService: LoginService,
     public auth: AuthService,
     @Inject(DOCUMENT) private doc: Document) { }

@@ -6,8 +6,8 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 
 export class LoginService {
-  
-  public userAdmin: boolean = true
+
+  public userAdmin: boolean = false;
   public user?: string
   public isLoggedIn?: boolean
 
@@ -20,5 +20,6 @@ export class LoginService {
       this.isLoggedIn = res!
     })
   }
+
 
 }
