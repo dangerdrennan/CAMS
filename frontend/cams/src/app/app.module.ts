@@ -8,10 +8,9 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { AssessmentComponent } from './assessment/assessment.component';
 import { ProjectsComponent } from './shared/projects/projects.component';
-import { LoginComponent } from './components/login/login.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment as env} from 'src/environments/environment';
-import { LogoutButtonComponent } from './components/logout-button/logout-button.component';
+import { LogoutButtonComponent } from './shared/logout-button/logout-button.component';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { CommonModule } from '@angular/common';
     HeaderComponent,
     AssessmentComponent,
     ProjectsComponent,
-    LoginComponent,
     LogoutButtonComponent
   ],
   imports: [

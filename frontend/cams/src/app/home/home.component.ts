@@ -14,7 +14,7 @@ import { ProfDashboardService } from '../services/prof-dashboard.service';
 export class HomeComponent implements OnInit {
 
   constructor(public loginService: LoginService, public profService: ProfDashboardService) {}
-
+  
   ngOnInit() {
     this.grabAllProfs();
     this.grabProfByEmail('rowling@potter.co.uk') // this would be set with loginService
@@ -53,7 +53,6 @@ export class HomeComponent implements OnInit {
       this.profService.allProfs = data;
     })
   }
-
 
 }
 
