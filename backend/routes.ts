@@ -13,26 +13,24 @@ const pool = new Pool({
 
 usersRouter.get('/all_profs', async (req, res) => {
     try{
-        const get_profs = await pool.query(`SELECT *
-        FROM prof;`);
-        res.json(get_profs.rows);
+        const get_profs = await pool.query('SELECT * FROM prof');
+        res.status(200).json(get_profs.rows);
     }
     catch(err ){
         console.log('error has occurred in backend function "all_profs"')
     }
   });
 
-  usersRouter.get('/get_prof', async (req, res) => {
+  usersRouter.get('/get_prof/:prof_email', async (req, res) => {
     try{
-        const {prof} = req.body;
-        const get_prof = await pool.query(`SELECT *
-        FROM prof WHERE prof_id = $1;`);
+        const prof_email = req.params.prof_email
+        const get_prof = await pool.query("SELECT * FROM prof WHERE prof_email = $1", [prof_email]);
         res.json(get_prof.rows);
     }
     catch(err ){
         console.log('error has occurred in backend function "get_prof"')
     }
-  });
+    });
 
   usersRouter.get('/all_cs_as', async (req, res) => {
     try{

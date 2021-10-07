@@ -15,8 +15,8 @@ const httpOptions =
 
 
 export class LoginService {
-  
-  public userAdmin: boolean = true;
+
+  public userAdmin: boolean = false;
 
   private apiURL = 'http://localhost:4200/'
   auth:Auth ={
@@ -24,13 +24,13 @@ export class LoginService {
     password: ''
   };
 
-  constructor() { 
-    
-  }
-    
-  
+  constructor() {
 
-  
+  }
+
+
+
+
 
   // Auth(): Observable<Auth[]>{
   //   return this.http.get<Auth[]>(this.apiURL +'login');

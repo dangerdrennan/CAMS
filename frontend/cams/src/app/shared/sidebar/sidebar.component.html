@@ -10,13 +10,13 @@
             <a routerLink="/home" class="nav-link" routerLinkActive="active">
                 <div class="tabs_title ">Assessments</div></a>
             <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
-            
+
         </div>
         <div class="tabs">
             <a routerLink="/projects" class="nav-link" routerLinkActive="active">
                 <div class="tabs_title ">Projects</div></a>
             <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
-            
+
         </div>
         <div class="tabs">
             <img class="tabs_icon" src="../../../assets/images/groups_white_24dp.svg" alt="admin_icon">
@@ -35,15 +35,12 @@
                 <div class="tabs_title ">Projects</div></a>
             <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
         </div>
-        <div class="tabs">
-            <a routerLink="/assessment" class="nav-link" routerLinkActive="active">
+        <!-- Only display when taking assessment -->
+        <div class="tabs" *ngIf="!isAssessing">
+            <a routerLink="/assessment" class="nav-link" routerLinkActive="active" >
                 <div class="tabs_title ">Assessments</div></a>
             <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
         </div>
-        <div class="tabs">
-            
-            <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
-        </div>
-        
+
     </ng-template>
 </div>

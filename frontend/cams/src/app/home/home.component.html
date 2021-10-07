@@ -1,4 +1,4 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- admin dashboard -->
 <div class="dashboard_admin" *ngIf="this.loginService.userAdmin;else prof">
     <app-sidebar></app-sidebar>
@@ -37,7 +37,7 @@
                     <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -46,7 +46,6 @@
 
 <!-- professor dashboard -->
 <ng-template #prof class="dashboard_prof">
-    <!-- <h1>in prof page</h1> -->
+    <app-header></app-header>
     <app-projects></app-projects>
-    
 </ng-template>
