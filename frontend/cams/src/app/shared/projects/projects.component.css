@@ -1,281 +1,55 @@
-.main_prof {
+@media (max-width: 768px) {
+  .main_projects {
     position: absolute;
     height: 100%;
-    left: 285px;
-    right: 40px;
-    top: 128px;
-    overflow: hidden !important;
-}
+    left: 65px !important;
+    right: 1%;
+    top: 105px;
+    align-content: center;
+  }
 
-.table {
-    position: absolute;
-    height: 779px;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
+  .table-scroll {
+    position: relative;
+    height: 80%;
     background: #FFFFFF;
-
     border: 1px solid #DFE0EB;
-    box-sizing: border-box;
     border-radius: 8px;
-    overflow: hidden !important;
+    margin-bottom: 20px !important;
+    overflow-y: scroll !important;
+  }
+
+  thead {
+    height: 5%;
+    font-size: small;
+  }
+
+  tr {
+    height: 15%;
+    font-size: small;
+  }
 }
 
-.table_name {
-    position: relative;
-    height: 24px;
-    left: 32px;
-    right: 690px;
-    top: 32px;
-
-    /* Bold 19 (0.4 px) */
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 19px;
-    line-height: 24px;
-
-    /* identical to box height */
-    letter-spacing: 0.4px;
-
-    /* grayscale / black */
-    color: #252733;
+/* desktop styling */
+.main_projects {
+  position: absolute;
+  height: 100%;
+  left: 245px;
+  right: 1%;
+  top: 105px;
+  align-content: center;
 }
 
-.filter {
-    position: absolute;
-    width: 80px;
-    height: 24px;
-    right: 110px;
-    top: 32px;
-}
+.table-scroll {
+  position: relative;
+  height: 80%;
 
-.filter label {
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 24px;
-
-    /* identical to box height */
-    letter-spacing: 0.4px;
-
-    /* grayscale / black */
-    color: #252733;
-}
-
-.table_top {
-    position: absolute;
-    /* height: 30px; */
-    left: 1px;
-    right: 1px;
-    top: 104px;
-}
-
-.divider {
-    position: absolute;
-    height: 0px;
-    left: 0px;
-    right: 0px;
-    top: 30px;
-    border: 1.5px solid #DFE0EB;
+  background: #FFFFFF;
+  border: 1px solid #DFE0EB;
+  border-radius: 8px;
+  margin-bottom: 10px !important;
+  overflow-y: scroll !important;
 }
 
 
-.project_name {
-    position: absolute;
-    width: 150px;
-    height: 18px;
-    left: 82px;
-    /* right: 340px; */
-    top: 1px;
-
-    /* Bold 14 (0.2 px) */
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 18px;
-
-    /* identical to box height */
-    letter-spacing: 0.2px;
-
-    /* grayscale / gray */
-    color: #9FA2B4;
 }
 
-.student_name {
-    position: absolute;
-    left: 650px;
-    width: 130px;
-    height: 18px;
-    /* right: 431px; */
-    top: 1px;
-
-    /* Bold 14 (0.2 px) */
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 18px;
-
-    /* identical to box height */
-    letter-spacing: 0.2px;
-
-    /* grayscale / gray */
-    color: #9FA2B4;
-}
-
-.term {
-    position: absolute;
-    /* left: 1100px; */
-    width: 80px;
-    height: 18px;
-    right: 408px;
-    top: 0px;
-
-    /* Bold 14 (0.2 px) */
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 18px;
-
-    /* identical to box height */
-    letter-spacing: 0.2px;
-
-    /* grayscale / gray */
-    color: #9FA2B4;
-}
-
-.status {
-    position: absolute;
-    width: 80px;
-    height: 18px;
-    right: 90px;
-    top: 0px;
-
-    /* Bold 14 (0.2 px) */
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 18px;
-
-    /* identical to box height */
-    letter-spacing: 0.2px;
-
-    /* grayscale / gray */
-    color: #9FA2B4;
-}
-
-.entry {
-    position: relative;
-    height: 92px;
-    left: 0px;
-    right: 0px;
-    top: 110px;
-    border-bottom: 1px solid #DFE0EB;
-}
-
-.entry:hover {
-    box-shadow: 0px 0px 8px 0px  #b8bac2;
-}
-
-.contents {
-    position: relative;
-    height: 32px;
-    left: 40px;
-    top: 30px;
-    right: 40px;
-}
-
-.p_name {
-    position: absolute;
-    height: 20px;
-    left: 42px;
-    /* right: 200px; */
-    top: calc(50% - 20px/2 - 6px);
-
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.2px;
-    color: #252733;
-}
-
-.s_name {
-    position: absolute;
-    left: 610px;
-    height: 20px;
-    top: calc(50% - 20px/2 - 6px);
-
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.2px;
-    color: #252733;
-}
-
-.content_term {
-    position: absolute;
-    left: 1050px;
-    height: 20px;
-    /* right: 360px; */
-    text-align: left;
-    top: calc(50% - 20px/2 - 6px);
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.2px;
-    color: #252733;
-}
-
-.content_status {
-    position: absolute;
-    width: 108px;
-    height: 24px;
-    right: 130px;
-    top: calc(50% - 24px/2 + 4px);
-}
-
-.danger {
-    position: relative;
-    height: 14px;
-    left: 12px;
-    top: calc(50% - 14px/2);
-    
-    /* Bold 11 (0.5 px, CAPS) */
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 11px;
-    line-height: 14px;
-    
-    /* identical to box height */
-    display: flex;
-    align-items: center;
-    text-align: center;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    
-    /* grayscale / white */
-    color: #FFFFFF;  
-}
-
-.priority {
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
-    background: #F12B2C;
-    border-radius: 100px;
-}

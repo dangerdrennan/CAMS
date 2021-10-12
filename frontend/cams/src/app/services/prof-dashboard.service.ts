@@ -8,6 +8,7 @@ import { Professor } from '../prof';
   providedIn: 'root'
 })
 export class ProfDashboardService {
+  public isAssessing: boolean = false;
   public userEmail: string = '';
   public userFirstName: string = '';
   public userLastName: string = '';

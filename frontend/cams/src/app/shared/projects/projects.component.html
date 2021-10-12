@@ -1,36 +1,33 @@
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">  -->
+<div class="main_projects">
 
-<app-sidebar></app-sidebar>
-<app-header></app-header>
-<div class="main_prof">
-    <div class="table">
-        <div class="table_name">Fall 2020 Capstone - Dr. Mock</div>
-        <div class="filter">
-            <img src="../../assets/images/filter_list_black_24dp.svg" alt="filter_icon">
-            <label for="filter">Filter</label> 
-        </div>
+  <div class="table-scroll">
+    <div style="text-align: center;font-size: medium;"><strong>Fall 2020 Capstone - Dr. Mock</strong></div>
+      <table class="table table-hover" style="border-radius: 8px;">
+        <thead>
+          <tr>
+            <th scope="col">Project Name</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Term</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody >
+          <tr *ngFor="let proj of Projectss" (click)="assessments()">
+            <td scope="row">{{proj.p_name}}</td>
+            <td>{{proj.s_name}}</td>
+            <td>{{proj.term}}</td>
 
-        <div class="table_top">
-            <div class="divider"></div>
-            <div class="project_name">Project Name</div>
-            <div class="student_name">Student Name</div>
-            <div class="term">Term</div>
-            <div class="status">Status</div>
-        </div>
-
-        <!-- list of projects, creators, date, status -->
-        <div class="entry" *ngFor="let proj of Projectss">
-            <div class="contents">
-                <div class="p_name">{{proj.p_name}}</div>
-                <div class="s_name">{{proj.s_name}}</div>
-                <div class="content_term">{{proj.term}}</div>
-                <div class="content_status">
-                    <div class="priority">
-                        <div class="danger">{{proj.status}}</div>
-                    </div>
-                </div>
-            </div>
-        
-        </div>
-    </div>
+            <td *ngIf="proj.status==='Graded';else notGraded">
+              <button disabled class="btn btn-outline-success btn-sm">{{proj.status}}</button>
+            </td>
+            <ng-template #notGraded>
+              <td>
+                <button disabled class="btn btn-outline-danger btn-sm">{{proj.status}}</button>
+              </td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+  </div>
 </div>
+

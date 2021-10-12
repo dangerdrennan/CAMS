@@ -1,3 +1,12 @@
+@media (max-width: 768px) {
+  .dashboard_prof {
+    position: absolute;
+    background-color: #F7F8FC;
+    height: 100%;
+    margin-bottom: 30px;
+  }
+}
+
 .dashboard_admin {
     position: absolute;
     background-color: #F7F8FC;
@@ -12,6 +21,7 @@
     left: 285px;
     right: 33px;
     top: 128px;
+    background-color: #F7F8FC;
 }
 
 .border {
@@ -175,7 +185,7 @@
 
 .plusIcon:hover {
     background-color: #C5C7CD;
-    
+
     box-shadow: 0px 0px 8px 0px  #b8bac2;
 }
 

@@ -16,12 +16,12 @@ export class HomeComponent implements OnInit {
   constructor(public loginService: LoginService, public profService: ProfDashboardService) {
 
   }
-  
+
   ngOnInit() {
     this.user = this.loginService.user
     this.grabAllProfs();
     this.grabProfByEmail(this.user!) // this would be set with loginService
-
+    this.profService.isAssessing=false
   }
 
   setAll(email: string, fname: string, lname: string, department: string, isAdmin: boolean, isGrader: boolean) {
