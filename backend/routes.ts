@@ -43,14 +43,14 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
-  usersRouter.get('/all_proj', async (req, res) => {
+  usersRouter.get('/all_projects', async (req, res) => {
     try{
         const get_proj = await pool.query(`SELECT *
         FROM project;`);
         res.json(get_proj.rows);
     }
     catch(err ){
-        console.log('error has occurred in backend function "get_proj"')
+        console.log('error has occurred in backend function "get_projects"')
     }
   });
 

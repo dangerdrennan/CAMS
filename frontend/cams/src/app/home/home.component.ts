@@ -11,14 +11,15 @@ import { ProfDashboardService } from '../services/prof-dashboard.service';
 
 
 export class HomeComponent implements OnInit {
-  user?: string
+  user: string
 
   constructor(public loginService: LoginService, public profService: ProfDashboardService) {
-
+    this.user = this.loginService.user!
+    console.log('in home component: ', this.user)
   }
 
   ngOnInit() {
-    this.user = this.loginService.user
+    
     this.grabAllProfs();
     this.grabProfByEmail(this.user!) // this would be set with loginService
     this.profService.isAssessing=false
