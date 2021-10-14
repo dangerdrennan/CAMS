@@ -12,6 +12,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { environment as env} from 'src/environments/environment';
 import { LogoutButtonComponent } from './shared/logout-button/logout-button.component';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CommonModule } from '@angular/common';
       }
     ),
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

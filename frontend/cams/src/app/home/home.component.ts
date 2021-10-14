@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.loginService.user
-    this.grabAllProfs();
+    //this.grabAllProfs();
     this.grabProfByEmail(this.user!) // this would be set with loginService
     this.profService.isAssessing=false
   }
