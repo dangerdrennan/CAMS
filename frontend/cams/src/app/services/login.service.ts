@@ -8,13 +8,13 @@ import { AuthService } from '@auth0/auth0-angular';
 export class LoginService{
 
 
-  public userAdmin: boolean = false;
+  public userAdmin: boolean = true;
   public user?: string
   public isLoggedIn?: boolean
   public auth: AuthService
   public email?: string
 
-  constructor(auth0:AuthService) { 
+  constructor(auth0:AuthService) {
     this.auth = auth0
     this.auth.user$.subscribe(res => {
       this.user = res!.email
@@ -24,7 +24,7 @@ export class LoginService{
     })
   }
 
-    
+
 
 
 }

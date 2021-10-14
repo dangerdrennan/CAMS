@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assessment',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssessmentComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+
   }
 
+
+
+  goBack() {
+    this.router.navigateByUrl('/projects');
+  }
 }

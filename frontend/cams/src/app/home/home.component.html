@@ -1,43 +1,30 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- admin dashboard -->
 <div class="dashboard_admin" *ngIf="this.loginService.userAdmin;else prof">
+  <div class="main">
 
-    <div class="main">
-        <div class="card_one">
-            <div class="border"></div>
-            <div class="title">Current Assessments</div>
-            <div class="subtitle">Term: Fall 2021</div>
-            <a routerLink="/projects" routerLinkActive="active">
-                <div class="viewDetails">View Details</div></a>
 
-            <div class="entry">
-                <div class="entryText">Not graded</div>
-            </div>
-            <div class="entry">
-                <div class="entryText">In progress</div>
-            </div>
-            <div class="entry">
-                <div class="entryText">Graded</div>
-            </div>
-            <div class="entry">
-                <div class="entryText">Total assessments</div>
-            </div>
-        </div>
-
-        <div class="card_two">
-            <div class="border"></div>
-            <div class="title">Past Assessments</div>
-            <a routerLink="/assessment/history" routerLinkActive="active"> <!-- get correct link to where past assessments will be-->
-                <div class="viewAll">View All</div></a>
-            <div class="entry">
-                <div class="uploadFiles">Upload *.csv file</div>
-                <div class="plusIcon">
-                    <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
-                </div>
-            </div>
-
-        </div>
+    <div class="card">
+      <div class="card-body">
+        Short cut to manage faculty that will be assessing this semester
+        <button class="btn btn-secondary" (click)="goToManAssessor()">Edit</button>
+      </div>
     </div>
+
+    <div class="card">
+      <div class="card-body">
+        Short cut to manage current students and projects
+        <button class="btn btn-secondary" (click)="goToManProj()">Edit</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        Short cut to manage administrators for this system
+        <button class="btn btn-secondary" (click)="goToAdmins()">Edit</button>
+      </div>
+    </div>
+
+  </div>
 
 </div>
 

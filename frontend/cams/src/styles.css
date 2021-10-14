@@ -6,6 +6,15 @@
     font-size: smaller;
   }
 
+  .main {
+    position: absolute;
+    height: 100%;
+    left: 65px !important;
+    right: 2% !important;
+    top: 105px;
+    align-content: center;
+  }
+
   .sidebar {
     min-width: 55px;
     max-width: 55px;
@@ -17,7 +26,7 @@
 
   .uaa_logo {
     position: relative;
-    margin-left: -20px;
+    margin-left: -10px;
   }
 
   .dashboard-title {
@@ -46,7 +55,7 @@
 
   .tabs_icon {
     position: relative;
-    margin-left: -20px;
+    margin-left: -10px;
     top: calc(50% - 20px/2);
     /* right: 20%; */
   }
@@ -61,7 +70,7 @@
     left: 0px !important;
     margin-top: -30px !important;
     padding-top: 20px;
-    /* background-color: #F7F8FC; */
+    right: 2% !important;
   }
 
   .header_title {
@@ -82,7 +91,7 @@
     position: relative;
     width: 60px;
     height: 18px;
-    right: 0px;
+    right: 12% !important;
     top: calc(50% - 18px/2);
     font-family: Mulish;
     font-style: normal;
@@ -93,6 +102,15 @@
     letter-spacing: 0.2px;
     color: #252733;
   }
+
+  .avi_icon {
+    position: relative;
+    margin-top: 5px;
+    width: 24px !important;
+    height: 24px !important;
+    right: 1% !important;
+  }
+
 }
 
 /****** Global styling below ******/
@@ -100,6 +118,16 @@ html, body {
   margin: 0;
   overflow-x: hidden !important;
   overflow-y: hidden !important;
+}
+
+.main {
+  position: absolute;
+  height: 100%;
+  left: 245px;
+  right: 1%;
+  top: 105px;
+  align-content: center;
+
 }
 
 /* Sidebar global styling */
@@ -114,7 +142,7 @@ html, body {
   position: absolute;
   width: 39px;
   height: 41px;
-  left: 25px;
+  left: 15px;
   top: 28px;
 
 }
@@ -123,12 +151,12 @@ html, body {
   position: absolute;
   width: 105px;
   height: 24px;
-  left: 76px;
+  left: 66px;
   top: 45px;
   font-family: 'Mulish', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 21px;
+  font-size: 22px;
   line-height: 24px;
   letter-spacing: 0.4px;
   color: #A4A6B3;
@@ -156,7 +184,7 @@ html, body {
 .tabs_title {
   position: absolute;
   height: 20px;
-  left: 80px;
+  left: 55px;
   right: 24px;
   top: calc(50% - 20px/2);
   font-family: 'Mulish', sans-serif;
@@ -185,7 +213,7 @@ html, body {
 
 .tabs_icon {
   position: absolute;
-  left: 38px;
+  left: 25px;
   right: 0%;
   top: calc(50% - 20px/2);
 }
@@ -209,17 +237,19 @@ html, body {
 .header {
   position: absolute;
   height: 44px;
-  left: 285px;
-  right: 33px;
-  top: 30px;
+  left: 235px;
+  right: 1%;
+  top: 25px;
+  z-index: 1;
 }
 
 .header_title {
   position: absolute;
+  display: flex;
   width: fit-content;
   height: 34px;
-  left: 0px;
-  right: 351px;
+  /* left: 0px; */
+  left: 1%;
   top: calc(50% - 34px/2 + 1px);
   font-family: 'Mulish', sans-serif;
   font-style: normal;
@@ -251,7 +281,7 @@ html, body {
   position: absolute;
   width: fit-content;
   height: 18px;
-  right: 60px;
+  right: 7%;
   top: calc(50% - 18px/2);
   font-family: Mulish;
   font-style: normal;
@@ -265,7 +295,8 @@ html, body {
 
 .avi_icon {
   position: absolute;
-  width: 44px;
-  height: 44px;
-  right: 1%;
+  width: 34px;
+  height: 34px;
+  margin-top: 5px;
+  right: 1% !important;
 }
