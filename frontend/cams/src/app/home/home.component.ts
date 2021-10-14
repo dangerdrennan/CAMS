@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Professor } from '../prof';
 import { LoginService } from '../services/login.service';
 import { ProfDashboardService } from '../services/prof-dashboard.service';
@@ -13,15 +15,29 @@ import { ProfDashboardService } from '../services/prof-dashboard.service';
 export class HomeComponent implements OnInit {
   user?: string
 
-  constructor(public loginService: LoginService, public profService: ProfDashboardService) {
+
+  constructor(public loginService: LoginService, private builder: FormBuilder, public profService: ProfDashboardService, private router: Router) {
 
   }
 
   ngOnInit() {
     this.user = this.loginService.user
     this.grabAllProfs();
-    this.grabProfByEmail(this.user!) // this would be set with loginService
+    this.grabProfByEmail('rowling@potter.co.uk') // this.user!
     this.profService.isAssessing=false
+
+  }
+
+  goToAdmins() {
+    this.router.navigateByUrl('/admins');
+  }
+
+  goToManProj() {
+    this.router.navigateByUrl('/manage-projects');
+  }
+
+  goToManAssessor() {
+    this.router.navigateByUrl('/manage-assessors');
   }
 
   setAll(email: string, fname: string, lname: string, department: string, isAdmin: boolean, isGrader: boolean) {
@@ -57,7 +73,7 @@ export class HomeComponent implements OnInit {
       this.profService.allProfs = data;
     })
   }
-
 }
+
 
 

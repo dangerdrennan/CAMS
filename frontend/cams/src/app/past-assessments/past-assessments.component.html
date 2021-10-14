@@ -1,0 +1,44 @@
+
+<div class="main">
+  <div class="card" style="max-width: 350px;">
+    <div class="card-body">
+      <div class="title">Past Assessments</div>
+      <form [formGroup]="form">
+        <div class="select-container" style="text-align: left;margin: 4px;">
+          <div class="container" style="display: flex;justify-content: left;margin-left: -8px;">
+            <div class="dropdown" style="margin-right: 8px;">
+              <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
+                <option value="">Select Term</option>
+                <option value="fall">Fall</option>
+                <option value="spring">Spring</option>
+              </select>
+            </div>
+
+            <div class="dropdown">
+              <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
+                <option value="">Select Year</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+              </select>
+            </div>
+
+            <button type="submit" [disabled]="form.invalid" class="btn btn-success btn-sm" style="margin-left: 12px;"
+            (click)="find()">Find</button>
+          </div>
+
+
+          <div class="form-check form-check-inline" style="margin-left: 14px;">
+            <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+            <label class="form-check-label">CS</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+            <label class="form-check-label">CSE</label>
+          </div>
+          <div *ngIf="this.form.get('degree')?.invalid && form.valid">Select CS or CSE.</div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
