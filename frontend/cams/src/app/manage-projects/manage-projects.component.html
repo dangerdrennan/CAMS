@@ -1,5 +1,58 @@
 <div class="main">
-  <p>manage-projects works!</p>
-  <button class="btn btn-secondary" (click)="goBack()">back</button>
+  <button class="btn btn-secondary btn-sm" (click)="goBack()">back</button>
 
+  <div class="card" style="max-width: 450px;margin-top: 20px;">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="mb-3">
+          <label for="projectName" class="form-label">Project Name</label>
+          <input type="text" class="form-control" formControlName="projectName" id="projectName" required="required">
+        </div>
+        <div class="mb-3">
+          <label for="studentName" class="form-label">Student Name</label>
+          <input type="text" class="form-control" formControlName="studentName" id="studentName" required="required">
+        </div>
+        <div class="container" style="display: flex;justify-content: left;margin-left: -10px;">
+          <div class="dropdown" style="margin-right: 8px;">
+            <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
+              <option value="">Select Year</option>
+              <option value="2018">2018</option>
+              <option value="2019">2019</option>
+              <option value="2020">2020</option>
+            </select>
+          </div>
+          <div class="dropdown">
+            <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
+              <option value="">Select Term</option>
+              <option value="fall">Fall</option>
+              <option value="spring">Spring</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-check form-check-inline" style="margin-left: 14px;margin-top: 5px;">
+          <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+          <label class="form-check-label">CS</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+          <label class="form-check-label">CSE</label>
+        </div>
+        <button type="submit" [disabled]="form.invalid" class="btn btn-primary btn-sm"
+          style="position: absolute;right: 15px;" (click)="submit()">Add</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 30px;max-width: 400px;">
+    <div class="card-body">
+      <form [formGroup]="form2">
+        <label for="professor" class="form-label">Instructors name for the current semester</label>
+        <input id="professor" class="form-control" type="text" required="required">
+        <small>This only needs to be entered once</small>
+        <button type="submit" [disabled]="form2.invalid" class="btn btn-primary btn-sm"
+          style="position: absolute;right: 15px; margin-top: 4px;" (click)="secondSubmit()">Add</button>
+      </form>
+    </div>
+  </div>
 </div>
