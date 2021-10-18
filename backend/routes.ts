@@ -66,16 +66,14 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(err, 'error has occurred in backend function "get_project_students"')
     }
   });
-    //INSERT INTO project (title) VALUES ('a') RETURNING *;
+  
     usersRouter.post("/add_project/:project", async(req, res) => {
         try{
-            // console.log('hit in add_project')
-            // console.log(req.params)
             const {project} = req.params;
             const new_project = await pool.query(`
 
             INSERT INTO project (title, term_id) VALUES ($1, get_current_term()) RETURNING *;`,[project]);
-            console.log(new_project.rows)
+            
             res.json(new_project.rows);
         }
         catch(err ){
@@ -85,8 +83,6 @@ usersRouter.get('/all_profs', async (req, res) => {
 
     usersRouter.post("/add_student", async(req, res) => {
         try{
-            // console.log('hit in add_student')
-            // console.log(req.body)
             const {degree, f_name, l_name, proj_id} = req.body;
             const new_project = await pool.query(`
             INSERT INTO student (degree,
@@ -95,7 +91,6 @@ usersRouter.get('/all_profs', async (req, res) => {
                 proj_id)
                 VALUES ($1, $2, $3, $4) RETURNING *;`,
                 [degree, f_name, l_name, proj_id]);
-            console.log(new_project.rows)
             res.json(new_project.rows);
         }
         catch(err ){
@@ -105,14 +100,9 @@ usersRouter.get('/all_profs', async (req, res) => {
 
     usersRouter.post("/add_assessments/:id", async(req, res) => {
         try{
-            console.log('hit in add_assessments')
-            console.log(req.body)
             const {student_id, degree, f_name, l_name, proj_id} = req.body;
-            console.log(student_id)
             const new_project = await pool.query(`
             SELECT addAssessments($1)`, [student_id]);
-            console.log('got this far')
-            console.log(new_project.rows)
             res.json(new_project.rows);
         }
         catch(err ){
