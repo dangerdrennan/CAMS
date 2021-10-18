@@ -1,13 +1,4 @@
 @media (max-width: 768px) {
-  .main_projects {
-    position: absolute;
-    height: 100%;
-    left: 65px !important;
-    right: 1%;
-    top: 105px;
-    align-content: center;
-  }
-
   .table-scroll {
     position: relative;
     height: 80%;
@@ -30,15 +21,6 @@
 }
 
 /* desktop styling */
-.main_projects {
-  position: absolute;
-  height: 100%;
-  left: 245px;
-  right: 1%;
-  top: 105px;
-  align-content: center;
-}
-
 .table-scroll {
   position: relative;
   height: 80%;

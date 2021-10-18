@@ -1,33 +1,51 @@
 <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">  -->
 <div class="sidebar">
     <img class="uaa_logo" src="../../../assets/images/uaa.png" alt="uaa_logo">
-    <span class="dashboard-title">Dashboard</span>
+    <span class="dashboard-title">Capstone</span>
 
     <!-- sidebar admin -->
     <div *ngIf="this.loginService.userAdmin;else prof">
-        <div class="tabs">
-            <!-- 'Assessment' link stays as home for admin since it starts there. -->
-            <a routerLink="/home" class="nav-link" routerLinkActive="active">
-                <div class="tabs_title ">Assessments</div>
-              <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
-          </a>
+      <div class="tabs">
+        <!-- 'Assessment' link stays as home for admin since it starts there. -->
+        <a routerLink="/home" class="nav-link" routerLinkActive="active">
+          <div class="tabs_title ">Home</div>
+          <img class="tabs_icon" src="../../../assets/images/dashboard_customize_white_24dp.svg" alt="assessment_icon">
+        </a>
 
-        </div>
-        <div class="tabs">
-            <a routerLink="/projects" class="nav-link" routerLinkActive="active">
-                <div class="tabs_title ">Projects</div>
-              <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
-          </a>
+      </div>
 
-        </div>
-        <div class="tabs">
-            <img class="tabs_icon" src="../../../assets/images/groups_white_24dp.svg" alt="admin_icon">
-            <div class="tabs_title ">Admins</div>
-        </div>
-        <div class="tabs_logout">
-            <img class="tabs_icon" src="../../../assets/images/logout_white_24dp.svg" alt="logout_icon">
-            <div class= "tabs_title" (click)= "logout()">Logout</div>
-        </div>
+      <div class="tabs">
+        <a routerLink="/past-assessments" class="nav-link" routerLinkActive="active">
+          <div class="tabs_title ">Assessments</div>
+          <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
+        </a>
+
+      </div>
+      <div class="tabs">
+        <a routerLink="/admins" class="nav-link" routerLinkActive="active">
+          <img class="tabs_icon" src="../../../assets/images/groups_white_24dp.svg" alt="admin_icon">
+          <div class="tabs_title">Manage Admins</div>
+        </a>
+      </div>
+      <div class="tabs">
+        <a routerLink="/manage-projects" class="nav-link" routerLinkActive="active">
+          <div class="tabs_title ">Manage Projects</div>
+          <img class="tabs_icon" src="../../../assets/images/manage_accounts_white_24dp.svg" alt="project_icon">
+        </a>
+
+      </div>
+      <div class="tabs">
+        <a routerLink="/projects" class="nav-link" routerLinkActive="active">
+          <div class="tabs_title ">Projects</div>
+          <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
+        </a>
+
+      </div>
+
+      <div class="tabs_logout">
+        <img class="tabs_icon" src="../../../assets/images/logout_white_24dp.svg" alt="logout_icon">
+        <div class="tabs_title" (click)="logout()">Logout</div>
+      </div>
     </div>
 
     <!-- sidebar prof -->
