@@ -12,12 +12,16 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { environment as env} from 'src/environments/environment';
 import { LogoutButtonComponent } from './shared/logout-button/logout-button.component';
 import { CommonModule } from '@angular/common';
+
+import { FormsModule } from '@angular/forms';
+
 import { PastAssessmentsComponent } from './past-assessments/past-assessments.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { PastResultsComponent } from './past-results/past-results.component';
 import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.component';
+
 
 @NgModule({
   declarations: [
@@ -45,6 +49,7 @@ PastAssessmentsComponent,
     ),
     CommonModule,
     HttpClientModule,
+    FormsModule
     ReactiveFormsModule
   ],
   providers: [],
