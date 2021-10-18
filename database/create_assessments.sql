@@ -1,12 +1,12 @@
  DROP TABLE IF EXISTS assessment;
 
  CREATE TABLE assessment (
+    assessment_id SERIAL PRIMARY KEY,
     prof_email VARCHAR( 100 ) REFERENCES prof(prof_email),
-    student_id INT REFERENCES student(student_id),
+    student_id INT REFERENCES student(student_id) ON DELETE CASCADE,
+    term_id INT REFERENCES term(term_id),
     degree VARCHAR ( 3 ),
-    graded BOOLEAN,
-    semester VARCHAR (5),
-    year INT
+    graded BOOLEAN
  );
 
 
@@ -24,8 +24,8 @@ BEGIN
     FOR g IN SELECT student_id
         FROM student
             LOOP
-            INSERT INTO assessment (prof_email, student_id, semester, year)
-                VALUES (f.prof_email, g.student_id, 'fall', 2021);
+            INSERT INTO assessment (prof_email, student_id, term_id)
+                VALUES (f.prof_email, g.student_id, get_current_term());
             END LOOP;
     END LOOP;
 END; $$;
