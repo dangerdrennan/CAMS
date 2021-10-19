@@ -75,6 +75,17 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(err, 'error has occurred in backend function "get_project_students"')
     }
   });
+
+  usersRouter.get('/current_term', async (req, res) => {
+    try{
+        const get_current_term = await pool.query(`
+        SELECT semester, year from term where term_id = get_current_term()`);
+        res.json(get_current_term.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "get_current_term"')
+    }
+  });
   
     usersRouter.post("/add_project/:project", async(req, res) => {
         try{
@@ -169,6 +180,35 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
+    usersRouter.post("/update_term", async(req, res) => {
+        try{
+            const {semester, year} = req.body;
+            console.log(req.body)
+            const update_term = await pool.query(`
+            SELECT set_term($1,$2)`,
+                [semester, year]);
+            console.log(update_term.rows)
+            res.json(update_term.rows);
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "update_term"');
+        }
+    });
+
+    usersRouter.post("/populate_semester", async(req, res) => {
+        try{
+            console.log('hit')
+            console.log(req.body)
+            const populate_semester = await pool.query(`
+            SELECT populate_semester()`
+            )
+            console.log(populate_semester.rows)
+            res.json(populate_semester.rows);
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "populate_semester"');
+        }
+    });
 
 
 
@@ -206,6 +246,7 @@ usersRouter.get('/all_profs', async (req, res) => {
             const {prof_email} = req.body;
             const new_assessments = await pool.query(`
             SELECT add_assessments_by_prof($1)`, [prof_email]);
+            console.log('this is at: ', new_assessments.rows)
             res.json(new_assessments.rows);
         }
         catch(err ){

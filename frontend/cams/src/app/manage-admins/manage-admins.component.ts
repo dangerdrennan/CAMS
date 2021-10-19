@@ -21,12 +21,17 @@ export class ManageAdminsComponent implements OnInit {
       l_name: 'McPherson',
       department: 'Science'
     }
-    //this.addProf(this.accessor)
+    this.addProf(this.accessor)
     //this.updateProfName(this.accessor, 'C.S.', 'Lewis', 'Philology')
     //this.makeProfAdmin(this.accessor)
     //this.revokePermissions(this.accessor)
-    this.makeProfNongrader(this.accessor)
+    //this.makeProfNongrader(this.accessor)
+    //this.updateTerm('Spring', 2023)
+    // this.adminService.getCurrentTerm().subscribe(res=>{
+    //   console.log(`${res[0].semester} ${res[0].year}`)
+    // })
     this.getCurrentAssessors()
+    this.populateCurrentSemester()
   }
 
   getCurrentAssessors(){
@@ -60,7 +65,11 @@ export class ManageAdminsComponent implements OnInit {
   }
 
   updateTerm(semester:string, year:number){
+    this.adminService.updateTerm(semester,year).subscribe()
+  }
 
+  populateCurrentSemester(){
+    this.adminService.populateSemester().subscribe()
   }
 
   ngOnInit(): void {

@@ -19,7 +19,7 @@ const httpOptions =
 // 4. set as current grader --Done
 // 5. take away as current grader --Done
 // 6. update assessments for new current grader --Done
-// 7. delete assessments for new non_grader
+// 7. delete assessments for new non_grader --Done
 // 8. update term (make new assessments where assessments aren't already created)
 
 @Injectable({
@@ -74,9 +74,9 @@ export class AdminService {
     return this.http.post<Accessor[]>(url, accessor, httpOptions)
   }
 
-  addAssessmentsForNewGrader(accessor:Accessor): Observable<Accessor[]>{
+  addAssessmentsForNewGrader(accessor:Accessor): Observable<any[]>{
     const url = `${this.endPoint}/add_assessments_by_prof`;
-    return this.http.post<Accessor[]>(url, accessor, httpOptions)
+    return this.http.post<any[]>(url, accessor, httpOptions)
   }
 
   setProfAsNongrader(accessor: Accessor){
@@ -94,7 +94,17 @@ export class AdminService {
     return this.http.delete<any>(url)
   }
 
-  updateTerm(semester:string, year:number){
+  updateTerm(semester:string, year:number): Observable<any>{
+    const url = `${this.endPoint}/update_term`;
+    return this.http.post<any[]>(url, {semester, year}, httpOptions)
+  }
 
+  getCurrentTerm(): Observable<any>{
+    return this.http.get<any>(this.endPoint + '/current_term')
+  }
+
+  populateSemester(): Observable<any>{
+    const url = `${this.endPoint}/populate_semester`;
+    return this.http.post<any[]>(url, {'empty': 'object'}, httpOptions)
   }
 }

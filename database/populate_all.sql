@@ -10,5 +10,7 @@
 \i create_assessments.sql
 \i student_assign.sql
 \i new_assessment.sql
+\i update_term.sql
+\i populate_semester.sql
 SELECT setval('project_proj_id_seq', (SELECT MAX(proj_id) FROM project));
 -- INSERT INTO student (degree, f_name, l_name, proj_id) VALUES ('cs', 'frank', 'tank', find_id('hola'));
