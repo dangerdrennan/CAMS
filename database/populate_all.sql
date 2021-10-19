@@ -1,6 +1,6 @@
 \copy prof(prof_email, f_name, l_name, department, is_admin, is_grader) FROM 'prof.csv' delimiter ',' CSV HEADER ;
 \copy project(proj_id, title, term_id) FROM 'project.csv' delimiter ',' CSV HEADER ;
-\copy student(f_name,l_name,degree,proj_id) FROM 'student.csv' delimiter ',' CSV HEADER ;
+\copy student(f_name,l_name,degree,proj_id,term_id) FROM 'student.csv' delimiter ',' CSV HEADER ;
 \i create_sem_req.sql
 \i create_outcome_details_cs.sql
 \i create_outcome_details_cse.sql

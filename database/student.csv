@@ -1,7 +1,7 @@
-﻿F_NAME,L_NAME,DEGREE,PROJ_ID
-Anne,Archy,cs,2
-Tom,Jones,cs,2
-Fionna,Apple,cse,4
-Raquel,Willy,cs,1
-Ernie,Cernie,cse,1
-Captain,Morgan,cse,3
+﻿F_NAME,L_NAME,DEGREE,PROJ_ID,TERM_ID
+Anne,Archy,cs,2,2
+Tom,Jones,cs,2,2
+Fionna,Apple,cse,4,2
+Raquel,Willy,cs,1,2
+Ernie,Cernie,cse,1,2
+Captain,Morgan,cse,3,2
