@@ -4,6 +4,7 @@ export interface Accessor {
     l_name: string,
     department: string,
     is_admin?: boolean,
-    is_grader?: boolean
+    is_grader?: boolean,
+    curr_cap_prof?: boolean
   }
   

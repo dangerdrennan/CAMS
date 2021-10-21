@@ -1,4 +1,4 @@
-\copy prof(prof_email, f_name, l_name, department, is_admin, is_grader) FROM 'prof.csv' delimiter ',' CSV HEADER ;
+\copy prof(prof_email, f_name, l_name, department, is_admin, is_grader, curr_cap_prof) FROM 'prof.csv' delimiter ',' CSV HEADER ;
 \copy project(proj_id, title, term_id) FROM 'project.csv' delimiter ',' CSV HEADER ;
 \copy student(f_name,l_name,degree,proj_id,term_id) FROM 'student.csv' delimiter ',' CSV HEADER ;
 \i create_sem_req.sql
@@ -12,5 +12,5 @@
 \i new_assessment.sql
 \i update_term.sql
 \i populate_semester.sql
+\i assign_capstone_prof.sql
 SELECT setval('project_proj_id_seq', (SELECT MAX(proj_id) FROM project));
--- INSERT INTO student (degree, f_name, l_name, proj_id) VALUES ('cs', 'frank', 'tank', find_id('hola'));

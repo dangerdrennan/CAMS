@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import { Accessor } from '../Accessor';
-import { isEmpty } from 'rxjs/operators';
 
 const httpOptions =
 {
@@ -12,24 +12,12 @@ const httpOptions =
 }
 
 
-
-// 1. add prof --Done
-// 2. make admin --Done
-// 3. take away admin --Done
-// 4. set as current grader --Done
-// 5. take away as current grader --Done
-// 6. update assessments for new current grader --Done
-// 7. delete assessments for new non_grader --Done
-// 8. update term (make new assessments where assessments aren't already created)
-
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  //accessors$: Observable<Accessor[]>
-  accessors$!: Observable<Accessor[]>
-  accessors: Accessor[] = []
   endPoint = "http://localhost:4201"
+  notifier= new Subject()
 
   constructor(private http: HttpClient) { }
 
@@ -41,6 +29,11 @@ export class AdminService {
 
   getAllProfs(): Observable<Accessor[]>{
     return this.http.get<Accessor[]>(this.endPoint + '/all_profs')
+  }
+
+  setCurrentCapstoneProfessor(accessor:Accessor): Observable<Accessor[]>{
+    const url = `${this.endPoint}/set_capstone_prof`;
+    return this.http.post<Accessor[]>(url, accessor, httpOptions)
   }
 
   showCurrentGraders(): Observable<Accessor[]>{
@@ -64,9 +57,9 @@ export class AdminService {
   }
 
   addGraderAndAssessments(accessor:Accessor){
-    this.updateProf(accessor).subscribe()
-    this.setProfAsCurrentGrader(accessor).subscribe()
-    this.addAssessmentsForNewGrader(accessor).subscribe()
+    this.updateProf(accessor).pipe(take(1)).subscribe()
+    this.setProfAsCurrentGrader(accessor).pipe(take(1)).subscribe()
+    this.addAssessmentsForNewGrader(accessor).pipe(takeUntil(this.notifier)).subscribe()
   }
   
   setProfAsCurrentGrader(accessor: Accessor): Observable<Accessor[]>{
@@ -80,8 +73,8 @@ export class AdminService {
   }
 
   setProfAsNongrader(accessor: Accessor){
-    this.revokeGraderStatus(accessor).subscribe()
-    this.deleteNongraderAssessments(accessor).subscribe()
+    this.revokeGraderStatus(accessor).pipe(takeUntil(this.notifier)).subscribe()
+    this.deleteNongraderAssessments(accessor).pipe(takeUntil(this.notifier)).subscribe()
   }
 
   revokeGraderStatus(accessor: Accessor): Observable<Accessor[]>{
@@ -103,8 +96,17 @@ export class AdminService {
     return this.http.get<any>(this.endPoint + '/current_term')
   }
 
+  // not sure if we want this or not, but we have it
+  // populates the assessment table with every grader and
+  // every student
   populateSemester(): Observable<any>{
     const url = `${this.endPoint}/populate_semester`;
     return this.http.post<any[]>(url, {'empty': 'object'}, httpOptions)
   }
+
+  ngOnDestory(){
+    this.notifier.next()
+    this.notifier.complete()
+  }
+
 }
