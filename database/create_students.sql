@@ -3,5 +3,6 @@ CREATE TABLE IF NOT EXISTS student (
     degree VARCHAR( 3 ),
     f_name VARCHAR( 25 ),
     l_name VARCHAR( 75 ),
-    proj_id int REFERENCES project(proj_id) ON DELETE CASCADE
+    proj_id INT REFERENCES project(proj_id) ON DELETE CASCADE,
+    term_id INT REFERENCES term(term_id) ON DELETE CASCADE
 );

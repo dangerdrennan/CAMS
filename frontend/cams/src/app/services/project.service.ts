@@ -36,13 +36,11 @@ export class ProjectService {
   }
 
   addProject(name:string): Observable<Project[]>{
-    console.log('in project service', name)
     const url = `${this.endPoint}/add_project/${name}`;
     return this.http.post<Project[]>(url, {name}, httpOptions) 
   }
 
   assignStudentToProject(student: Student): Observable<Student[]> {
-    console.log('in project service', student)
     const url = `${this.endPoint}/add_student/`;
     return this.http.post<Student[]>(url, student, httpOptions) 
   }
@@ -58,7 +56,6 @@ export class ProjectService {
   }
 
   addAssessment(student: Student): Observable<any>{
-    console.log(student)
     const url = `${this.endPoint}/add_assessments/${student.student_id}`
     return this.http.post<any[]>(url, student, httpOptions);
   }

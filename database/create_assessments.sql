@@ -5,8 +5,8 @@
     prof_email VARCHAR( 100 ) REFERENCES prof(prof_email),
     student_id INT REFERENCES student(student_id) ON DELETE CASCADE,
     term_id INT REFERENCES term(term_id),
-    degree VARCHAR ( 3 ),
-    graded BOOLEAN
+    degree TEXT CHECK (degree = 'cs' OR degree = 'cse'),
+    graded BOOLEAN DEFAULT false
  );
 
 
@@ -21,11 +21,11 @@ BEGIN
    WHERE
    is_grader = true
    LOOP
-    FOR g IN SELECT student_id
+    FOR g IN SELECT student_id, degree
         FROM student
             LOOP
-            INSERT INTO assessment (prof_email, student_id, term_id)
-                VALUES (f.prof_email, g.student_id, get_current_term());
+            INSERT INTO assessment (prof_email, student_id, term_id,degree)
+                VALUES (f.prof_email, g.student_id, get_current_term(), g.degree);
             END LOOP;
     END LOOP;
 END; $$;

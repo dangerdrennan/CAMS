@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
     this.profService.department = department;
     this.profService.isAdmin = isAdmin;
     this.profService.isGrader = isGrader;
+    console.log(this.profService.userEmail)
   }
 
   getAll() {
