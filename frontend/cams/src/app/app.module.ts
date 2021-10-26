@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.component';
+import { SuboutcomeComponent } from './suboutcome/suboutcome.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.co
     LogoutButtonComponent,
     ManageAdminsComponent,
     ManageProjectsComponent,
-    ManageAssessorsComponent
+    ManageAssessorsComponent,
+    SuboutcomeComponent
   ],
   imports: [
     BrowserModule,

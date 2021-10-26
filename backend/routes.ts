@@ -345,22 +345,25 @@ usersRouter.get('/all_profs', async (req, res) => {
 
   usersRouter.get('/current_outcome_reqs', async (req, res) => {
     try{
-        const current_assessments_by_prof = await pool.query(`
+        const current_outcome_reqs = await pool.query(`
         SELECT outcome_cats_cs, outcome_cats_cse, suboutcomes_cs, suboutcomes_cse FROM sem_req WHERE term_id = get_current_term();`);
-        res.json(current_assessments_by_prof.rows[0]);
+        res.json(current_outcome_reqs.rows[0]);
     }
     catch(err ){
-        console.log('error has occurred in backend function "current_assessments_by_prof"')
+        console.log('error has occurred in backend function "current_outcome_reqs"')
     }
   });
 
   usersRouter.get('/get_cs_outcome_desc/:ids', async (req, res) => {
     try{
         const {ids} = req.params
-        console.log(typeof(ids))
+        console.log(ids)
+        // const num_array = ids.array.forEach(element => {
+            
+        // });
         let query = `
         SELECT * FROM outcome_details_cs WHERE cs_cat_id in (${ids})`
-        console.log(query)
+        console.log('this query is at ', query)
 
         const get_cs_outcome_desc = await pool.query(`${query};`);
         res.json(get_cs_outcome_desc.rows);
@@ -370,6 +373,21 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+  //get_cs_suboutcomes
+
+  usersRouter.get('/get_cs_suboutcomes/:outcome_name', async (req, res) => {
+    try{
+        const {outcome_name} = req.params
+        console.log('outcome name is ', outcome_name)
+        const get_cs_suboutcomes = await pool.query(`
+        SELECT * FROM suboutcome_details_cs WHERE outcome_cat_id = $1;`, [outcome_name]);
+        res.json(get_cs_suboutcomes.rows);
+        console.log(get_cs_suboutcomes.rows)
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "get_cs_suboutcomes"')
+    }
+  });
 
 
 

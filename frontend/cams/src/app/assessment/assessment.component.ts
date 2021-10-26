@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { Observable } from 'rxjs';
-import { first, take } from 'rxjs/operators';
+import { first, shareReplay, take } from 'rxjs/operators';
 import { Accessor } from '../Accessor';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
@@ -19,9 +19,10 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./assessment.component.css']
 })
 export class AssessmentComponent implements OnInit {
+  requirements$: Observable<SemesterReqs>
   cs_outcome_des: OutcomeDescriptions[] = []
   requirement_suboutcomes:string[] = []
-  reqs!: SemesterReqs
+  reqs: SemesterReqs
   outcome_cats_cs?: string[]
   prof: Accessor = {
     prof_email: 'ginandjuice@fbi.gov',
@@ -37,28 +38,26 @@ export class AssessmentComponent implements OnInit {
     this.assessmentService.getCurrentAssessmentsbyProf(this.prof.prof_email).subscribe((res: any)=>
       console.log(res)
     )
-    const test_arr = this.assessmentService.getCurrentSemesterRequirements().subscribe(res=>{
-      console.log(res)
-      this.reqs = res
-    })
-    this.assessmentService.getCurrentSemesterRequirements().subscribe(res=> {
-      console.log('in service at getCSOutcomeDescription()', res)
+    //this.requirements$ = this.assessmentService.getCurrentSemesterRequirements()
+    this.requirements$ = this.assessmentService.getCurrentSemesterRequirements().pipe(shareReplay())
+    this.assessmentService.getCurrentSemesterRequirements().pipe(take(1)).subscribe(res=> {
       this.outcome_cats_cs = res.outcome_cats_cs
-      this.setDescriptions(this.outcome_cats_cs)
+      //this.setDescriptions(this.outcome_cats_cs)
     })
    }
 
   ngOnInit(): void {
+    this.requirements$.subscribe()
+    }
 
-  }
-
+    // haven't gotten this to work yet
   setDescriptions(arr : string[]){
     const num_array:number[] = []
     console.log(arr)
     arr.forEach(val => {
       num_array.push(parseInt(val))
     })
-    this.assessmentService.getCSOutcomeDescription(num_array).subscribe(res =>{
+    this.assessmentService.getCSOutcomeDescription(num_array).pipe(take(1)).subscribe(res =>{
       this.cs_outcome_des = res
       console.log(this.cs_outcome_des)
     }

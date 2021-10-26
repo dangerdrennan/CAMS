@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
+import { CSSuboutcome } from '../CSSuboutcome'
 
 const httpOptions =
 {
@@ -50,6 +51,10 @@ export class AssessmentService {
   getCSOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
     console.log('what is this id type? ', typeof(ids))
     return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_cs_outcome_desc/${ids}`)
+  }
+
+  getCSSuboutcomes(outcome_name: string): Observable<CSSuboutcome[]>{
+    return this.http.get<CSSuboutcome[]>(`${this.endPoint}/get_cs_suboutcomes/${outcome_name}`)
   }
 
 }
