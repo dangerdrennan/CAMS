@@ -16,7 +16,6 @@ import { PastAssessmentsComponent } from './past-assessments/past-assessments.co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
-import { PastResultsComponent } from './past-results/past-results.component';
 import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.component';
 
 
@@ -33,7 +32,6 @@ PastAssessmentsComponent,
     LogoutButtonComponent,
     ManageAdminsComponent,
     ManageProjectsComponent,
-    PastResultsComponent,
     ManageAssessorsComponent
   ],
   imports: [

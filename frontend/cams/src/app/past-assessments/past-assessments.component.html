@@ -1,44 +1,217 @@
 
 <div class="main">
-  <div class="card" style="max-width: 350px;">
-    <div class="card-body">
-      <div class="title">Past Assessments</div>
-      <form [formGroup]="form">
-        <div class="select-container" style="text-align: left;margin: 4px;">
-          <div class="container" style="display: flex;justify-content: left;margin-left: -8px;">
-            <div class="dropdown" style="margin-right: 8px;">
-              <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
-                <option value="">Select Term</option>
-                <option value="fall">Fall</option>
-                <option value="spring">Spring</option>
-              </select>
-            </div>
+  <div class="container" style="max-height: fit-content;width: fit-content">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body" style="text-align: center;">
+            <div class="title">Outcome Trends</div>
+            <form [formGroup]="outcomeForm">
+              <div class="select-container">
+                <div class="container" style="display: flex; justify-content: center;">
+                  <div class="dropdown" style="margin-right: 8px;">
+                    <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
+                      <option value="">Select Term</option>
+                      <option value="fall">Fall</option>
+                      <option value="spring">Spring</option>
+                    </select>
+                  </div>
 
-            <div class="dropdown">
-              <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
-                <option value="">Select Year</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-              </select>
-            </div>
+                  <div class="dropdown">
+                    <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
+                      <option value="">Select Year</option>
+                      <option value="2018">2018</option>
+                      <option value="2019">2019</option>
+                      <option value="2020">2020</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-check form-check-inline" style="margin-left: 14px;">
+                  <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+                  <label class="form-check-label">CS</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+                  <label class="form-check-label">CSE</label>
+                </div>
+                <div *ngIf="this.outcomeForm.get('degree')?.invalid && outcomeForm.valid">Select CS or CSE.</div>
+              </div>
 
-            <button type="submit" [disabled]="form.invalid" class="btn btn-success btn-sm" style="margin-left: 12px;"
-            (click)="find()">Find</button>
+              <button type="submit" [disabled]="outcomeForm.invalid" class="btn btn-success btn-sm" style="margin-left: 12px;"
+                  (click)="findTrends()">Find</button>
+            </form>
           </div>
-
-
-          <div class="form-check form-check-inline" style="margin-left: 14px;">
-            <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
-            <label class="form-check-label">CS</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
-            <label class="form-check-label">CSE</label>
-          </div>
-          <div *ngIf="this.form.get('degree')?.invalid && form.valid">Select CS or CSE.</div>
         </div>
-      </form>
+      </div>
+
+      <div class="col">
+        <div class="card">
+          <div class="card-body" style="text-align: center;">
+            <div class="title">Past Assessments</div>
+            <form [formGroup]="pastForm">
+              <div class="select-container">
+                <div class="container" style="display: flex; justify-content: center;">
+                  <div class="dropdown" style="margin-right: 8px;">
+                    <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
+                      <option value="">Select Term</option>
+                      <option value="fall">Fall</option>
+                      <option value="spring">Spring</option>
+                    </select>
+                  </div>
+
+                  <div class="dropdown">
+                    <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
+                      <option value="">Select Year</option>
+                      <option value="2018">2018</option>
+                      <option value="2019">2019</option>
+                      <option value="2020">2020</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-check form-check-inline" style="margin-left: 14px;">
+                  <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+                  <label class="form-check-label">CS</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+                  <label class="form-check-label">CSE</label>
+                </div>
+                <div *ngIf="this.pastForm.get('degree')?.invalid && pastForm.valid">Select CS or CSE.</div>
+              </div>
+
+              <button type="submit" [disabled]="pastForm.invalid" class="btn btn-success btn-sm" style="margin-left: 12px;"
+                  (click)="findPast()">Find</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- table that displays past assessments -->
+    <div class="row" *ngIf="displayPast" >
+      <div class="col-12" style="align-items: center;">
+        <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
+          <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
+              <div *ngIf="this.pastForm.get('degree')?.value ==='CS';else cse">
+                <div class="d-flex justify-content-start">
+                  <div id="title">
+                    <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
+                    <ng-template #normal>
+                      <strong>{{this.outcomeTitle[this.outcomeNum - 1]}}</strong>
+                    </ng-template>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                  <div class="dropdown">
+                    <select class="btn btn-secondary btn-sm dropdown-toggle">
+                      <option *ngFor="let i of this.outcomeIdCS" [value]="i" (click)="changeOutcomes(i)">Outcome {{i}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+
+              <ng-template #cse>
+                <div class="d-flex justify-content-start">
+                  <div id="title">
+                    <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
+                    <ng-template #normal>
+                      <strong>{{this.outcomeTitle[this.outcomeNum - 1]}}</strong>
+                    </ng-template>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                  <div class="dropdown">
+                    <select class="btn btn-secondary btn-sm dropdown-toggle">
+                      <option *ngFor="let i of this.outcomeIdCSE" [value]="i" (click)="changeOutcomes(i)">Outcome {{i}}</option>
+                    </select>
+                  </div>
+                </div>
+              </ng-template>
+
+
+            <table class="table" >
+              <thead >
+                <tr>
+                  <th scope="col">Evaluation Criteria</th>
+                  <th scope="col">Poor</th>
+                  <th scope="col">Developing</th>
+                  <th scope="col">Satisfactory</th>
+                  <th scope="col">Excellent</th>
+                  <th scope="col">Totals</th>
+                </tr>
+              </thead>
+
+               <tbody>
+                <tr *ngFor="let j of this.subTitle">
+                  <td scope="col" >{{j}}</td>
+                  <td scope="row">1</td>
+                  <td scope="row">2</td>
+                  <td scope="row">3</td>
+                  <td scop="row">4</td>
+                  <td scop="row">11</td>
+
+                </tr>
+                <tr >
+                  <th scope="row">Total</th>
+                  <td scope="row">1</td>
+                  <td scope="row">2</td>
+                  <td scope="row">3</td>
+                  <td scop="row">4</td>
+                  <td scop="row">11</td>
+                </tr>
+                <tr>
+                  <th scope="row">Percentages</th>
+                  <td scope="row">1%</td>
+                  <td scope="row">2%</td>
+                  <td scope="row">3%</td>
+                  <td scop="row">4%</td>
+                  <td scop="row">%100</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- display outcomes table -->
+    <div class="row" *ngIf="displayOutcome">
+      <div class="col-12" style="align-items: center;">
+        <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
+          <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
+
+            <div id="title" style="text-align: center;">
+              <strong>{{this.outcomeForm.get('degree')?.value}} Outcome Trend {{this.outcomeForm.get('year')?.value}}</strong>
+            </div>
+            <table class="table" >
+              <thead >
+                <tr>
+                  <th scope="col">Outcome</th>
+                  <th scope="col">Poor</th>
+                  <th scope="col">Developing</th>
+                  <th scope="col">Satisfactory</th>
+                  <th scope="col">Excellent</th>
+                </tr>
+              </thead>
+
+               <tbody>
+                <tr *ngFor="let j of this.outcomeTitle">
+                  <td scope="row" style="max-width: 140px;">{{j}}</td>
+                  <td scope="row">1%</td>
+                  <td scope="row">2%</td>
+                  <td scope="row">3%</td>
+                  <td scop="row">4%</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
