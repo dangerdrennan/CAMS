@@ -9,10 +9,10 @@ import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.component';
 
-
+// home changed on assessment-service branch to display assessment component for testing
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: 'home', component: AssessmentComponent, canActivate: [AuthGuard]},
   {path: 'assessment', component: AssessmentComponent, canActivate: [AuthGuard]},
   {path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard]},
   {path: 'past-assessments', component: PastAssessmentsComponent, canActivate: [AuthGuard]},

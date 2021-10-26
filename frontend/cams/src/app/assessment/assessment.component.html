@@ -1,5 +1,9 @@
 <div class="main">
   <p>assessments will be here</p>
+  <div *ngFor= "let req of outcome_cats_cs; index as i">
+    {{cs_outcome_des[i].outcome_description}}
+    <!-- {{(getCSOutcomeDescription(req))}} -->
+  </div>
   <button class="btn btn-secondary" (click)="goBack()">back</button>
 
 

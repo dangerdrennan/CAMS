@@ -330,6 +330,46 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+  usersRouter.get('/current_assessments_by_prof/:email', async (req, res) => {
+    try{
+        const {email} = req.params
+        const current_assessments_by_prof = await pool.query(`
+        SELECT * FROM assessment WHERE prof_email = $1 AND term_id = get_current_term();`,
+        [email]);
+        res.json(current_assessments_by_prof.rows);
+    }
+    catch(err ){
+        console.log('error has occurred in backend function "current_assessments_by_prof"')
+    }
+  });
+
+  usersRouter.get('/current_outcome_reqs', async (req, res) => {
+    try{
+        const current_assessments_by_prof = await pool.query(`
+        SELECT outcome_cats_cs, outcome_cats_cse, suboutcomes_cs, suboutcomes_cse FROM sem_req WHERE term_id = get_current_term();`);
+        res.json(current_assessments_by_prof.rows[0]);
+    }
+    catch(err ){
+        console.log('error has occurred in backend function "current_assessments_by_prof"')
+    }
+  });
+
+  usersRouter.get('/get_cs_outcome_desc/:ids', async (req, res) => {
+    try{
+        const {ids} = req.params
+        console.log(typeof(ids))
+        let query = `
+        SELECT * FROM outcome_details_cs WHERE cs_cat_id in (${ids})`
+        console.log(query)
+
+        const get_cs_outcome_desc = await pool.query(`${query};`);
+        res.json(get_cs_outcome_desc.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "get_cs_outcome_desc"')
+    }
+  });
+
 
 
 
