@@ -1,8 +1,8 @@
 DROP TABLE suboutcome_details_cse;
 
 CREATE TABLE suboutcome_details_cse (
-    cse_suboutcome_name VARCHAR( 4 ) PRIMARY KEY,
-    score_id VARCHAR (10),
+    cse_suboutcome_name TEXT PRIMARY KEY,
+    score_id TEXT,
     outcome_cat_id INT,
     suboutcome_description TEXT,
     poor_description TEXT,
