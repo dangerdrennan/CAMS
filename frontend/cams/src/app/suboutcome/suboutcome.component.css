@@ -1,0 +1,14 @@
+.scoreable:hover{
+    background-color: aqua;
+    cursor: pointer;
+}
+
+.height {
+    position: relative;
+    height: 800px;
+    overflow: auto !important;
+}
+
+.selected {
+    background-color: aqua;
+}
