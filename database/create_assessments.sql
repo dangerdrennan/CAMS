@@ -2,10 +2,10 @@
 
  CREATE TABLE assessment (
     assessment_id SERIAL PRIMARY KEY,
-    prof_email VARCHAR( 100 ) REFERENCES prof(prof_email),
+    prof_email TEXT REFERENCES prof(prof_email),
     student_id INT REFERENCES student(student_id) ON DELETE CASCADE,
     term_id INT REFERENCES term(term_id),
-    degree TEXT CHECK (degree = 'cs' OR degree = 'cse'),
+    degree TEXT,
     graded BOOLEAN DEFAULT false
  );
 
