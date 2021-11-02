@@ -20,6 +20,7 @@ export class AssessmentService {
   currentCSOutcomes: string[] = []
   cs_categories: string[] = []
   currentCSOutcomeDesc: OutcomeDescriptions[] = []
+  suboutcome_grade: { score_id: number}[] = []
   //outcomeDescriptions$: Observable<OutcomeDescriptions[]>
   
 

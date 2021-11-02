@@ -1,11 +1,6 @@
 <meta charset="UTF-8"><div class="main">
+  <button class='btn btn-primary' (click) = "showServiceGrades()">Track Assessment Grades</button>
   <body class="scroll">
-  <p>assessments will be here</p>
-  
-  <app-suboutcome class= 'scroll' *ngFor= "let req of outcome_cats_cs" [outcome_cat] = "req">
-    
-  </app-suboutcome>
-  <button class="btn btn-secondary" (click)="goBack()">back</button>
-
-
+    <app-suboutcome class= 'scroll' *ngFor= "let req of outcome_cats_cs" [outcome_cat] = "req"></app-suboutcome>
+    <button class="btn btn-secondary" (click)="goBack()">back</button>
 </body>

@@ -18,7 +18,8 @@ const routes: Routes = [
   {path: 'past-assessments', component: PastAssessmentsComponent, canActivate: [AuthGuard]},
   {path: 'admins', component: ManageAdminsComponent, canActivate: [AuthGuard]},
   {path: 'manage-projects', component: ManageProjectsComponent, canActivate: [AuthGuard]},
-  {path: 'manage-assessors', component: ManageAssessorsComponent, canActivate: [AuthGuard]}
+  {path: 'manage-assessors', component: ManageAssessorsComponent, canActivate: [AuthGuard]},
+  {path: 'assessment/:prof_email/:student_id',component: AssessmentComponent, canActivate: [AuthGuard]}
 
 ];
 

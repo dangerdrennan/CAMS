@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AssessmentService } from 'src/app/services/assessment.service';
 import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 
 @Component({
@@ -10,12 +11,17 @@ import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 export class ProjectsComponent implements OnInit {
   
   user: string
-  constructor(private router: Router, public profDashService: ProfDashboardService) { 
+  
+  constructor(private router: Router, public profDashService: ProfDashboardService, public assessmentService:AssessmentService) { 
     this.user = profDashService.userEmail
   }
 
   ngOnInit(): void {
 
+  }
+
+  getDisplayInfo(email: string){
+    
   }
 
   assessments() {

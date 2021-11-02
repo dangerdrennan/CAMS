@@ -14,6 +14,7 @@ export class SuboutcomeComponent implements OnInit {
   suboutcomeDetails: CSSuboutcome[]
   subOutcomeNames: string[] = []
   subDeets$: Observable<CSSuboutcome[]>
+  suboutcome_grade: { score_id: number}[] = []
 
 
   constructor(public assessmentService: AssessmentService) {
@@ -27,6 +28,8 @@ export class SuboutcomeComponent implements OnInit {
     const developing_box = document.getElementById(score_id+'_'+'developing');
     const satisfactory_box = document.getElementById(score_id+'_'+'satisfactory');
     const excellent_box = document.getElementById(score_id+'_'+'excellent');
+    this.assessmentService.suboutcome_grade[score_id] = grade
+    console.log('in suboutcome component: ', this.assessmentService.suboutcome_grade)
     switch(grade) {
       case 1:
         poor_box.className = "scoreable selected"

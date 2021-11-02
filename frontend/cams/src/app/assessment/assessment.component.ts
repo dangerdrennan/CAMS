@@ -50,6 +50,10 @@ export class AssessmentComponent implements OnInit {
     this.requirements$.subscribe()
     }
 
+    showServiceGrades(){
+      console.log('in parent component: ', this.assessmentService.suboutcome_grade)
+    }
+
     // haven't gotten this to work yet
   setDescriptions(arr : string[]){
     const num_array:number[] = []
