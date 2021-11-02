@@ -1,58 +1,167 @@
-<div class="main">
-  <button class="btn btn-secondary btn-sm" (click)="goBack()">back</button>
+<div class="main" style="overflow-y: scroll; overflow-x: hidden;">
+  <div class="row" >
+    <div class="col" >
+      <div class="card" style="margin-bottom: 30px;">
+        <div class="card-body">
+        <div class="title" style="font-size: medium;"><strong>All Projects</strong></div>
 
-  <div class="card" style="max-width: 450px;margin-top: 20px;">
-    <div class="card-body">
-      <form [formGroup]="form">
-        <div class="mb-3">
-          <label for="projectName" class="form-label">Project Name</label>
-          <input type="text" class="form-control" formControlName="projectName" id="projectName" required="required">
-        </div>
-        <div class="mb-3">
-          <label for="studentName" class="form-label">Student Name</label>
-          <input type="text" class="form-control" formControlName="studentName" id="studentName" required="required">
-        </div>
-        <div class="container" style="display: flex;justify-content: left;margin-left: -10px;">
-          <div class="dropdown" style="margin-right: 8px;">
-            <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
-              <option value="">Select Year</option>
-              <option value="2018">2018</option>
-              <option value="2019">2019</option>
-              <option value="2020">2020</option>
-            </select>
-          </div>
-          <div class="dropdown">
-            <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
-              <option value="">Select Term</option>
-              <option value="fall">Fall</option>
-              <option value="spring">Spring</option>
-            </select>
-          </div>
-        </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Project Name</th>
+                <th>Student(s) Name </th>
+                <th>Term</th>
+                <th>Actions</th>
+              </tr>
 
-        <div class="form-check form-check-inline" style="margin-left: 14px;margin-top: 5px;">
-          <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
-          <label class="form-check-label">CS</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
-          <label class="form-check-label">CSE</label>
-        </div>
-        <button type="submit" [disabled]="form.invalid" class="btn btn-primary btn-sm"
-          style="position: absolute;right: 15px;" (click)="submit()">Add</button>
-      </form>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of allProj; let i = index">
+                <td>{{item.proj_id}}</td>
+                <td>{{item.title}}</td>
+
+                <span *ngFor="let stud of allStud">
+                  <td *ngIf="item.proj_id===stud.proj_id">{{stud.f_name}} {{stud.l_name}} <button class="btn btn-warning btn-sm" style="width: 33px;height: 31px;" data-bs-toggle="modal" data-bs-target="#editStudent" (click)="editButton(item)"> <img src="../../assets/images/edit_white_24dp.svg" style="width: 20px;height: 20px;text-align: center;"alt=""> </button></td>
+                </span>
+
+                <td>{{item.term_id!}}</td>
+                <td><button class="btn btn-danger btn-sm" (click)="deleteProject(item)"> <img src="../../assets/images/delete_outline_white_24dp.svg"  alt=""> </button></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- accordion to add project in All projects-->
+          <div class="accordion" id="accordionExampleAddProj">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Add Project
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExampleAddProj">
+                <div class="accordion-body">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <form [formGroup]="addProjForm">
+                          <label for="projName">Project Name</label>
+                          <input type="text" class="form-control" formControlName="projectName" id="projName" required="required">
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-12">
+                        <form [formGroup]="addStudForm">
+                          <div class="col-5">
+                            <label for="studentFirst">Student First Name</label>
+                            <input type="text" class="form-control" formControlName="studentFirst" id="studentFirst" required="required">
+                            </div>
+                          <div class="col-5">
+                            <label for="studentLast">Student Last Name</label>
+                            <input type="text" class="form-control" formControlName="studentLast" id="studentLast">
+                          </div>
+
+                          <div class="col-2" style="margin-top: 15px;">
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+                              <label class="form-check-label">CS</label>
+                            </div>
+
+                            <div class="form-check form-check">
+                              <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+                              <label class="form-check-label">CSE</label>
+                            </div>
+                          </div>
+                      </form>
+                    </div>
+
+
+                  </div>
+                  <div class="col-1" style="margin-top: 30px;margin-left: 90%;">
+                    <button (click)="submitAddNewProj(this.addProjForm.get('projectName')?.value)" type="submit" [disabled]="this.addStudForm.invalid" class="btn btn-primary btn-sm" style="position:relative;" >Submit</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- modal when edit button clicked next to stud name -->
+          <div class="modal fade" id="editStudent" tabindex="-1" aria-labelledby="editStudent" aria-hidden="true">
+            <div class="modal-dialog" *ngFor="let item of allProj;let j = index">
+              <div class="modal-content" *ngIf="item.proj_id===this.projIndex">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editStudent" >Students In  "{{item.title}}"</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <!-- List of studs to be able to remove Stud From Project -->
+                  <label for="students">Student(s)</label>
+                  <ul id="students" class="list-group" *ngFor="let stud of allStud;let k = index">
+
+                      <li *ngIf=" stud.proj_id===this.projIndex" class="list-group-item" style="justify-content: space-evenly;" >{{stud.f_name}} {{stud.l_name}}<button class="btn btn-danger btn-sm" style="margin-left: 310px;" (click)="deleteStudFromProjInModal(stud)"> <img src="../../assets/images/delete_outline_white_24dp.svg"> </button></li>
+
+                  </ul>
+
+                  <!-- In modal add student to project -->
+                  <div class="accordion" id="editStudent" style="margin-top: 10px;" *ngIf="item.proj_id===this.projIndex">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingEdit">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEdit" aria-expanded="false" aria-controls="collapseEdit">
+                          Add Student To Project
+                        </button>
+                      </h2>
+                      <div id="collapseEdit" class="accordion-collapse collapse" aria-labelledby="headingEdit" data-bs-parent="#editStudent">
+                        <div class="accordion-body">
+
+                          <form [formGroup]="addStudForm">
+
+                            <div class="col-auto">
+                              <label for="studentFirst">Student First Name</label>
+                              <input type="text" class="form-control" formControlName="studentFirst" id="studentFirst" required="required">
+                            </div>
+                            <div class="col-auto">
+                              <label for="studentLast">Student Last Name</label>
+                              <input type="text" class="form-control" formControlName="studentLast" id="studentLast">
+                            </div>
+
+                            <div class="container" style="display: flex;margin-top: 10px;margin-left: -25px;margin-bottom: 10px;">
+
+                              <div class="form-check form-check-inline" style="margin-left: 14px;">
+                                <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+                                <label class="form-check-label">CS</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+                                <label class="form-check-label">CSE</label>
+                              </div>
+                            </div>
+                          </form>
+                          <div class="col-auto">
+                            <button type="submit" [disabled]="this.addStudForm.invalid" (click)="addStudInModal(item)" class="btn btn-primary mb-3">Add</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+      </div>
     </div>
   </div>
 
-  <div class="card" style="margin-top: 30px;max-width: 400px;">
-    <div class="card-body">
-      <form [formGroup]="form2">
-        <label for="professor" class="form-label">Instructors name for the current semester</label>
-        <input id="professor" class="form-control" type="text" required="required">
-        <small>This only needs to be entered once</small>
-        <button type="submit" [disabled]="form2.invalid" class="btn btn-primary btn-sm"
-          style="position: absolute;right: 15px; margin-top: 4px;" (click)="secondSubmit()">Add</button>
-      </form>
-    </div>
-  </div>
+
+
 </div>
