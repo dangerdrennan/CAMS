@@ -49,13 +49,12 @@ export class ManageProjectsComponent implements OnInit {
 
   // display all projects
   allProjects() {
-    return this.projectService.getAllProjects().subscribe((res) => {
+    this.projectService.getAllProjects().subscribe((res) => {
       res.filter((item: Project) => {
         this.projectService.getProjectStudents(item).subscribe((res) => {
           res.filter((stud: Student) => {
 
             this.allStud.push(stud)
-            this.generateAssessments(stud)
           })
         })
          this.allProj.push(item)
@@ -72,7 +71,7 @@ export class ManageProjectsComponent implements OnInit {
     this.projectService.addProject(projectName).subscribe((res) => {
       res.filter((item: Project) => {
         this.allProj.push(item)
-        return this.addStudToProj(item.proj_id!, item.term_id!)
+        this.addStudToProj(item.proj_id!, item.term_id!)
       })
     })
   }
@@ -87,15 +86,17 @@ export class ManageProjectsComponent implements OnInit {
       proj_id: projId,
       term_id: termId
     }
-    this.projectService.assignStudentToProject(this.student).subscribe(() => {
+    
+    this.projectService.assignStudentToProject(this.student).subscribe(res => {
       this.allStud.push(this.student)
-      this.generateAssessments(this.student)
-      location.reload()
+      this.generateAssessments(res[0])
     })
+    
   }
 
   // delete an entire project
   deleteProject(project: Project) {
+    
     this.projectService.deleteProject(project.title).subscribe(() => {
       location.reload()
     })
@@ -121,7 +122,9 @@ export class ManageProjectsComponent implements OnInit {
 
   // add assessments for each student
   generateAssessments(stud: Student) {
-    this.projectService.addAssessment(stud).subscribe()
+    this.projectService.addAssessment(stud).subscribe(() => {
+    })
+    location.reload()
   }
 
 

@@ -79,7 +79,7 @@
 
                   </div>
                   <div class="col-1" style="margin-top: 30px;margin-left: 90%;">
-                    <button (click)="submitAddNewProj(this.addProjForm.get('projectName')?.value)" type="submit" [disabled]="this.addStudForm.invalid" class="btn btn-primary btn-sm" style="position:relative;" >Submit</button>
+                    <button data-bs-target="#collapseTwo" data-bs-toggle="collapse" (click)="submitAddNewProj(this.addProjForm.get('projectName')?.value)" type="submit" [disabled]="this.addStudForm.invalid" class="btn btn-primary btn-sm" style="position:relative;" >Submit</button>
                   </div>
 
                 </div>
@@ -151,7 +151,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button data-bs-dismiss="modal" type="button" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
             </div>
