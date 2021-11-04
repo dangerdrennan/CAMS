@@ -65,4 +65,9 @@ export class ProjectService {
     return this.http.get<Student[]>(url)
   }
 
+  getSemYear(): Observable<{semester:string, year:number}[]>{
+    const url = `${this.endPoint}/current_term`
+    return this.http.get<{semester:string, year:number}[]>(url)
+  }
+
 }

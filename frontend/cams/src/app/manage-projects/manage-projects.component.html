@@ -18,7 +18,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of allProj; let i = index">
-                <td>{{item.proj_id}}</td>
+                <td>{{semYear[0].semester}} {{semYear[0].year}}</td>
                 <td>{{item.title}}</td>
 
                 <span *ngFor="let stud of allStud">

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Project } from '../Project';
 import { ProjectService } from '../services/project.service';
 import { Student } from '../Student';
@@ -22,6 +24,7 @@ export class ManageProjectsComponent implements OnInit {
   projIndex: number = 0;
   termId!: number
   projId:number | undefined
+  semYear!: {semester:string, year:number}[]
   constructor(private builder: FormBuilder, private projectService: ProjectService) { }
 
   ngOnInit(): void {
@@ -43,6 +46,11 @@ export class ManageProjectsComponent implements OnInit {
 
 
     console.log("all students", this.allStud)
+
+    this.projectService.getSemYear().pipe(first()).subscribe(res =>{
+      this.semYear = res
+      console.log(this.semYear)
+    })
 
 
   }
@@ -125,6 +133,9 @@ export class ManageProjectsComponent implements OnInit {
     this.projectService.addAssessment(stud).subscribe(() => {
     })
     location.reload()
+  }
+
+  getSemYear(){
   }
 
 

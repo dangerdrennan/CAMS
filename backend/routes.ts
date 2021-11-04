@@ -79,7 +79,7 @@ usersRouter.get('/all_profs', async (req, res) => {
   usersRouter.get('/current_term', async (req, res) => {
     try{
         const get_current_term = await pool.query(`
-        SELECT semester, year from term where term_id = get_current_term()`);
+        SELECT semester, year from term where term_id = get_current_term() LIMIT 1`);
         res.json(get_current_term.rows);
     }
     catch(err ){
