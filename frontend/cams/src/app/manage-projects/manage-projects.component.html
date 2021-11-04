@@ -18,14 +18,14 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of allProj; let i = index">
-                <td>{{semYear[0].semester}} {{semYear[0].year}}</td>
+                <td>{{i + 1}}</td>
                 <td>{{item.title}}</td>
 
                 <span *ngFor="let stud of allStud">
                   <td *ngIf="item.proj_id===stud.proj_id">{{stud.f_name}} {{stud.l_name}} <button class="btn btn-warning btn-sm" style="width: 33px;height: 31px;" data-bs-toggle="modal" data-bs-target="#editStudent" (click)="editButton(item)"> <img src="../../assets/images/edit_white_24dp.svg" style="width: 20px;height: 20px;text-align: center;"alt=""> </button></td>
                 </span>
 
-                <td>{{item.term_id!}}</td>
+                <td>{{semYear[0].semester}} {{semYear[0].year}}</td>
                 <td><button class="btn btn-danger btn-sm" (click)="deleteProject(item)"> <img src="../../assets/images/delete_outline_white_24dp.svg"  alt=""> </button></td>
               </tr>
             </tbody>

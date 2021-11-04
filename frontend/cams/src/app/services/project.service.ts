@@ -40,6 +40,10 @@ export class ProjectService {
     return this.http.get<Project[]>(this.endPoint + '/all_proj')
   }
 
+  getCurrentProjects() : Observable<Project[]>{
+    return this.http.get<Project[]>(this.endPoint + '/current_proj')
+  }
+
   addProject(name:string): Observable<Project[]>{
     const url = `${this.endPoint}/add_project/${name}`;
     return this.http.post<Project[]>(url, {name}, httpOptions) 

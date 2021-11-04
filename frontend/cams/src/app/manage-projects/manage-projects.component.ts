@@ -41,8 +41,10 @@ export class ManageProjectsComponent implements OnInit {
       status: ['Not Graded'] // by default we'll mark as not graded
     })
 
-    // initially display all projects
-    this.allProjects()
+    // // initially display all projects
+    // this.allProjects()
+    // new code to display only current projects
+    this.currentProjects()
 
 
     console.log("all students", this.allStud)
@@ -58,6 +60,20 @@ export class ManageProjectsComponent implements OnInit {
   // display all projects
   allProjects() {
     this.projectService.getAllProjects().subscribe((res) => {
+      res.filter((item: Project) => {
+        this.projectService.getProjectStudents(item).subscribe((res) => {
+          res.filter((stud: Student) => {
+
+            this.allStud.push(stud)
+          })
+        })
+         this.allProj.push(item)
+      })
+    })
+  }
+  // new stuff I added, kept your same code
+  currentProjects() {
+    this.projectService.getCurrentProjects().subscribe((res) => {
       res.filter((item: Project) => {
         this.projectService.getProjectStudents(item).subscribe((res) => {
           res.filter((stud: Student) => {
@@ -138,5 +154,7 @@ export class ManageProjectsComponent implements OnInit {
   getSemYear(){
   }
 
+
+  // when you get the component to display only the current term's projects, just be aware that in the current term in the database, there's no projects for that current term, so if you see blanks, there's a chance it's working. And obviously you can play around with the files in the db to test it. I think the easiest way to do that is to go to the student csv and replace some of the term values for a specific project id
 
 }

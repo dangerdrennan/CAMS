@@ -63,6 +63,16 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+  usersRouter.get('/current_proj', async (req, res) => {
+    try{
+        const get_proj = await pool.query(`select * from project INNER JOIN get_current_term() ON project.term_id = get_current_term`);
+        res.json(get_proj.rows);
+    }
+    catch(err ){
+        console.log('error has occurred in backend function "current_proj"')
+    }
+  });
+
   usersRouter.get('/students_by_project/:id', async (req, res) => {
     try{
         const {id} = req.params
