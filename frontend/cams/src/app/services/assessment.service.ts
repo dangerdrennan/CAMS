@@ -3,10 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
-import { CSSuboutcome } from '../CSSuboutcome'
+import { Suboutcome } from '../Suboutcome'
 import { AssessmentDisplay } from '../AssessmentDisplay';
 import { take } from 'rxjs/operators';
-import { Project } from '../Project';
 import { Router } from '@angular/router';
 
 const httpOptions =
@@ -29,13 +28,12 @@ export class AssessmentService {
   assessment: AssessmentDisplay
   outcomeDescriptions$: Observable<OutcomeDescriptions[]>
   submissionStatus: boolean = false
+  requirements$: Observable<SemesterReqs[]>
   
 
 
   constructor(private http: HttpClient, private router: Router) { 
-    this.getCurrentSemesterRequirements().subscribe(res=>{
-      this.currentCSOutcomes = res.outcome_cats_cs
-    })
+    
   }
 
   getCurrentAssessmentsbyProf(email:string): any{
@@ -64,7 +62,6 @@ export class AssessmentService {
     catch(err){
       alert('An error has occured while submitted your grades. This assessment has not been marked as graded and needs to be resubmitted.')
       return false
-      //this.router.navigateByUrl('/projects');
     }
   }
 
@@ -83,13 +80,13 @@ export class AssessmentService {
     return this.http.post<{ score_id: number}>(url, grade, httpOptions);
   }
 
-  getCSOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
-    console.log('what is this id type? ', typeof(ids))
-    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_cs_outcome_desc/${ids}`)
+  getOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
+    console.log('what is this id type? ', typeof(ids), ' what is this')
+    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_cs_outcome_desc/${this.assessment.degree}/${ids}`)
   }
 
-  getCSSuboutcomes(outcome_name: string): Observable<CSSuboutcome[]>{
-    return this.http.get<CSSuboutcome[]>(`${this.endPoint}/get_cs_suboutcomes/${outcome_name}`)
+  getSuboutcomes(outcome_name: string): Observable<Suboutcome[]>{
+    return this.http.get<Suboutcome[]>(`${this.endPoint}/get_suboutcomes/${this.assessment.degree}/${outcome_name}`)
   }
 
 }

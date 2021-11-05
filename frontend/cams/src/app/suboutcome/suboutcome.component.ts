@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { CSSuboutcome } from '../CSSuboutcome';
+import { shareReplay, take } from 'rxjs/operators';
+import { AssessmentDisplay } from '../AssessmentDisplay';
+import { Suboutcome } from '../Suboutcome';
 import { AssessmentService } from '../services/assessment.service';
 
 @Component({
@@ -14,26 +15,24 @@ export class SuboutcomeComponent implements OnInit {
   @Input() outcome_cat: string
   @Input() outcome_description: string
   @Input() assID: number
+  @Input() assessmentInfo: AssessmentDisplay
   @Output() newGrade = new EventEmitter<[string, number]>();
-  suboutcomeDetails: CSSuboutcome[]
+  suboutcomeDetails: Suboutcome[]
   subOutcomeNames: string[] = []
-  subDeets$: Observable<CSSuboutcome[]>
-  subDeets: CSSuboutcome[] = []
+  subDeets$: Observable<Suboutcome[]>
+  subDeets: Suboutcome[] = []
   suboutcome_grade: { score_id: number}[] = []
 
 
   constructor(public assessmentService: AssessmentService) {
-    this.subDeets$ = this.assessmentService.getCSSuboutcomes(this.outcome_cat)
     
    }
 
    recordGrade(score_id: string, grade: number){
-    console.log('in record grade score id is ', score_id, ' and grade is ',grade)
     const poor_box = document.getElementById(score_id+'_'+'poor');
     const developing_box = document.getElementById(score_id+'_'+'developing');
     const satisfactory_box = document.getElementById(score_id+'_'+'satisfactory');
     const excellent_box = document.getElementById(score_id+'_'+'excellent');
-    this.assessmentService.suboutcome_grade[score_id] = grade
     //console.log('in suboutcome component: ', this.assessmentService.suboutcome_grade)
     switch(grade) {
       case 1:
@@ -65,21 +64,18 @@ export class SuboutcomeComponent implements OnInit {
    }
   
   ngOnInit(): void {
-    //console.log("should not be undefined: " + this.outcome_cat)
-    this.assessmentService.getCSSuboutcomes(this.outcome_cat).subscribe(res => {
+    this.subDeets$ = this.assessmentService.getSuboutcomes(this.outcome_cat).pipe(shareReplay())
+    this.assessmentService.getSuboutcomes(this.outcome_cat).subscribe(res => {
       this.suboutcomeDetails = res
-      //console.log('suboutcomeDetails is at ', this.suboutcomeDetails)
       this.setHighlights(res)
     })
   }
 
-  setHighlights(outcome_arr: CSSuboutcome[]){
+  setHighlights(outcome_arr: Suboutcome[]){
     for (let i = 0; i < outcome_arr.length; i++){
       const grade$ = this.assessmentService.getSuboutcomeGrades(this.assID,outcome_arr[i].score_id)
       grade$.pipe(take(1)).subscribe(res=>{
-        
         if (res != null){
-          console.log('in setHighlight score id is ', outcome_arr[i].score_id, 'and grade is ',res)
         this.recordGrade(outcome_arr[i].score_id, res[0].get_grade)
       }
       })

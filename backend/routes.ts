@@ -419,7 +419,33 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
-  usersRouter.get('/get_cs_outcome_desc/:ids', async (req, res) => {
+  usersRouter.get('/get_cs_outcome_desc/:degree/:ids', async (req, res) => {
+    try{
+        const {degree, ids} = req.params
+        console.log(ids)
+        if (degree == 'CS'){
+            let query = `
+            SELECT cs_cat_id AS cat_id, outcome_description FROM outcome_details_cs WHERE cs_cat_id in (${ids})`
+            console.log('this query is at ', query)
+
+            const get_cs_outcome_desc = await pool.query(`${query};`);
+            res.json(get_cs_outcome_desc.rows);
+        }
+        else {
+            let query = `
+            SELECT cse_cat_id AS cat_id, outcome_description FROM outcome_details_cse WHERE cse_cat_id in (${ids})`
+            console.log('this query is at ', query)
+
+            const get_cs_outcome_desc = await pool.query(`${query};`);
+            res.json(get_cs_outcome_desc.rows);
+        }
+        }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "get_cs_outcome_desc"')
+    }
+  });
+
+  usersRouter.get('/get_cse_outcome_desc/:ids', async (req, res) => {
     try{
         const {ids} = req.params
         console.log(ids)
@@ -427,30 +453,53 @@ usersRouter.get('/all_profs', async (req, res) => {
             
         // });
         let query = `
-        SELECT * FROM outcome_details_cs WHERE cs_cat_id in (${ids})`
+        SELECT * FROM outcome_details_cse WHERE cse_cat_id in (${ids})`
         console.log('this query is at ', query)
 
-        const get_cs_outcome_desc = await pool.query(`${query};`);
-        res.json(get_cs_outcome_desc.rows);
+        const get_cse_outcome_desc = await pool.query(`${query};`);
+        res.json(get_cse_outcome_desc.rows);
     }
     catch(err ){
-        console.log(err, 'error has occurred in backend function "get_cs_outcome_desc"')
+        console.log(err, 'error has occurred in backend function "get_cse_outcome_desc"')
     }
   });
 
   //get_cs_suboutcomes
 
-  usersRouter.get('/get_cs_suboutcomes/:outcome_name', async (req, res) => {
+  usersRouter.get('/get_suboutcomes/:degree/:outcome_name', async (req, res) => {
     try{
-        const {outcome_name} = req.params
-        console.log('outcome name is ', outcome_name)
-        const get_cs_suboutcomes = await pool.query(`
-        SELECT * FROM suboutcome_details_cs WHERE outcome_cat_id = $1;`, [outcome_name]);
-        res.json(get_cs_suboutcomes.rows);
+        const {degree, outcome_name} = req.params
+        if (degree == 'CS'){
+            console.log('outcome name is ', outcome_name)
+            const get_suboutcomes = await pool.query(`
+            SELECT 
+            score_id,
+            outcome_cat_id,
+            suboutcome_description,
+            poor_description,
+            developing_description,
+            satisfactory_description,
+            excellent_description
+            FROM suboutcome_details_cs WHERE outcome_cat_id = $1;`, [outcome_name]);
+            res.json(get_suboutcomes.rows);}
+        else {
+            console.log('outcome name is ', outcome_name)
+            const get_suboutcomes = await pool.query(`
+            SELECT 
+            score_id,
+            outcome_cat_id,
+            suboutcome_description,
+            poor_description,
+            developing_description,
+            satisfactory_description,
+            excellent_description
+            FROM suboutcome_details_cse WHERE outcome_cat_id = $1;`, [outcome_name]);
+            res.json(get_suboutcomes.rows);
+        }
         //console.log(get_cs_suboutcomes.rows)
     }
     catch(err ){
-        console.log(err, 'error has occurred in backend function "get_cs_suboutcomes"')
+        console.log(err, 'error has occurred in backend function "get_suboutcomes"')
     }
   });
 

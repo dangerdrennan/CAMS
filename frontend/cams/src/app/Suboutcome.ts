@@ -1,5 +1,4 @@
-export interface CSSuboutcome {
-    cs_suboutcome_name: string,
+export interface Suboutcome {
     score_id: string,
     outcome_cat_id: number,
     suboutcome_description: string,

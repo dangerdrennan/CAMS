@@ -1,17 +1,11 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { Observable } from 'rxjs';
-import { first, shareReplay, take } from 'rxjs/operators';
-import { Accessor } from '../Accessor';
+import { shareReplay, take } from 'rxjs/operators';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
 import { AssessmentService } from '../services/assessment.service';
-import { LoginService } from '../services/login.service';
-import { ProfDashboardService } from '../services/prof-dashboard.service';
-import { Student } from '../Student';
-import { CommonModule } from '@angular/common';
 import { AssessmentDisplay } from '../AssessmentDisplay';
 
 @Component({
@@ -21,29 +15,30 @@ import { AssessmentDisplay } from '../AssessmentDisplay';
 })
 export class AssessmentComponent implements OnInit {
   grades: { score_id: string, grade: number}[] = []
-  requirements$: Observable<SemesterReqs>
-  cs_outcome_des: OutcomeDescriptions[] = []
-  requirement_suboutcomes:string[] = []
-  reqs: SemesterReqs
-  outcome_cats_cs?: string[]
+  outcome_des: OutcomeDescriptions[] = []
+  outcome_cats?: string[]
   assessmentInfo: AssessmentDisplay
   submissionStatus: boolean
   
 
 
   constructor(private router: Router, public auth:AuthService, public assessmentService: AssessmentService) {
-    //this.requirements$ = this.assessmentService.getCurrentSemesterRequirements()
     this.submissionStatus= this.assessmentService.submissionStatus
     this.assessmentInfo = this.assessmentService.assessment
-    this.requirements$ = this.assessmentService.getCurrentSemesterRequirements().pipe(shareReplay())
-    this.assessmentService.getCurrentSemesterRequirements().pipe(take(1)).subscribe(res=> {
-      this.outcome_cats_cs = res.outcome_cats_cs
-      this.setDescriptions(this.outcome_cats_cs)
-    })
    }
 
   ngOnInit(): void {
-    this.requirements$.subscribe()
+    this.assessmentService.getCurrentSemesterRequirements().pipe(take(1)).subscribe(res=> {
+      if (this.assessmentInfo.degree =='CS'){
+      this.outcome_cats = res.outcome_cats_cs
+      this.setDescriptions(this.outcome_cats, 'CS')
+
+    }
+    else if (this.assessmentInfo.degree =='CSE'){
+      this.outcome_cats = res.outcome_cats_cse
+      this.setDescriptions(this.outcome_cats, 'CSE')
+    }
+    })
     if (this.assessmentService.assID == undefined){
       this.router.navigateByUrl('/projects');
     }
@@ -61,21 +56,15 @@ export class AssessmentComponent implements OnInit {
     }
     
 
-  setDescriptions(arr : string[]){
+  setDescriptions(arr : string[], degree: 'CS' | 'CSE'){
     const num_array:number[] = []
     console.log(arr)
     arr.forEach(val => {
       num_array.push(parseInt(val))
     })
-    this.assessmentService.getCSOutcomeDescription(num_array).pipe(take(1)).subscribe(res =>{
-      this.cs_outcome_des = res
-      console.log("in set descriptions", this.cs_outcome_des)
-    }
-    )
-  }
-
-  setOutcomeReqs(outcomes: string){
-    return this.outcome_cats_cs
+    this.assessmentService.getOutcomeDescription(num_array).pipe(take(1)).subscribe(res =>{
+      this.outcome_des = res
+    })
   }
 
   goBack() {

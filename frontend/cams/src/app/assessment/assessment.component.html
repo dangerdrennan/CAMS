@@ -3,16 +3,20 @@
   <div class='ass-header'>{{this.assessmentInfo.title}} - {{this.assessmentInfo.semester}}, {{this.assessmentInfo.year}}</div>
   <br>
   <div *ngIf = "!this.submissionStatus; else graded">
-    <div style="height:650px;width:1500px;overflow:auto;">
-      <div *ngFor="let req of outcome_cats_cs; let i = index">
-        <strong style="font-size: larger;">{{this.cs_outcome_des[i].outcome_description}}</strong>
-          <app-suboutcome class= 'scroll'
-          [outcome_cat] = "req"
-          [assID] = "this.assessmentInfo.assessment_id"
-          (newGrade)="addScore($event)"></app-suboutcome><br>
+    <div>
+      <div style="height:650px;width:1500px;overflow:auto;">
+        <div *ngFor="let req of outcome_cats; let i = index">
+          <strong style="font-size: larger;">{{this.outcome_des[i].outcome_description}}</strong>
+            <app-suboutcome class= 'scroll'
+            [outcome_cat] = "req"
+            [assID] = "this.assessmentInfo.assessment_id"
+            [assessmentInfo]="this.assessmentInfo"
+            (newGrade)="addScore($event)"></app-suboutcome>
+            <br>
+          </div>
+          <button class="btn btn-secondary" style='float: left;'(click)="goBack()">back</button>
+          <button class='btn btn-primary' style='float: right;' (click) = "submitScores()">Track Assessment Grades</button>
         </div>
-        <button class="btn btn-secondary" style='float: left;'(click)="goBack()">back</button>
-        <button class='btn btn-primary' style='float: right;' (click) = "submitScores()">Track Assessment Grades</button>
       </div>
   </div>
   <ng-template #graded>
