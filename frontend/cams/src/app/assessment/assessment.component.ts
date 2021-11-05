@@ -30,25 +30,40 @@ export class AssessmentComponent implements OnInit {
     l_name: 'Dogg',
     department: 'Botany'
   }
+
+//   export interface AssessmentDisplay {
+//     title: string,
+//     f_name: string,
+//     l_name: string,
+//     semester: string,
+//     year: number,
+//     graded: boolean,
+//     assessment_id: number
+// }
   student: Student = {student_id: 1, degree: 'cs', f_name:'Anne', l_name: 'Archy'}
   
 
 
   constructor(private router: Router, public auth:AuthService, public assessmentService: AssessmentService) {
     this.assessmentService.getCurrentAssessmentsbyProf(this.prof.prof_email).subscribe((res: any)=>
-      console.log(res)
+      console.log('hit: ', res)
     )
     //this.requirements$ = this.assessmentService.getCurrentSemesterRequirements()
     this.requirements$ = this.assessmentService.getCurrentSemesterRequirements().pipe(shareReplay())
     this.assessmentService.getCurrentSemesterRequirements().pipe(take(1)).subscribe(res=> {
       this.outcome_cats_cs = res.outcome_cats_cs
-      //this.setDescriptions(this.outcome_cats_cs)
+      this.setDescriptions(this.outcome_cats_cs)
     })
    }
 
   ngOnInit(): void {
     this.requirements$.subscribe()
+    if (this.assessmentService.assID == undefined){
+      console.log('whoops')
+      this.router.navigateByUrl('/projects');
     }
+    }
+    
 
     showServiceGrades(){
       console.log('in parent component: ', this.assessmentService.suboutcome_grade)

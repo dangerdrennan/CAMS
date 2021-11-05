@@ -21,6 +21,7 @@ export class AssessmentService {
   cs_categories: string[] = []
   currentCSOutcomeDesc: OutcomeDescriptions[] = []
   suboutcome_grade: { score_id: number}[] = []
+  assID: number
   //outcomeDescriptions$: Observable<OutcomeDescriptions[]>
   
 
@@ -49,6 +50,10 @@ export class AssessmentService {
   //   return this.http.get<string[]>(`${this.endPoint}/get_cs_outcome_desc/${id}`)
   // }
 
+  testIDUpdate(){
+    console.log(this.assID)
+  }
+
   getCSOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
     console.log('what is this id type? ', typeof(ids))
     return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_cs_outcome_desc/${ids}`)
@@ -57,5 +62,14 @@ export class AssessmentService {
   getCSSuboutcomes(outcome_name: string): Observable<CSSuboutcome[]>{
     return this.http.get<CSSuboutcome[]>(`${this.endPoint}/get_cs_suboutcomes/${outcome_name}`)
   }
+
+  // getCSEOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
+  //   console.log('what is this id type? ', typeof(ids))
+  //   return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_cse_outcome_desc/${ids}`)
+  // }
+
+  // getCSESuboutcomes(outcome_name: string): Observable<CSSuboutcome[]>{
+  //   return this.http.get<CSSuboutcome[]>(`${this.endPoint}/get_cse_suboutcomes/${outcome_name}`)
+  // }
 
 }

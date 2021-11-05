@@ -160,6 +160,7 @@ usersRouter.get('/all_profs', async (req, res) => {
             UPDATE prof SET is_grader = true WHERE prof_email = $1 RETURNING *;`,
                 [prof_email]);
             res.json(make_grader.rows);
+            console.log(make_grader.rows)
         }
         catch(err ){
             console.error(err, 'error has occurred in backend function "make_grader"');
@@ -252,9 +253,11 @@ usersRouter.get('/all_profs', async (req, res) => {
     usersRouter.post("/add_assessments_by_prof", async(req, res) => {
         try{
             const {prof_email} = req.body;
+
             const new_assessments = await pool.query(`
             SELECT add_assessments_by_prof($1)`, [prof_email]);
             res.json(new_assessments.rows);
+            console.log(new_assessments.rows)
         }
         catch(err ){
             console.error(err, 'error has occurred in backend function "new_assessments"');
@@ -334,12 +337,32 @@ usersRouter.get('/all_profs', async (req, res) => {
     try{
         const {email} = req.params
         const current_assessments_by_prof = await pool.query(`
-        SELECT * FROM assessment WHERE prof_email = $1 AND term_id = get_current_term();`,
+        SELECT
+        p.title,
+        s.f_name,
+        s.l_name,
+        t.semester,
+        t.year,
+        a.graded,
+        a.assessment_id,
+        a.degree
+        FROM
+            prof pr
+        INNER JOIN assessment a 
+            ON pr.prof_email = a.prof_email
+        INNER JOIN student s 
+            ON s.student_id = a.student_id
+        INNER JOIN project p
+            ON s.proj_id = p.proj_id
+        INNER JOIN term t
+            ON t.term_id = a.term_id
+        WHERE
+            pr.prof_email = $1 and p.term_id = get_current_term()`,
         [email]);
         res.json(current_assessments_by_prof.rows);
     }
     catch(err ){
-        console.log('error has occurred in backend function "current_assessments_by_prof"')
+        console.log(err, 'error has occurred in backend function "current_assessments_by_prof"')
     }
   });
 
@@ -350,7 +373,7 @@ usersRouter.get('/all_profs', async (req, res) => {
         res.json(current_outcome_reqs.rows[0]);
     }
     catch(err ){
-        console.log('error has occurred in backend function "current_outcome_reqs"')
+        console.log(err, 'error has occurred in backend function "current_outcome_reqs"')
     }
   });
 

@@ -9,10 +9,10 @@ export class LoginService{
 
 
   public userAdmin: boolean = true;
-  public user?: string
+  public user: string
   public isLoggedIn?: boolean
   public auth: AuthService
-  public email?: string
+  public email: string
 
   constructor(auth0:AuthService) {
     this.auth = auth0
