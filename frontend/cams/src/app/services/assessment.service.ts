@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
 import { Suboutcome } from '../Suboutcome'
 import { AssessmentDisplay } from '../AssessmentDisplay';
 import { take } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { ScoreComment } from '../ScoreComment';
 
 const httpOptions =
 {
@@ -45,11 +46,22 @@ export class AssessmentService {
     return this.http.get<SemesterReqs>(`${this.endPoint}/current_outcome_reqs`)
   }
 
-  recordAllSuboutcomeScores(grades: { score_id: string, grade:number}[]): boolean{
-    console.log('recordAll :', grades)
-    if (grades.length == 0){
-      alert('At least one outcome needs to be marked for this to be submitted.')
+  submitAssessment(grades: { score_id: string, grade:number}[],comments:ScoreComment[]): boolean{
+    try{
+      this.recordAllSuboutcomeScores(grades)
+      //this.recordAllComments(comments)
+    }catch(err){
+      console.log(err)
+      alert(err)
       return false
+    }
+    return true
+  }
+
+  recordAllSuboutcomeScores(grades: { score_id: string, grade:number}[]){
+    if (grades.length == 0){
+      alert('At least one outcome needs to be updated for this to be submitted.')
+      return
     }
     try{
       grades.forEach(grade => {
@@ -57,12 +69,29 @@ export class AssessmentService {
         this.recordSingleGrade(grade).pipe(take(1)).subscribe()
       })
       this.markAsGraded().pipe(take(1)).subscribe()
-      return  true
     }
     catch(err){
-      alert('An error has occured while submitted your grades. This assessment has not been marked as graded and needs to be resubmitted.')
-      return false
+      throw Error('An error has occured while submitting your grades. This assessment has not been marked as graded and needs to be resubmitted.')
     }
+
+
+  }
+
+  recordAllComments(comments:ScoreComment[]){
+    try{
+    comments.forEach(comment => {
+      console.log('comment in foreach is at ', comment)
+      this.recordSingleComment(comment).pipe(take(1)).subscribe()
+    })}
+    catch(err){
+      throw Error('An error has occured while submitting your comments. Your assessment has been submitted but comments may not have updated.')
+    }
+  }
+
+  recordSingleComment(comment:ScoreComment){
+    console.log('in record comment:', comment)
+    const url = `${this.endPoint}/record_comment/${this.assID}`
+    return this.http.post<{ score_id: number}>(url, comment, httpOptions);
   }
 
   markAsGraded(){
@@ -75,7 +104,6 @@ export class AssessmentService {
   }
 
   recordSingleGrade(grade: { score_id: string, grade:number}){
-    console.log('in testOCReording:', grade)
     const url = `${this.endPoint}/record_scores/${this.assID}`
     return this.http.post<{ score_id: number}>(url, grade, httpOptions);
   }

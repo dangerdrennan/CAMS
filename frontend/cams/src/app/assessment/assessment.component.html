@@ -11,11 +11,12 @@
             [outcome_cat] = "req"
             [assID] = "this.assessmentInfo.assessment_id"
             [assessmentInfo]="this.assessmentInfo"
-            (newGrade)="addScore($event)"></app-suboutcome>
+            (newGrade)="addScore($event)"
+            (newComment)="addComment($event)"></app-suboutcome>
             <br>
           </div>
           <button class="btn btn-secondary" style='float: left;'(click)="goBack()">back</button>
-          <button class='btn btn-primary' style='float: right;' (click) = "submitScores()">Track Assessment Grades</button>
+          <button class='btn btn-primary' style='float: right;' [disabled]="" (click) = "submitScores()">Track Assessment Grades</button>
         </div>
       </div>
   </div>

@@ -4,9 +4,9 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Observable } from 'rxjs';
 import { shareReplay, take } from 'rxjs/operators';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
-import { SemesterReqs } from '../SemesterReqs';
 import { AssessmentService } from '../services/assessment.service';
 import { AssessmentDisplay } from '../AssessmentDisplay';
+import { ScoreComment } from '../ScoreComment';
 
 @Component({
   selector: 'app-assessment',
@@ -19,6 +19,7 @@ export class AssessmentComponent implements OnInit {
   outcome_cats?: string[]
   assessmentInfo: AssessmentDisplay
   submissionStatus: boolean
+  comments:ScoreComment[] = []
   
 
 
@@ -50,9 +51,15 @@ export class AssessmentComponent implements OnInit {
         grade: grade[1]
       })
     }
+    addComment(comment:ScoreComment){
+      this.comments.push(comment)
+      console.log(this.comments)
+    }
+
 
     submitScores(){
-      this.submissionStatus = this.assessmentService.recordAllSuboutcomeScores(this.grades)
+      this.submissionStatus = this.assessmentService.submitAssessment(this.grades,this.comments)
+      
     }
     
 

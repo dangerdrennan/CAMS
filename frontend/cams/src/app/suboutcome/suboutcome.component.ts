@@ -4,6 +4,8 @@ import { shareReplay, take } from 'rxjs/operators';
 import { AssessmentDisplay } from '../AssessmentDisplay';
 import { Suboutcome } from '../Suboutcome';
 import { AssessmentService } from '../services/assessment.service';
+import { ScoreComment } from '../ScoreComment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-suboutcome',
@@ -17,14 +19,24 @@ export class SuboutcomeComponent implements OnInit {
   @Input() assID: number
   @Input() assessmentInfo: AssessmentDisplay
   @Output() newGrade = new EventEmitter<[string, number]>();
+  @Output() newComment = new EventEmitter<ScoreComment>();
+
   suboutcomeDetails: Suboutcome[]
   subOutcomeNames: string[] = []
   subDeets$: Observable<Suboutcome[]>
   subDeets: Suboutcome[] = []
   suboutcome_grade: { score_id: number}[] = []
+  comment: ScoreComment
+  commentSubmitted=false
+  setCommentForm:FormGroup
+  formBuilder: FormBuilder
+  twoCents:string
 
-
-  constructor(public assessmentService: AssessmentService) {
+  constructor(public assessmentService: AssessmentService, fB: FormBuilder) {
+    this.formBuilder = fB
+    this.setCommentForm = this.formBuilder.group({
+      comment: ['', Validators.required]
+    })
     
    }
 
@@ -98,5 +110,18 @@ export class SuboutcomeComponent implements OnInit {
     }
     return newStr
   }
-
+  addComment(score_id:string, twoCents:string){
+    
+    let input = (document.getElementById(`${score_id}_comment`) as HTMLInputElement).value;
+    this.comment = {
+      assessment_id: 3,
+      comment: twoCents,
+      score_id: score_id
+    }
+    //let input= (document.getElementById(score_id+'_'+'comment'));
+    //let input = (document.getElementById(score_id+'_'+'comment') as HTMLInputElement).value;
+    console.log(this.comment)
+    this.newComment.emit(this.comment)
+    this.commentSubmitted = true
+  }
 }
