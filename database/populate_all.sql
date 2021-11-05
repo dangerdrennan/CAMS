@@ -13,5 +13,6 @@
 \i create_outcome_details_cse.sql
 \i create_suboutcome_details_cs.sql
 \i create_suboutcome_details_cse.sql
-\i get_assessments_display.sql
+\i set_grade.sql
+\i get_grade.sql
 SELECT setval('project_proj_id_seq', (SELECT MAX(proj_id) FROM project));

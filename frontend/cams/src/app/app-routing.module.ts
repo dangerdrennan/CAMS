@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AssessmentComponent } from './assessment/assessment.component';
 import { HomeComponent } from './home/home.component';
+import { AssessmentCompletedComponent } from './assessment-completed/assessment-completed.component';
 import { PastAssessmentsComponent } from './past-assessments/past-assessments.component'
 import { ProjectsComponent } from './shared/projects/projects.component';
 import { AuthGuard } from '@auth0/auth0-angular';
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'admins', component: ManageAdminsComponent, canActivate: [AuthGuard]},
   {path: 'manage-projects', component: ManageProjectsComponent, canActivate: [AuthGuard]},
   {path: 'manage-assessors', component: ManageAssessorsComponent, canActivate: [AuthGuard]},
+  {path: 'successful-submission', component: AssessmentCompletedComponent, canActivate: [AuthGuard]},
   {path: 'assessment/:prof_email/:student_id',component: AssessmentComponent, canActivate: [AuthGuard]}
 
 ];

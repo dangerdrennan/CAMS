@@ -12,6 +12,7 @@ import { LoginService } from '../services/login.service';
 import { ProfDashboardService } from '../services/prof-dashboard.service';
 import { Student } from '../Student';
 import { CommonModule } from '@angular/common';
+import { AssessmentDisplay } from '../AssessmentDisplay';
 
 @Component({
   selector: 'app-assessment',
@@ -25,28 +26,15 @@ export class AssessmentComponent implements OnInit {
   requirement_suboutcomes:string[] = []
   reqs: SemesterReqs
   outcome_cats_cs?: string[]
-  prof: Accessor = {
-    prof_email: 'ginandjuice@fbi.gov',
-    f_name: 'Snoop',
-    l_name: 'Dogg',
-    department: 'Botany'
-  }
-
-//   export interface AssessmentDisplay {
-//     title: string,
-//     f_name: string,
-//     l_name: string,
-//     semester: string,
-//     year: number,
-//     graded: boolean,
-//     assessment_id: number
-// }
-  student: Student = {student_id: 1, degree: 'cs', f_name:'Anne', l_name: 'Archy'}
+  assessmentInfo: AssessmentDisplay
+  submissionStatus: boolean
   
 
 
   constructor(private router: Router, public auth:AuthService, public assessmentService: AssessmentService) {
     //this.requirements$ = this.assessmentService.getCurrentSemesterRequirements()
+    this.submissionStatus= this.assessmentService.submissionStatus
+    this.assessmentInfo = this.assessmentService.assessment
     this.requirements$ = this.assessmentService.getCurrentSemesterRequirements().pipe(shareReplay())
     this.assessmentService.getCurrentSemesterRequirements().pipe(take(1)).subscribe(res=> {
       this.outcome_cats_cs = res.outcome_cats_cs
@@ -57,7 +45,6 @@ export class AssessmentComponent implements OnInit {
   ngOnInit(): void {
     this.requirements$.subscribe()
     if (this.assessmentService.assID == undefined){
-      console.log('whoops')
       this.router.navigateByUrl('/projects');
     }
     }
@@ -70,15 +57,10 @@ export class AssessmentComponent implements OnInit {
     }
 
     submitScores(){
-      this.assessmentService.recordAllSuboutcomeScores(this.grades)
+      this.submissionStatus = this.assessmentService.recordAllSuboutcomeScores(this.grades)
     }
     
 
-    showServiceGrades(){
-      console.log('in parent component: ', this.assessmentService.suboutcome_grade)
-    }
-
-    // haven't gotten this to work yet
   setDescriptions(arr : string[]){
     const num_array:number[] = []
     console.log(arr)
@@ -87,7 +69,7 @@ export class AssessmentComponent implements OnInit {
     })
     this.assessmentService.getCSOutcomeDescription(num_array).pipe(take(1)).subscribe(res =>{
       this.cs_outcome_des = res
-      console.log(this.cs_outcome_des)
+      console.log("in set descriptions", this.cs_outcome_des)
     }
     )
   }
@@ -95,12 +77,6 @@ export class AssessmentComponent implements OnInit {
   setOutcomeReqs(outcomes: string){
     return this.outcome_cats_cs
   }
-
-  // getCSOutcomeDescription(cat_id: string){
-  //   var x = this.assessmentService.getCSOutcomeDescription(parseInt(cat_id)).pipe(take(1)).subscribe()
-  //   console.log(x)
-  //   return x
-  // }
 
   goBack() {
     this.router.navigateByUrl('/projects');

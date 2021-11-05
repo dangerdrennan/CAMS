@@ -3,7 +3,7 @@
 
 create or replace function set_grade(score_id text, grade int, assessment_id int) returns void as $$
 begin
-    execute 'update assessment set ' || score_id || ' = ' || grade || 'where assessment_id = '|| assessment_id || ';';
+    execute 'update assessment set ' || score_id || ' = ' || grade || ' where assessment_id = '|| assessment_id || ';';
 end;
 $$ language plpgsql;
 

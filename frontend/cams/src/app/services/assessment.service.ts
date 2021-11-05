@@ -6,6 +6,8 @@ import { SemesterReqs } from '../SemesterReqs';
 import { CSSuboutcome } from '../CSSuboutcome'
 import { AssessmentDisplay } from '../AssessmentDisplay';
 import { take } from 'rxjs/operators';
+import { Project } from '../Project';
+import { Router } from '@angular/router';
 
 const httpOptions =
 {
@@ -25,18 +27,15 @@ export class AssessmentService {
   suboutcome_grade: { score_id: number}[] = []
   assID: number
   assessment: AssessmentDisplay
-  //outcomeDescriptions$: Observable<OutcomeDescriptions[]>
+  outcomeDescriptions$: Observable<OutcomeDescriptions[]>
+  submissionStatus: boolean = false
   
 
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private router: Router) { 
     this.getCurrentSemesterRequirements().subscribe(res=>{
       this.currentCSOutcomes = res.outcome_cats_cs
     })
-    //this.outcomeDescriptions$ = this.getCSOutcomeDescription()
-    // this.getCSOutcomeDescription().subscribe(res=> {
-    //   console.log('in service at getCSOutcomeDescription()', res)
-    // })
   }
 
   getCurrentAssessmentsbyProf(email:string): any{
@@ -48,23 +47,34 @@ export class AssessmentService {
     return this.http.get<SemesterReqs>(`${this.endPoint}/current_outcome_reqs`)
   }
 
-  recordAllSuboutcomeScores(grades: { score_id: string, grade:number}[]){
+  recordAllSuboutcomeScores(grades: { score_id: string, grade:number}[]): boolean{
     console.log('recordAll :', grades)
-    grades.forEach(grade => {
-      console.log('grade in foreach is at ', grade)
-      this.recordSingleGrade(grade).pipe(take(1)).subscribe()
-    })
-    
+    if (grades.length == 0){
+      alert('At least one outcome needs to be marked for this to be submitted.')
+      return false
+    }
+    try{
+      grades.forEach(grade => {
+        console.log('grade in foreach is at ', grade)
+        this.recordSingleGrade(grade).pipe(take(1)).subscribe()
+      })
+      this.markAsGraded().pipe(take(1)).subscribe()
+      return  true
+    }
+    catch(err){
+      alert('An error has occured while submitted your grades. This assessment has not been marked as graded and needs to be resubmitted.')
+      return false
+      //this.router.navigateByUrl('/projects');
+    }
   }
 
-  // getCSOutcomeDescription(id:number): Observable<string[]>{
-  //   console.log('what is this id type? ', typeof(id))
-  //   return this.http.get<string[]>(`${this.endPoint}/get_cs_outcome_desc/${id}`)
-  // }
+  markAsGraded(){
+    const url = `${this.endPoint}/mark_as_graded/${this.assID}`
+    return this.http.post<{ score_id: number}>(url, {'empty': 'object'}, httpOptions);
+  }
 
-  testIDUpdate(){
-    //console.log(this.assID)
-    console.log('in ass Service: ' ,this.suboutcome_grade)
+  getSuboutcomeGrades(ass_id:number, score_id: string){
+    return this.http.get<any>(`${this.endPoint}/get_suboutcome_grade/${ass_id}/${score_id}`)
   }
 
   recordSingleGrade(grade: { score_id: string, grade:number}){
@@ -81,14 +91,5 @@ export class AssessmentService {
   getCSSuboutcomes(outcome_name: string): Observable<CSSuboutcome[]>{
     return this.http.get<CSSuboutcome[]>(`${this.endPoint}/get_cs_suboutcomes/${outcome_name}`)
   }
-
-  // getCSEOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
-  //   console.log('what is this id type? ', typeof(ids))
-  //   return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_cse_outcome_desc/${ids}`)
-  // }
-
-  // getCSESuboutcomes(outcome_name: string): Observable<CSSuboutcome[]>{
-  //   return this.http.get<CSSuboutcome[]>(`${this.endPoint}/get_cse_suboutcomes/${outcome_name}`)
-  // }
 
 }

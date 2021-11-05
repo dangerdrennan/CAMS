@@ -1,9 +1,21 @@
 <meta charset="UTF-8"><div class="main">
-  <div style="height:750px;width:1000px;overflow:auto;">
-
-  <button class='btn btn-primary' (click) = "submitScores()">Track Assessment Grades</button>
-  <body class="scroll">
-    <app-suboutcome class= 'scroll' *ngFor= "let req of outcome_cats_cs" [outcome_cat] = "req" (newGrade)="addScore($event)"></app-suboutcome>
-    <button class="btn btn-secondary" (click)="goBack()">back</button>
-</body>
+  <div class='title'>{{this.assessmentInfo.f_name}} {{this.assessmentInfo.l_name}}</div>
+  <div class='ass-header'>{{this.assessmentInfo.title}} - {{this.assessmentInfo.semester}}, {{this.assessmentInfo.year}}</div>
+  <br>
+  <div *ngIf = "!this.submissionStatus; else graded">
+    <div style="height:650px;width:1500px;overflow:auto;">
+      <div *ngFor="let req of outcome_cats_cs; let i = index">
+        <strong style="font-size: larger;">{{this.cs_outcome_des[i].outcome_description}}</strong>
+          <app-suboutcome class= 'scroll'
+          [outcome_cat] = "req"
+          [assID] = "this.assessmentInfo.assessment_id"
+          (newGrade)="addScore($event)"></app-suboutcome><br>
+        </div>
+        <button class="btn btn-secondary" style='float: left;'(click)="goBack()">back</button>
+        <button class='btn btn-primary' style='float: right;' (click) = "submitScores()">Track Assessment Grades</button>
+      </div>
+  </div>
+  <ng-template #graded>
+    <app-assessment-completed></app-assessment-completed>
+  </ng-template>
 </div>

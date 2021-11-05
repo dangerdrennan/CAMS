@@ -86,6 +86,18 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(err, 'error has occurred in backend function "get_current_term"')
     }
   });
+
+  usersRouter.get('/get_suboutcome_grade/:ass_id/:score_id', async (req, res) => {
+    try{
+        const {ass_id, score_id} = req.params
+        const get_current_term = await pool.query(`
+        SELECT get_grade($1,$2)`, [ass_id,score_id]);
+        res.json(get_current_term.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "get_current_term"')
+    }
+  });
   
     usersRouter.post("/add_project/:project", async(req, res) => {
         try{
@@ -276,6 +288,21 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
         catch(err ){
             console.error(err, 'error has occurred in backend function "record_scores"');
+        }
+    });
+
+    usersRouter.post("/mark_as_graded/:id", async(req, res) => {
+        try{
+            
+            const {id} = req.params;
+            console.log('what are the variables at? ', id)
+            const mark_as_graded = await pool.query(`
+            update assessment set graded = true where assessment_id = $1`, [id]);
+            res.json(mark_as_graded.rows);
+            console.log(mark_as_graded.rows)
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "mark_as_graded"');
         }
     });
 

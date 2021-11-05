@@ -5,6 +5,7 @@ import { AssessmentService } from 'src/app/services/assessment.service';
 import { LoginService } from 'src/app/services/login.service';
 import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 import { AssessmentDisplay } from 'src/app/AssessmentDisplay';
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 
 @Component({
   selector: 'app-projects',
@@ -30,6 +31,7 @@ export class ProjectsComponent implements OnInit {
     this.assessmentService.getCurrentAssessmentsbyProf(this.user).subscribe((res: any)=>{
       console.log('hit: ', res)
       this.currentAssessments = res
+      this.currentAssessments.sort((a, b) => a.assessment_id - b.assessment_id)
     }
     )
     this.getDisplayInfo()
@@ -42,36 +44,9 @@ export class ProjectsComponent implements OnInit {
   assessments(project:AssessmentDisplay) {
     this.profDashService.isAssessing = true;
     this.assessmentService.assID = project.assessment_id
-    this.assessmentService.testIDUpdate()
+    this.assessmentService.assessment = project
     
     this.router.navigateByUrl("/assessment");
   }
-
-  Projectss = [
-    {
-      p_name: "Achieving The Singularity",
-      s_name: "Bobby",
-      term: 'Fall 2021',
-      status: 'Not Graded'
-    },
-    {
-      p_name: "Roko's Basilisk",
-      s_name: "Bobby Jr",
-      term: 'Fall 2021',
-      status: 'Not Graded'
-    },
-    {
-      p_name: "Can an AI Fill the Void Vanessa Left?",
-      s_name: "Bobby jr III",
-      term: 'Fall 2021',
-      status: 'Graded'
-    },
-    {
-      p_name: "Building a Robot to Play Backgammon with my Pee Paw",
-      s_name: "Bobby jr III",
-      term: 'Fall 2021',
-      status: 'Graded'
-    }
-  ]
 
 }

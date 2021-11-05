@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { CSSuboutcome } from '../CSSuboutcome';
 import { AssessmentService } from '../services/assessment.service';
 
@@ -11,10 +12,13 @@ import { AssessmentService } from '../services/assessment.service';
 export class SuboutcomeComponent implements OnInit {
 
   @Input() outcome_cat: string
+  @Input() outcome_description: string
+  @Input() assID: number
   @Output() newGrade = new EventEmitter<[string, number]>();
   suboutcomeDetails: CSSuboutcome[]
   subOutcomeNames: string[] = []
   subDeets$: Observable<CSSuboutcome[]>
+  subDeets: CSSuboutcome[] = []
   suboutcome_grade: { score_id: number}[] = []
 
 
@@ -24,7 +28,7 @@ export class SuboutcomeComponent implements OnInit {
    }
 
    recordGrade(score_id: string, grade: number){
-    console.log(score_id, grade)
+    console.log('in record grade score id is ', score_id, ' and grade is ',grade)
     const poor_box = document.getElementById(score_id+'_'+'poor');
     const developing_box = document.getElementById(score_id+'_'+'developing');
     const satisfactory_box = document.getElementById(score_id+'_'+'satisfactory');
@@ -61,12 +65,26 @@ export class SuboutcomeComponent implements OnInit {
    }
   
   ngOnInit(): void {
-    console.log("should not be undefined: " + this.outcome_cat)
+    //console.log("should not be undefined: " + this.outcome_cat)
     this.assessmentService.getCSSuboutcomes(this.outcome_cat).subscribe(res => {
       this.suboutcomeDetails = res
-      console.log('suboutcomeDetails is at ', this.suboutcomeDetails)
+      //console.log('suboutcomeDetails is at ', this.suboutcomeDetails)
+      this.setHighlights(res)
     })
   }
+
+  setHighlights(outcome_arr: CSSuboutcome[]){
+    for (let i = 0; i < outcome_arr.length; i++){
+      const grade$ = this.assessmentService.getSuboutcomeGrades(this.assID,outcome_arr[i].score_id)
+      grade$.pipe(take(1)).subscribe(res=>{
+        
+        if (res != null){
+          console.log('in setHighlight score id is ', outcome_arr[i].score_id, 'and grade is ',res)
+        this.recordGrade(outcome_arr[i].score_id, res[0].get_grade)
+      }
+      })
+  }
+}
 
   giveGradeToParent(score_id: string, grade: number){
     this.newGrade.emit([score_id, grade])
