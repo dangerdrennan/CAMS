@@ -1,6 +1,9 @@
 <meta charset="UTF-8"><div class="main">
+  <div style="height:750px;width:1000px;overflow:auto;">
+
   <button class='btn btn-primary' (click) = "submitScores()">Track Assessment Grades</button>
   <body class="scroll">
     <app-suboutcome class= 'scroll' *ngFor= "let req of outcome_cats_cs" [outcome_cat] = "req" (newGrade)="addScore($event)"></app-suboutcome>
     <button class="btn btn-secondary" (click)="goBack()">back</button>
 </body>
+</div>

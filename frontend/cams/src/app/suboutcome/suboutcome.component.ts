@@ -30,9 +30,7 @@ export class SuboutcomeComponent implements OnInit {
     const satisfactory_box = document.getElementById(score_id+'_'+'satisfactory');
     const excellent_box = document.getElementById(score_id+'_'+'excellent');
     this.assessmentService.suboutcome_grade[score_id] = grade
-    console.log('in suboutcome component: ', this.assessmentService.suboutcome_grade)
-    //this.giveGradeToParent(score_id, grade)
-    this.assessmentService.testIDUpdate()
+    //console.log('in suboutcome component: ', this.assessmentService.suboutcome_grade)
     switch(grade) {
       case 1:
         poor_box.className = "scoreable selected"
@@ -59,7 +57,6 @@ export class SuboutcomeComponent implements OnInit {
         excellent_box.className = "scoreable selected"
       break;
       default:
-        // code block
     }
    }
   
@@ -73,6 +70,19 @@ export class SuboutcomeComponent implements OnInit {
 
   giveGradeToParent(score_id: string, grade: number){
     this.newGrade.emit([score_id, grade])
+  }
+
+  prettyCat(req:string){
+    let newStr = req.slice(6,7) + '.'
+    for (let i = 8; i < req.length; i++){
+      if (req.slice(i,i+1) == '_'){
+
+      }
+      else{
+        newStr += req.slice(i)
+      }
+    }
+    return newStr
   }
 
 }

@@ -161,10 +161,10 @@ INSERT INTO suboutcome_details_cs(cs_suboutcome_name, score_id, outcome_cat_id, 
         'score_5_2',
         '5',
         '2.	Listens and works with others',
-        'Does not consider other team members’ ideas or concerns',
-        'Sometimes considers other team members’ ideas or concerns',
-        'Often addresses other team members’ ideas or concerns',
-        'Is exceptionally adept at addressing other team members’ ideas or concerns'
+        'Does not consider other team members'' ideas or concerns',
+        'Sometimes considers other team members'' ideas or concerns',
+        'Often addresses other team members'' ideas or concerns',
+        'Is exceptionally adept at addressing other team members'' ideas or concerns'
     );
 
 INSERT INTO suboutcome_details_cs(cs_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)

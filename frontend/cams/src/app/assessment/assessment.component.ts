@@ -19,7 +19,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./assessment.component.css']
 })
 export class AssessmentComponent implements OnInit {
-  grades: { score_id: number}[] = []
+  grades: { score_id: string, grade: number}[] = []
   requirements$: Observable<SemesterReqs>
   cs_outcome_des: OutcomeDescriptions[] = []
   requirement_suboutcomes:string[] = []
@@ -46,9 +46,6 @@ export class AssessmentComponent implements OnInit {
 
 
   constructor(private router: Router, public auth:AuthService, public assessmentService: AssessmentService) {
-    this.assessmentService.getCurrentAssessmentsbyProf(this.prof.prof_email).subscribe((res: any)=>
-      console.log('hit: ', res)
-    )
     //this.requirements$ = this.assessmentService.getCurrentSemesterRequirements()
     this.requirements$ = this.assessmentService.getCurrentSemesterRequirements().pipe(shareReplay())
     this.assessmentService.getCurrentSemesterRequirements().pipe(take(1)).subscribe(res=> {
@@ -66,18 +63,14 @@ export class AssessmentComponent implements OnInit {
     }
 
     addScore(grade: [string, number]){
-      //this.grades[grade[0]] = grade[1]
-      //console.log(this.grades)
-      let test = {
+      this.grades.push({
         score_id: grade[0],
         grade: grade[1]
-      }
-      this.assessmentService.testSuboutcomeRecording(test).subscribe()
+      })
     }
 
     submitScores(){
-      let grade = this.assessmentService.suboutcome_grade[0]
-      //this.assessmentService.testSuboutcomeRecording(grade).subscribe()
+      this.assessmentService.recordAllSuboutcomeScores(this.grades)
     }
     
 

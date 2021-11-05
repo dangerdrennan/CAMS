@@ -14,7 +14,7 @@ INSERT INTO outcome_details_cs(cs_cat_id, outcome_description)
 INSERT INTO outcome_details_cs(cs_cat_id, outcome_description)
     VALUES (
         2,
-        'Outcome 2: Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline.'
+        'Outcome 2: Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program''s discipline.'
     );
 
 INSERT INTO outcome_details_cs(cs_cat_id, outcome_description)
@@ -26,5 +26,5 @@ INSERT INTO outcome_details_cs(cs_cat_id, outcome_description)
 INSERT INTO outcome_details_cs(cs_cat_id, outcome_description)
     VALUES (
         5,
-        'Outcome 5: Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline.'
+        'Outcome 5: Function effectively as a member or leader of a team engaged in activities appropriate to the program/''s discipline.'
     );

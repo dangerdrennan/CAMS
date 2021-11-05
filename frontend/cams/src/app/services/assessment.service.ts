@@ -5,6 +5,7 @@ import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
 import { CSSuboutcome } from '../CSSuboutcome'
 import { AssessmentDisplay } from '../AssessmentDisplay';
+import { take } from 'rxjs/operators';
 
 const httpOptions =
 {
@@ -47,6 +48,15 @@ export class AssessmentService {
     return this.http.get<SemesterReqs>(`${this.endPoint}/current_outcome_reqs`)
   }
 
+  recordAllSuboutcomeScores(grades: { score_id: string, grade:number}[]){
+    console.log('recordAll :', grades)
+    grades.forEach(grade => {
+      console.log('grade in foreach is at ', grade)
+      this.recordSingleGrade(grade).pipe(take(1)).subscribe()
+    })
+    
+  }
+
   // getCSOutcomeDescription(id:number): Observable<string[]>{
   //   console.log('what is this id type? ', typeof(id))
   //   return this.http.get<string[]>(`${this.endPoint}/get_cs_outcome_desc/${id}`)
@@ -57,10 +67,10 @@ export class AssessmentService {
     console.log('in ass Service: ' ,this.suboutcome_grade)
   }
 
-  testSuboutcomeRecording(grades: { score_id: string, grade:number}){
-    console.log('in testOCReording:', grades)
+  recordSingleGrade(grade: { score_id: string, grade:number}){
+    console.log('in testOCReording:', grade)
     const url = `${this.endPoint}/record_scores/${this.assID}`
-    return this.http.post<{ score_id: number}>(url, grades, httpOptions);
+    return this.http.post<{ score_id: number}>(url, grade, httpOptions);
   }
 
   getCSOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{

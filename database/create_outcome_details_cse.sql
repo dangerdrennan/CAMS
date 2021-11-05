@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS outcome_details_cse;
 
-CREATE TABLE outcome_details_cse (
+CREATE TABLE outcome_details_cse  (
     cse_cat_id INT PRIMARY KEY,
     outcome_description TEXT
 );
