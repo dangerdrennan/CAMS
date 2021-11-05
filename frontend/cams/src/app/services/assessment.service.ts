@@ -49,7 +49,7 @@ export class AssessmentService {
   submitAssessment(grades: { score_id: string, grade:number}[],comments:ScoreComment[]): boolean{
     try{
       this.recordAllSuboutcomeScores(grades)
-      //this.recordAllComments(comments)
+      this.recordAllComments(comments)
     }catch(err){
       console.log(err)
       alert(err)
@@ -60,8 +60,7 @@ export class AssessmentService {
 
   recordAllSuboutcomeScores(grades: { score_id: string, grade:number}[]){
     if (grades.length == 0){
-      alert('At least one outcome needs to be updated for this to be submitted.')
-      return
+      throw Error('At least one outcome needs to be updated for this to be submitted.')
     }
     try{
       grades.forEach(grade => {
@@ -90,7 +89,7 @@ export class AssessmentService {
 
   recordSingleComment(comment:ScoreComment){
     console.log('in record comment:', comment)
-    const url = `${this.endPoint}/record_comment/${this.assID}`
+    const url = `${this.endPoint}/record_comment`
     return this.http.post<{ score_id: number}>(url, comment, httpOptions);
   }
 
@@ -109,8 +108,7 @@ export class AssessmentService {
   }
 
   getOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
-    console.log('what is this id type? ', typeof(ids), ' what is this')
-    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_cs_outcome_desc/${this.assessment.degree}/${ids}`)
+    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outcome_desc/${this.assessment.degree}/${ids}`)
   }
 
   getSuboutcomes(outcome_name: string): Observable<Suboutcome[]>{

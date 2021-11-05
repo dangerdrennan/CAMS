@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS comment (
-    comment_id int PRIMARY KEY,
+    comment_id SERIAL PRIMARY KEY,
     assessment_id int REFERENCES assessment(assessment_id),
     comment text,
-    score_id int
+    score_id text
 );
+ALTER TABLE comment ADD CONSTRAINT num_vals UNIQUE (assessment_id, score_id);

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { Observable } from 'rxjs';
-import { shareReplay, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { AssessmentService } from '../services/assessment.service';
 import { AssessmentDisplay } from '../AssessmentDisplay';

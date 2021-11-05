@@ -112,14 +112,11 @@ export class SuboutcomeComponent implements OnInit {
   }
   addComment(score_id:string, twoCents:string){
     
-    let input = (document.getElementById(`${score_id}_comment`) as HTMLInputElement).value;
     this.comment = {
-      assessment_id: 3,
+      assessment_id: this.assID,
       comment: twoCents,
       score_id: score_id
     }
-    //let input= (document.getElementById(score_id+'_'+'comment'));
-    //let input = (document.getElementById(score_id+'_'+'comment') as HTMLInputElement).value;
     console.log(this.comment)
     this.newComment.emit(this.comment)
     this.commentSubmitted = true

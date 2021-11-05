@@ -277,6 +277,23 @@ usersRouter.get('/all_profs', async (req, res) => {
     });
 
 
+    usersRouter.post("/record_comment", async(req, res) => {
+        try{
+            const {assessment_id, score_id, comment} = req.body;
+            console.log('what are the variables at? ', assessment_id, score_id, comment)
+            const record_comment = await pool.query(`
+            INSERT INTO comment (assessment_id, score_id, comment)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (assessment_id, score_id) DO UPDATE
+            SET comment = $3`,
+            [assessment_id, score_id, comment]);
+            res.json(record_comment.rows);
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "record_comment"');
+        }
+    });
+
     usersRouter.post("/record_scores/:id", async(req, res) => {
         try{
             const {id} = req.params
@@ -342,39 +359,6 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
-  usersRouter.get('/all_cse_as', async (req, res) => {
-    try{
-        const get_cse_assessments = await pool.query(`SELECT *
-        FROM cse_assessment;`);
-        res.json(get_cse_assessments.rows);
-    }
-    catch(err ){
-        console.log('error has occurred in backend function "get_cse_assessments"')
-    }
-  });
-
-  usersRouter.get('/all_cs_students', async (req, res) => {
-    try{
-        const get_cs_students = await pool.query(`SELECT *
-        FROM cs_student;`);
-        res.json(get_cs_students.rows);
-    }
-    catch(err ){
-        console.log('error has occurred in backend function "get_cs_students"')
-    }
-  });
-
-  usersRouter.get('/all_cse_students', async (req, res) => {
-    try{
-        const get_cse_students = await pool.query(`SELECT *
-        FROM cse_student;`);
-        res.json(get_cse_students.rows);
-    }
-    catch(err ){
-        console.log('error has occurred in backend function "get_cse_students"')
-    }
-  });
-
   usersRouter.get('/current_assessments_by_prof/:email', async (req, res) => {
     try{
         const {email} = req.params
@@ -419,7 +403,7 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
-  usersRouter.get('/get_cs_outcome_desc/:degree/:ids', async (req, res) => {
+  usersRouter.get('/get_outcome_desc/:degree/:ids', async (req, res) => {
     try{
         const {degree, ids} = req.params
         console.log(ids)
@@ -428,20 +412,20 @@ usersRouter.get('/all_profs', async (req, res) => {
             SELECT cs_cat_id AS cat_id, outcome_description FROM outcome_details_cs WHERE cs_cat_id in (${ids})`
             console.log('this query is at ', query)
 
-            const get_cs_outcome_desc = await pool.query(`${query};`);
-            res.json(get_cs_outcome_desc.rows);
+            const get_outcome_desc = await pool.query(`${query};`);
+            res.json(get_outcome_desc.rows);
         }
         else {
             let query = `
             SELECT cse_cat_id AS cat_id, outcome_description FROM outcome_details_cse WHERE cse_cat_id in (${ids})`
             console.log('this query is at ', query)
 
-            const get_cs_outcome_desc = await pool.query(`${query};`);
-            res.json(get_cs_outcome_desc.rows);
+            const get_outcome_desc = await pool.query(`${query};`);
+            res.json(get_outcome_desc.rows);
         }
         }
     catch(err ){
-        console.log(err, 'error has occurred in backend function "get_cs_outcome_desc"')
+        console.log(err, 'error has occurred in backend function "get_outcome_desc"')
     }
   });
 

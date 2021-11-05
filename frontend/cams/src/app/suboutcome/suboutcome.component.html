@@ -22,5 +22,7 @@
     </table>
     <input type="text" for= "deet.score_id + '_comment'" placeholder="Optional comment area" #twoCents>
     <button type= "submit" class="btn btn-secondary" [attr.id]="deet.score_id + '_comment'"(click)= "addComment(deet.score_id, twoCents.value)">Add Comment</button>
-    <p></p>
+    <div *ngIf="commentSubmitted"><p>
+      New comment submitted!
+    </p></div>
 </div>
