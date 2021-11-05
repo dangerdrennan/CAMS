@@ -1,4 +1,4 @@
-<div class="main" style="overflow-y: scroll;max-height: 800px;">
+<div class="main" style="overflow-y: scroll;">
   <div class="container" style="max-height: fit-content;width: fit-content;">
 
     <!-- Current term -->
@@ -126,11 +126,21 @@
                               <div class="row g-3">
                                 <div class="col-auto">
                                   <label for="fname">First Name</label>
-                                  <input id="fname" type="text" class="form-control" formControlName="f_name">
+                                  <input id="fname" type="text" class="form-control" formControlName="f_name" [ngClass]="{ 'is-invalid': getEdit.f_name.errors && submitted }">
+
+                                  <div *ngIf="getEdit.f_name.errors && getEdit.f_name.touched">
+                                    <small class="text-danger" *ngIf="getEdit.f_name.errors.pattern">Invalid first name.</small>
+                                    <small class="text-danger" *ngIf="getEdit.f_name.errors.required">First name is required.</small>
+                                  </div>
                                 </div>
                                 <div class="col-auto">
                                   <label for="lname">Last Name</label>
-                                  <input id="lname" type="text" class="form-control" formControlName="l_name">
+                                  <input id="lname" type="text" class="form-control" formControlName="l_name" [ngClass]="{ 'is-invalid': getEdit.l_name.errors && submitted }">
+
+                                  <div *ngIf="getEdit.l_name.errors && getEdit.l_name.touched">
+                                    <small class="text-danger" *ngIf="getEdit.l_name.errors.pattern">Invalid last name.</small>
+                                    <small class="text-danger" *ngIf="getEdit.l_name.errors.required">Last name is required.</small>
+                                  </div>
                                 </div>
                                 <!-- <div class="col-auto">
                                   <label for="department">Department</label>
@@ -141,8 +151,8 @@
                             </form>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" (click)="submitGraderUpdate()" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+                            <button type="button" (click)="resetEditForms()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" (click)="submitGraderUpdate()" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="this.editGraderForm.pristine">Submit</button>
                           </div>
                         </div>
 
@@ -183,31 +193,56 @@
                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                   data-bs-parent="#accordionFlushExample">
                   <div class="accordion-body">
-                    <form [formGroup]="addGraderform">
-                      <div class="row g-3">
-                        <div class="col-auto">
+
+                    <form [formGroup]="addGraderform" (ngSubmit)="submitAddGrader()">
+                      <div class="row">
+
+                        <div class="col-6">
                           <label for="fname">First Name</label>
-                          <input id="fname" type="text" class="form-control" formControlName="f_name" required="required">
-                        </div>
-                        <div class="col-auto">
-                          <label for="lname">Last Name</label>
-                          <input id="lname" type="text" class="form-control" formControlName="l_name" required="required">
-                        </div>
-                        <div class="col-auto">
-                          <label for="email">Email</label>
-                          <input id="email" type="text" class="form-control" formControlName="prof_email"
-                            required="required">
-                        </div>
-                        <div class="col-auto">
-                          <label for="department">Department</label>
-                          <input id="department" type="text" class="form-control" formControlName="department"
-                            required="required">
+                          <input id="fname" type="text" class="form-control" formControlName="f_name" [ngClass]="{ 'is-invalid': f.f_name.errors && submitted }">
+
+                          <div *ngIf="f.f_name.errors && f.f_name.touched">
+                            <small class="text-danger" *ngIf="f.f_name.errors.pattern">Invalid first name.</small>
+                            <small class="text-danger" *ngIf="f.f_name.errors.required">First name is required.</small>
+                          </div>
 
                         </div>
+
+                        <div class="col-6">
+                          <label for="lname">Last Name</label>
+                          <input id="lname" type="text" class="form-control" formControlName="l_name" [ngClass]="{ 'is-invalid': f.l_name.errors && submitted }">
+
+                          <div *ngIf="f.l_name.errors && f.l_name.touched">
+                            <small class="text-danger" *ngIf="f.l_name.errors.pattern">Invalid last name.</small>
+                            <small class="text-danger" *ngIf="f.l_name.errors.required">Last name is required.</small>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <label for="email">Email</label>
+                          <input id="email" type="email" class="form-control" formControlName="prof_email" [ngClass]="{ 'is-invalid': f.prof_email.errors && submitted }">
+
+                          <div *ngIf="f.prof_email.errors && f.prof_email.touched" >
+                            <small class="text-danger" *ngIf="f.prof_email.errors.pattern">Invalid email.</small>
+                            <small class="text-danger" *ngIf="f.prof_email.errors.required">Email is required.</small>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <label for="department">Department</label>
+                          <input id="department" type="text" class="form-control" formControlName="department" [ngClass]="{ 'is-invalid': f.department.errors && submitted }">
+
+                          <div *ngIf="f.department.errors && f.department.touched">
+                            <small class="text-danger" *ngIf="f.department.errors.pattern">Invalid department.</small>
+                            <small class="text-danger" *ngIf="f.department.errors.required">Department is required.</small>
+
+                          </div>
+                        </div>
+
                         <div class="col-auto">
-                          <button type="submit" [disabled]="addGraderform.invalid" (click)="submitAddGrader()"
+                          <button type="submit" (click)="submitAddGrader()"
                             class="btn btn-primary mb-3" style="margin-top: 24px;" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseOne">Add</button>
+                            data-bs-target="#flush-collapseOne" [disabled]="this.addGraderform.invalid">Add</button>
                         </div>
                       </div>
                     </form>
@@ -225,7 +260,7 @@
       <div class="row">
         <div class="col">
           <div class="card" id="displayCard"
-            style="position: relative;max-height: 500px !important; max-width: 1300px;margin-top: 30px;">
+            style="position: relative; max-width: 1300px;margin-top: 30px;">
             <div class="card-body" id="displayCardBody">
               <div class="title" style="font-size: medium;"><strong>Capstone Professor</strong></div>
               <table class="table table-sm">
@@ -259,33 +294,21 @@
                   </h2>
                   <div id="flush-collapseOneCurrProf" class="accordion-collapse collapse"
                     aria-labelledby="flush-headingOneCurrProf" data-bs-parent="#accordionFlushExampleCurrProf">
-                    <div class="accordion-body">
-                      <form [formGroup]="setCurrProfForm">
-                        <div class="row g-3">
-                          <div class="col-auto">
-                            <label for="fname">First Name</label>
-                            <input id="fname" type="text" class="form-control" formControlName="f_name" required="required">
-                          </div>
-                          <div class="col-auto">
-                            <label for="lname">Last Name</label>
-                            <input id="lname" type="text" class="form-control" formControlName="l_name" required="required">
-                          </div>
-                          <div class="col-auto">
-                            <label for="email">Email</label>
-                            <input id="email" type="text" class="form-control" formControlName="prof_email"
-                              required="required">
-                          </div>
-                          <div class="col-auto">
-                            <label for="department">Department</label>
-                            <input id="department" type="text" class="form-control" formControlName="department"
-                              required="required">
-                          </div>
-                          <div class="col-auto">
-                            <button type="submit" [disabled]="setCurrProfForm.invalid" (click)="submitCapProf()"
-                              class="btn btn-primary mb-3" style="margin-top: 24px;" data-bs-toggle="collapse" data-bs-target="#flush-collapseOneCurrProf">Update</button>
-                          </div>
-                        </div>
-                      </form>
+                    <div class="accordion-body" >
+                      <ul id="admins" class="list-group" *ngFor="let grader of this.graders;let i = index">
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="!grader.curr_cap_prof">
+                          {{grader.f_name}}  {{grader.l_name}} - {{grader.prof_email}}
+                            <button class="btn btn-sm btn-primary" (click)="submitCapProf(grader)">Select</button>
+
+                        </li>
+
+                      </ul>
+                      <div *ngFor="let grader of this.graders;let i = index">
+                        <span *ngIf="i==0">
+                        <small>*Add a professor to grading list to allow current capstone professor.</small>
+                      </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -300,9 +323,9 @@
       <div class="row">
         <div class="col">
           <div class="card" id="displayCard"
-            style="position: relative;max-height: 500px !important; max-width: 1300px;margin-top: 30px; margin-bottom: 30px;">
+            style="position: relative; max-width: 1300px;margin-top: 30px; margin-bottom: 30px;">
             <div class="card-body" id="displayCardBody">
-              <div class="title" style="font-size: medium;"><strong>System Administrators</strong><small> *Must be a grader as well</small></div>
+              <div class="title" style="font-size: medium;"><strong>System Administrators</strong></div>
               <table class="table table-sm">
                 <thead>
                   <tr>
@@ -350,7 +373,7 @@
               </table>
 
 
-
+              <!-- accordion to select from list of graders to allow system admin privileges -->
               <div class="accordion accordion" id="accordionFlushExampleCurrAdmin">
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="flush-headingOneCurAdmin">
@@ -361,35 +384,21 @@
                   </h2>
                   <div id="flush-collapseOneCurrAdmin" class="accordion-collapse collapse"
                     aria-labelledby="flush-headingOneCurrAdmin" data-bs-parent="#accordionFlushExampleCurrAdmin">
-                    <div class="accordion-body">
-                      <form [formGroup]="setAdminForm">
-                        <div class="row g-3">
-                          <div class="col-auto">
-                            <label for="fname">First Name</label>
-                            <input id="fname" type="text" class="form-control" formControlName="f_name" required="required">
-                          </div>
-                          <div class="col-auto">
-                            <label for="lname">Last Name</label>
-                            <input id="lname" type="text" class="form-control" formControlName="l_name" required="required">
-                          </div>
-                          <div class="col-auto">
-                            <label for="email">Email</label>
-                            <input id="email" type="text" class="form-control" formControlName="prof_email"
-                              required="required">
-                          </div>
-                          <div class="col-auto">
-                            <label for="department">Department</label>
-                            <input id="department" type="text" class="form-control" formControlName="department"
-                              required="required">
+                    <div class="accordion-body" >
+                      <ul id="admins" class="list-group" *ngFor="let grader of this.graders;let i = index">
 
-                          </div>
-                          <div class="col-auto">
-                            <button type="submit" [disabled]="setAdminForm.invalid" (click)="submitAdmin()"
-                              class="btn btn-primary mb-3" style="margin-top: 24px;" data-bs-toggle="collapse"
-                              data-bs-target="#flush-collapseOneCurrAdmin">Add</button>
-                          </div>
-                        </div>
-                      </form>
+                        <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="!grader.is_admin">
+                          {{grader.f_name}}  {{grader.l_name}} - {{grader.prof_email}}
+                            <button class="btn btn-sm btn-primary" (click)="submitAdmin(grader)">Add</button>
+
+                        </li>
+
+                      </ul>
+                      <div *ngFor="let grader of this.graders;let i = index">
+                        <span *ngIf="i==0">
+                        <small>*Add a professor to grading list to allow system privileges.</small>
+                      </span>
+                      </div>
                     </div>
                   </div>
                 </div>

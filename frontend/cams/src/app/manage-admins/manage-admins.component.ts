@@ -1,3 +1,4 @@
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,17 +15,14 @@ import { AdminService } from '../services/admin.service';
 export class ManageAdminsComponent implements OnInit {
   termUpdated: boolean = false;
   notifier = new Subject()
-  // accessors$: Observable<Accessor[]>
-  // adminService: AdminService
+
   accessor!: Accessor;
   updateAccessor!: Accessor
   newCapProf!: Accessor
   newSysAdmin!: Accessor
 
-  addGraderform!: FormGroup
+  addGraderform!: FormGroup;
   editGraderForm!: FormGroup
-  setCurrProfForm!: FormGroup
-  setAdminForm!: FormGroup
   setTermForm!: FormGroup
 
   graders:Accessor[] = []
@@ -34,93 +32,125 @@ export class ManageAdminsComponent implements OnInit {
   deleteGrader: boolean = false
   graderIndex!: number
 
-  constructor(public adminService: AdminService, private builder: FormBuilder) {
-    // this.adminService = aS
+  regTxtPattern = /^[a-zA-Z ]{2,30}$/
+  emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+  yearPattern = /^\d+$/
+  submitted: boolean = false
+
+  constructor(public adminService: AdminService, private builder: FormBuilder) {  }
+
+  ngOnInit() {
     this.addGraderform = this.builder.group({
-      prof_email: ['', Validators.required],
-      f_name: ['', Validators.required],
-      l_name: ['', Validators.required],
-      department: ['', Validators.required]
+      f_name: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
+      l_name: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
+      prof_email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+      department: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]]
     })
 
     // update grader name modal
     this.editGraderForm = this.builder.group({
-      f_name: [''],
-      l_name: ['']
-    })
-
-    this.setCurrProfForm = this.builder.group({
-      prof_email: ['', Validators.required],
-      f_name: ['', Validators.required],
-      l_name: ['', Validators.required],
-      department: ['', Validators.required],
-      curr_cap_prof: [true]
-    })
-
-    this.setAdminForm = this.builder.group({
-      prof_email: ['', Validators.required],
-      f_name: ['', Validators.required],
-      l_name: ['', Validators.required],
-      department: ['', Validators.required],
-      is_admin: [true]
+      f_name: ['', [Validators.pattern(this.regTxtPattern)]],
+      l_name: ['', [Validators.pattern(this.regTxtPattern)]]
     })
 
     this.setTermForm = this.builder.group({
-      semester: ['', Validators.required],
-      year: ['', Validators.required]
+      semester: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
+      year: ['', [Validators.required, Validators.pattern(this.yearPattern)]]
     })
 
-    // this.accessors$ = this.getCurrentAssessors()
-    // this.accessors$.pipe(takeUntil(this.notifier)).subscribe()
-    //this.addProf(this.accessor)
-    //this.updateProfName(this.accessor, 'C.S.', 'Lewis', 'Philology')
-    //this.makeProfAdmin(this.accessor)
-    //this.revokePermissions(this.accessor)
-    //this.makeProfNongrader(this.accessor)
-    //this.updateTerm('Spring', 2023)
-    //this.updateTerm('Fall', 2021)
-    // this.adminService.getCurrentTerm().pipe(first()).subscribe(res=>{
-    //   console.log(`${res[0].semester} ${res[0].year}`)
-    // })
-    // this.populateCurrentSemester()
-    // this.setCurrentCapstoneProf(this.accessor)
 
+    this.submitted = false
+    this.getCurrentAssessors()
+    this.submitUpdateTerm()
+    this.getCurrentTerm()
   }
 
-  ngOnInit() {
-
-   this.getCurrentAssessors()
-   this.submitUpdateTerm()
-   this.getCurrentTerm()
+  get f() {
+    return this.addGraderform.controls
   }
+
+  get getEdit() {
+    return this.editGraderForm.controls
+  }
+
+  resetEditForms() {
+    this.editGraderForm.reset()
+  }
+
 
   // trigger to add a current grader
   submitAddGrader() {
-    this.accessor = {
-      prof_email: this.addGraderform.get('prof_email')?.value,
-      f_name : this.addGraderform.get('f_name')?.value,
-      l_name: this.addGraderform.get('l_name')?.value,
-      department: this.addGraderform.get('department')?.value,
+    this.submitted = true
+
+    if(!this.addGraderform.valid) {
+      console.log("nope ):")
+      this.addGraderform.reset()
+      this.submitted = false
     }
-    this.addProf(this.accessor)
-    this.graders.push(this.accessor)
-    this.addGraderform.reset()
+    else {
+      this.accessor = {
+        prof_email: this.addGraderform.get('prof_email')?.value,
+        f_name : this.addGraderform.get('f_name')?.value,
+        l_name: this.addGraderform.get('l_name')?.value,
+        department: this.addGraderform.get('department')?.value,
+      }
+      this.graders.push(this.accessor)
+      this.addProf(this.accessor)
+
+    }
+
+
+
   }
 
   // trigger to update grader first name or last name or department
   submitGraderUpdate() {
+    this.submitted = true
 
-    // populate Accessor object with user input changes
-    this.updateAccessor = {
-      prof_email: this.graders[this.graderIndex].prof_email,
-      f_name: this.editGraderForm.get("f_name")?.value,
-      l_name: this.editGraderForm.get("l_name")?.value,
-      department: this.graders[this.graderIndex].department
+    if(!this.editGraderForm.valid) {
+      console.log("nope ):")
+      this.editGraderForm.reset()
+      this.submitted = false
     }
-    this.updateProfName(this.updateAccessor)
-    // update ui
-    this.graders[this.graderIndex].f_name = this.editGraderForm.get("f_name")?.value
-    this.graders[this.graderIndex].l_name = this.editGraderForm.get("l_name")?.value
+    else {
+      // populate Accessor object with user input changes
+      // update if only first name was changed
+      if(this.getEdit['l_name'].pristine) {
+        this.updateAccessor = {
+          prof_email: this.graders[this.graderIndex].prof_email,
+          f_name: this.editGraderForm.get("f_name")?.value,
+          l_name: this.graders[this.graderIndex].l_name,
+          department: this.graders[this.graderIndex].department
+        }
+        this.graders[this.graderIndex].f_name = this.editGraderForm.get("f_name")?.value
+
+      }
+      // update if only last name was changed
+      else if(this.getEdit['f_name'].pristine) {
+        this.updateAccessor = {
+          prof_email: this.graders[this.graderIndex].prof_email,
+          f_name: this.graders[this.graderIndex].f_name,
+          l_name: this.editGraderForm.get("l_name")?.value,
+          department: this.graders[this.graderIndex].department
+        }
+        this.graders[this.graderIndex].l_name = this.editGraderForm.get("l_name")?.value
+      }
+      // update both first and last name
+      else {
+        this.updateAccessor = {
+          prof_email: this.graders[this.graderIndex].prof_email,
+          f_name: this.editGraderForm.get("f_name")?.value,
+          l_name: this.editGraderForm.get("l_name")?.value,
+          department: this.graders[this.graderIndex].department
+        }
+        this.graders[this.graderIndex].f_name = this.editGraderForm.get("f_name")?.value
+        this.graders[this.graderIndex].l_name = this.editGraderForm.get("l_name")?.value
+      }
+
+      this.updateProfName(this.updateAccessor)
+      this.submitted = false
+
+    }
 
   }
 
@@ -135,26 +165,28 @@ export class ManageAdminsComponent implements OnInit {
   }
 
   // trigger to update current capstone professor
-  submitCapProf() {
+  submitCapProf(accessor: Accessor) {
     this.newCapProf = {
-      prof_email: this.setCurrProfForm.get("prof_email")?.value,
-      f_name: this.setCurrProfForm.get("f_name")?.value,
-      l_name: this.setCurrProfForm.get("l_name")?.value,
-      department: this.setCurrProfForm.get("department")?.value,
-      curr_cap_prof: this.setCurrProfForm.get("curr_cap_prof")?.value
+      prof_email: accessor.prof_email,
+      f_name: accessor.f_name,
+      l_name: accessor.l_name,
+      department: accessor.department,
+      curr_cap_prof: accessor.curr_cap_prof
     }
+
     this.setCurrentCapstoneProf(this.newCapProf)
   }
 
   // trigger to add a professor as a system administrator
-  submitAdmin() {
+  submitAdmin(accessor: Accessor) {
     this.newSysAdmin = {
-      prof_email: this.setAdminForm.get("prof_email")?.value,
-      f_name: this.setAdminForm.get("f_name")?.value,
-      l_name: this.setAdminForm.get("l_name")?.value,
-      department: this.setAdminForm.get("department")?.value,
-      is_admin: this.setAdminForm.get("is_admin")?.value
+      prof_email: accessor.prof_email,
+      f_name: accessor.f_name,
+      l_name: accessor.l_name,
+      department: accessor.department,
+      is_admin: accessor.is_admin
     }
+
     this.makeProfAdmin(this.newSysAdmin)
   }
 
@@ -194,7 +226,10 @@ export class ManageAdminsComponent implements OnInit {
     // accessor.f_name = f_name
     // accessor.l_name = l_name
     // accessor.department = department
-    this.adminService.updateProf(accessor).pipe(first()).subscribe()
+    this.adminService.updateProf(accessor).pipe(first()).subscribe(() => {
+      this.editGraderForm.reset()
+    })
+    //
   }
 
   makeProfAdmin(accessor:Accessor){
@@ -212,6 +247,8 @@ export class ManageAdminsComponent implements OnInit {
   addProf(accessor:Accessor){
 
     this.adminService.addGraderAndAssessments(accessor)
+    this.addGraderform.reset()
+
   }
 
   makeProfNongrader(accessor:Accessor){
