@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
 import { CSSuboutcome } from '../CSSuboutcome'
+import { AssessmentDisplay } from '../AssessmentDisplay';
 
 const httpOptions =
 {
@@ -22,6 +23,7 @@ export class AssessmentService {
   currentCSOutcomeDesc: OutcomeDescriptions[] = []
   suboutcome_grade: { score_id: number}[] = []
   assID: number
+  assessment: AssessmentDisplay
   //outcomeDescriptions$: Observable<OutcomeDescriptions[]>
   
 
@@ -51,7 +53,14 @@ export class AssessmentService {
   // }
 
   testIDUpdate(){
-    console.log(this.assID)
+    //console.log(this.assID)
+    console.log('in ass Service: ' ,this.suboutcome_grade)
+  }
+
+  testSuboutcomeRecording(grades: { score_id: string, grade:number}){
+    console.log('in testOCReording:', grades)
+    const url = `${this.endPoint}/record_scores/${this.assID}`
+    return this.http.post<{ score_id: number}>(url, grades, httpOptions);
   }
 
   getCSOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{

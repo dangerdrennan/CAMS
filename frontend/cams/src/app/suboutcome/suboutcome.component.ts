@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CSSuboutcome } from '../CSSuboutcome';
 import { AssessmentService } from '../services/assessment.service';
@@ -11,6 +11,7 @@ import { AssessmentService } from '../services/assessment.service';
 export class SuboutcomeComponent implements OnInit {
 
   @Input() outcome_cat: string
+  @Output() newGrade = new EventEmitter<[string, number]>();
   suboutcomeDetails: CSSuboutcome[]
   subOutcomeNames: string[] = []
   subDeets$: Observable<CSSuboutcome[]>
@@ -30,6 +31,8 @@ export class SuboutcomeComponent implements OnInit {
     const excellent_box = document.getElementById(score_id+'_'+'excellent');
     this.assessmentService.suboutcome_grade[score_id] = grade
     console.log('in suboutcome component: ', this.assessmentService.suboutcome_grade)
+    //this.giveGradeToParent(score_id, grade)
+    this.assessmentService.testIDUpdate()
     switch(grade) {
       case 1:
         poor_box.className = "scoreable selected"
@@ -66,6 +69,10 @@ export class SuboutcomeComponent implements OnInit {
       this.suboutcomeDetails = res
       console.log('suboutcomeDetails is at ', this.suboutcomeDetails)
     })
+  }
+
+  giveGradeToParent(score_id: string, grade: number){
+    this.newGrade.emit([score_id, grade])
   }
 
 }

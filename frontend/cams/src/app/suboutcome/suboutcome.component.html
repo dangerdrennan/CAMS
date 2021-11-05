@@ -14,10 +14,10 @@
           <tbody>
             <tr>
               <td scope="col">{{deet.suboutcome_description}}</td>
-              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_poor'" (click)= "recordGrade(deet.score_id, 1)">{{deet.poor_description}}</td>
-              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_developing'" (click)= "recordGrade(deet.score_id, 2)">{{deet.developing_description}}</td>
-              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_satisfactory'" (click)= "recordGrade(deet.score_id, 3)">{{deet.satisfactory_description}}</td>
-              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_excellent'" (click)= "recordGrade(deet.score_id, 4)">{{deet.excellent_description}}</td>
+              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_poor'" (click)= "recordGrade(deet.score_id, 2); giveGradeToParent(deet.score_id, 1)">{{deet.poor_description}}</td>
+              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_developing'" (click)= "recordGrade(deet.score_id, 2); giveGradeToParent(deet.score_id, 2)">{{deet.developing_description}}</td>
+              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_satisfactory'" (click)= "recordGrade(deet.score_id, 3); giveGradeToParent(deet.score_id, 3)">{{deet.satisfactory_description}}</td>
+              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_excellent'" (click)= "recordGrade(deet.score_id, 4); giveGradeToParent(deet.score_id, 4)">{{deet.excellent_description}}</td>
             </tr>
           </tbody>
     </table>

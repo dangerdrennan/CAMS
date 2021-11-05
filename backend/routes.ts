@@ -264,6 +264,21 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
+
+    usersRouter.post("/record_scores/:id", async(req, res) => {
+        try{
+            const {id} = req.params
+            const {score_id, grade} = req.body;
+            console.log('what are the variables at? ', score_id, grade, id)
+            const new_assessments = await pool.query(`
+            select set_grade($1, $2, $3)`, [score_id, grade, id]);
+            res.json(new_assessments.rows);
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "record_scores"');
+        }
+    });
+
     usersRouter.delete("/delete_assessments_by_prof/:prof_email", async(req, res) => {
         try{
             const {prof_email} = req.params;
@@ -405,7 +420,7 @@ usersRouter.get('/all_profs', async (req, res) => {
         const get_cs_suboutcomes = await pool.query(`
         SELECT * FROM suboutcome_details_cs WHERE outcome_cat_id = $1;`, [outcome_name]);
         res.json(get_cs_suboutcomes.rows);
-        console.log(get_cs_suboutcomes.rows)
+        //console.log(get_cs_suboutcomes.rows)
     }
     catch(err ){
         console.log(err, 'error has occurred in backend function "get_cs_suboutcomes"')

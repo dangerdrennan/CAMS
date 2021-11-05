@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./assessment.component.css']
 })
 export class AssessmentComponent implements OnInit {
+  grades: { score_id: number}[] = []
   requirements$: Observable<SemesterReqs>
   cs_outcome_des: OutcomeDescriptions[] = []
   requirement_suboutcomes:string[] = []
@@ -62,6 +63,21 @@ export class AssessmentComponent implements OnInit {
       console.log('whoops')
       this.router.navigateByUrl('/projects');
     }
+    }
+
+    addScore(grade: [string, number]){
+      //this.grades[grade[0]] = grade[1]
+      //console.log(this.grades)
+      let test = {
+        score_id: grade[0],
+        grade: grade[1]
+      }
+      this.assessmentService.testSuboutcomeRecording(test).subscribe()
+    }
+
+    submitScores(){
+      let grade = this.assessmentService.suboutcome_grade[0]
+      //this.assessmentService.testSuboutcomeRecording(grade).subscribe()
     }
     
 
