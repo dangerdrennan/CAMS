@@ -45,7 +45,12 @@
                       <div class="col-12">
                         <form [formGroup]="addProjForm">
                           <label for="projName">Project Name</label>
-                          <input type="text" class="form-control" formControlName="projectName" id="projName" required="required">
+                          <input type="text" class="form-control" formControlName="projectName" id="projName" [ngClass]="{ 'is-invalid': p.projectName.errors && submitted }">
+
+                          <div *ngIf="p.projectName.errors && p.projectName.touched">
+                            <small class="text-danger" *ngIf="p.projectName.errors.pattern">Invalid project name.</small>
+                            <small class="text-danger" *ngIf="p.projectName.errors.required">Project name is required.</small>
+                          </div>
                         </form>
                       </div>
                     </div>
@@ -55,22 +60,39 @@
                         <form [formGroup]="addStudForm">
                           <div class="col-5">
                             <label for="studentFirst">Student First Name</label>
-                            <input type="text" class="form-control" formControlName="studentFirst" id="studentFirst" required="required">
+                            <input type="text" class="form-control" formControlName="studentFirst" id="studentFirst" [ngClass]="{ 'is-invalid': s.studentFirst.errors && submitted }">
+
+                            <div *ngIf="s.studentFirst.errors && s.studentFirst.touched">
+                              <small class="text-danger" *ngIf="s.studentFirst.errors.pattern">Invalid first name.</small>
+                              <small class="text-danger" *ngIf="s.studentFirst.errors.required">First name is required.</small>
                             </div>
+                          </div>
                           <div class="col-5">
                             <label for="studentLast">Student Last Name</label>
-                            <input type="text" class="form-control" formControlName="studentLast" id="studentLast">
+                            <input type="text" class="form-control" formControlName="studentLast" id="studentLast" [ngClass]="{ 'is-invalid': s.studentLast.errors && submitted }">
+
+                            <div *ngIf="s.studentLast.errors && s.studentLast.touched">
+                              <small class="text-danger" *ngIf="s.studentLast.errors.pattern">Invalid last name.</small>
+                              <small class="text-danger" *ngIf="s.studentLast.errors.required">Last name is required.</small>
+                            </div>
                           </div>
 
                           <div class="col-2" style="margin-top: 15px;">
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+                              <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree" [ngClass]="{ 'is-invalid': s.degree.errors && submitted }">
                               <label class="form-check-label">CS</label>
+
+                              <div *ngIf="s.degree.errors && s.degree.touched">
+                                <small class="text-danger" *ngIf="s.degree.errors.required">Major is required.</small>
+                              </div>
                             </div>
 
                             <div class="form-check form-check">
-                              <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+                              <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree" [ngClass]="{ 'is-invalid': s.degree.errors && submitted }">
                               <label class="form-check-label">CSE</label>
+                              <div *ngIf="s.degree.errors && s.degree.touched">
+                                <small class="text-danger" *ngIf="s.degree.errors.required">Major is required.</small>
+                              </div>
                             </div>
                           </div>
                       </form>
@@ -121,22 +143,40 @@
 
                             <div class="col-auto">
                               <label for="studentFirst">Student First Name</label>
-                              <input type="text" class="form-control" formControlName="studentFirst" id="studentFirst" required="required">
+                              <input type="text" class="form-control" formControlName="studentFirst" id="studentFirst" [ngClass]="{ 'is-invalid': s.studentFirst.errors && submitted }">
+
+                              <div *ngIf="s.studentFirst.errors && s.studentFirst.touched">
+                                <small class="text-danger" *ngIf="s.studentFirst.errors.pattern">Invalid first name.</small>
+                                <small class="text-danger" *ngIf="s.studentFirst.errors.required">First name is required.</small>
+                              </div>
                             </div>
                             <div class="col-auto">
                               <label for="studentLast">Student Last Name</label>
-                              <input type="text" class="form-control" formControlName="studentLast" id="studentLast">
+                              <input type="text" class="form-control" formControlName="studentLast" id="studentLast" [ngClass]="{ 'is-invalid': s.studentLast.errors && submitted }">
+
+                              <div *ngIf="s.studentLast.errors && s.studentLast.touched">
+                                <small class="text-danger" *ngIf="s.studentLast.errors.pattern">Invalid last name.</small>
+                                <small class="text-danger" *ngIf="s.studentLast.errors.required">Last name is required.</small>
+                              </div>
                             </div>
 
                             <div class="container" style="display: flex;margin-top: 10px;margin-left: -25px;margin-bottom: 10px;">
 
                               <div class="form-check form-check-inline" style="margin-left: 14px;">
-                                <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+                                <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree" [ngClass]="{ 'is-invalid': s.degree.errors && submitted }">
                                 <label class="form-check-label">CS</label>
+
+                                <div *ngIf="s.degree.errors && s.degree.touched">
+                                  <small class="text-danger" *ngIf="s.degree.errors.required">Major is required.</small>
+                                </div>
                               </div>
                               <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+                                <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree" [ngClass]="{ 'is-invalid': s.degree.errors && submitted }">
                                 <label class="form-check-label">CSE</label>
+
+                                <div *ngIf="s.degree.errors && s.degree.touched">
+                                  <small class="text-danger" *ngIf="s.degree.errors.required">Major is required.</small>
+                                </div>
                               </div>
                             </div>
                           </form>
@@ -150,8 +190,8 @@
 
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button data-bs-dismiss="modal" type="button" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetStudentForm()">Close</button>
+                  <button data-bs-dismiss="modal" type="button" class="btn btn-primary" (click)="resetStudentForm()">Save changes</button>
                 </div>
               </div>
             </div>

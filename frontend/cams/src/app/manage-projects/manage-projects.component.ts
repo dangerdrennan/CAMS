@@ -21,6 +21,9 @@ export class ManageProjectsComponent implements OnInit {
   project!: Project
   student!: Student
 
+  regTxtPattern = /^[a-zA-Z ]{2,30}$/
+  submitted: boolean = false
+
   projIndex: number = 0;
   termId!: number
   projId:number | undefined
@@ -30,14 +33,14 @@ export class ManageProjectsComponent implements OnInit {
   ngOnInit(): void {
     // initialize project form
     this.addProjForm = this.builder.group({
-      projectName: ['', Validators.required],
+      projectName: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
     })
 
     // initialize student form
     this.addStudForm = this.builder.group({
-      studentFirst: ['', Validators.required],
-      studentLast: ['', Validators.required],
-      degree: ['', Validators.required],
+      studentFirst: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
+      studentLast: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
+      degree: ['', [Validators.required]],
       status: ['Not Graded'] // by default we'll mark as not graded
     })
 
@@ -47,14 +50,28 @@ export class ManageProjectsComponent implements OnInit {
     this.currentProjects()
 
 
-    console.log("all students", this.allStud)
+    // console.log("all students", this.allStud)
 
     this.projectService.getSemYear().pipe(first()).subscribe(res =>{
       this.semYear = res
-      console.log(this.semYear)
+      // console.log(this.semYear)
     })
 
 
+  }
+
+  // easy access for validating project inputs
+  get p() {
+    return this.addProjForm.controls
+  }
+
+  // easy access for validating student inputs
+  get s() {
+    return this.addStudForm.controls
+  }
+
+  resetStudentForm() {
+    this.addStudForm.reset()
   }
 
   // display all projects
@@ -110,17 +127,17 @@ export class ManageProjectsComponent implements OnInit {
       proj_id: projId,
       term_id: termId
     }
-    
+
     this.projectService.assignStudentToProject(this.student).subscribe(res => {
       this.allStud.push(this.student)
       this.generateAssessments(res[0])
     })
-    
+
   }
 
   // delete an entire project
   deleteProject(project: Project) {
-    
+
     this.projectService.deleteProject(project.title).subscribe(() => {
       location.reload()
     })

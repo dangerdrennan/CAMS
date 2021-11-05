@@ -19,15 +19,15 @@ const httpOptions =
 })
 export class ProjectService {
 
-  
+
   projects: Project[] = []
   semYear!: {semester:string, year:number}[]
   endPoint = "http://localhost:4201"
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.getSemYear().pipe(first()).subscribe(res =>{
       this.semYear = res
-      console.log(this.semYear)
+      // console.log(this.semYear)
     })
   }
   httpHeader = {
@@ -46,12 +46,12 @@ export class ProjectService {
 
   addProject(name:string): Observable<Project[]>{
     const url = `${this.endPoint}/add_project/${name}`;
-    return this.http.post<Project[]>(url, {name}, httpOptions) 
+    return this.http.post<Project[]>(url, {name}, httpOptions)
   }
 
   assignStudentToProject(student: Student): Observable<Student[]> {
     const url = `${this.endPoint}/add_student/`;
-    return this.http.post<Student[]>(url, student, httpOptions) 
+    return this.http.post<Student[]>(url, student, httpOptions)
   }
 
   deleteProject(project: string){
