@@ -6,10 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./assessment-completed.component.css']
 })
 export class AssessmentCompletedComponent implements OnInit {
-
+  
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void { }
 }
