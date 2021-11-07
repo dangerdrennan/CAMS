@@ -1,7 +1,10 @@
 <div class='scroll' *ngFor= "let deet of suboutcomeDetails; index as i">
-    <strong>{{prettyCat(deet.score_id)}}</strong>
-    <table class="table table-bordered " >
-        <thead >
+
+  <!-- <div class="card" style="margin-bottom: 10px;">
+    <div class="card-body"> -->
+      <strong>{{prettyCat(deet.score_id)}}</strong>
+      <table class="table table-bordered ">
+        <thead>
           <tr>
             <th scope="col" style="width: 20%">Evaluation Criteria</th>
             <th scope="col" style="width: 20%">Poor</th>
@@ -10,17 +13,61 @@
             <th scope="col" style="width: 20%">Excellent</th>
           </tr>
         </thead>
-          <tbody>
-            <tr>
-              <td scope="col">{{deet.suboutcome_description}}</td>
-              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_poor'" (click)= "recordGrade(deet.score_id, 1); giveGradeToParent(deet.score_id, 1)">{{deet.poor_description}}</td>
-              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_developing'" (click)= "recordGrade(deet.score_id, 2); giveGradeToParent(deet.score_id, 2)">{{deet.developing_description}}</td>
-              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_satisfactory'" (click)= "recordGrade(deet.score_id, 3); giveGradeToParent(deet.score_id, 3)">{{deet.satisfactory_description}}</td>
-              <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_excellent'" (click)= "recordGrade(deet.score_id, 4); giveGradeToParent(deet.score_id, 4)">{{deet.excellent_description}}</td>
-            </tr>
-          </tbody>
-    </table>
-    <input type="text" for= "deet.score_id + '_comment'" placeholder="Optional comment area" #twoCents>
-    <button type= "submit" class="btn btn-secondary" [attr.id]="deet.score_id + '_comment'"(click)= "addComment(deet.score_id, twoCents.value)">Add Comment</button>
-    <p></p>
+        <tbody>
+          <tr>
+            <td scope="col" style="font-weight: bold;">{{deet.suboutcome_description}}</td>
+            <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_poor'"
+              (click)="recordGrade(deet.score_id, 1); giveGradeToParent(deet.score_id, 1)">{{deet.poor_description}}</td>
+            <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_developing'"
+              (click)="recordGrade(deet.score_id, 2); giveGradeToParent(deet.score_id, 2)">{{deet.developing_description}}
+            </td>
+            <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_satisfactory'"
+              (click)="recordGrade(deet.score_id, 3); giveGradeToParent(deet.score_id, 3)">{{deet.satisfactory_description}}
+            </td>
+            <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_excellent'"
+              (click)="recordGrade(deet.score_id, 4); giveGradeToParent(deet.score_id, 4)">{{deet.excellent_description}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <div class="accordion accordion" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingOne">
+            <div class="panel">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#flush-collapseOne' + deet.score_id" data-bs-parent="#accordionFlushExample" aria-expanded="false" aria-controls="flush-collapseOne">
+                Add Comment
+              </button>
+            </div>
+
+          </h2>
+          <div [attr.id]="'flush-collapseOne' + deet.score_id" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+            >
+            <div class="accordion-body">
+              <form [formGroup]="setCommentForm">
+                <div class="row">
+                  <div class="col-12">
+                    <textarea id="comment" style="width: 100%;" type="text" for= "deet.score_id + '_comment'" placeholder="Type comment here.." #twoCents formControlName="comment"></textarea>
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <button [disabled]="this.setCommentForm.pristine" style="float: right;" type= "submit" class="btn btn-primary btn-sm" [attr.id]="deet.score_id + '_comment'"(click)= "addComment(deet.score_id, twoCents.value)" data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#flush-collapseOne' + deet.score_id">Submit</button>
+                    <div [attr.id]="deet.score_id + '_commentSubmit'"></div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    <!-- </div>
+  </div> -->
+
+
+
 </div>

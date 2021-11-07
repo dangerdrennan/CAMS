@@ -25,16 +25,16 @@ export class AssessmentService {
   cs_categories: string[] = []
   currentCSOutcomeDesc: OutcomeDescriptions[] = []
   suboutcome_grade: { score_id: number}[] = []
-  assID: number
-  assessment: AssessmentDisplay
-  outcomeDescriptions$: Observable<OutcomeDescriptions[]>
+  assID!: number
+  assessment!: AssessmentDisplay
+  outcomeDescriptions$!: Observable<OutcomeDescriptions[]>
   submissionStatus: boolean = false
-  requirements$: Observable<SemesterReqs[]>
-  
+  requirements$!: Observable<SemesterReqs[]>
 
 
-  constructor(private http: HttpClient, private router: Router) { 
-    
+
+  constructor(private http: HttpClient, private router: Router) {
+
   }
 
   getCurrentAssessmentsbyProf(email:string): any{

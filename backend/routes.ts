@@ -32,8 +32,9 @@ usersRouter.get('/all_profs', async (req, res) => {
 
   usersRouter.get('/get_prof/:prof_email', async (req, res) => {
     try{
-        const prof_email = req.params.prof_email
-        const get_prof = await pool.query("SELECT * FROM prof WHERE prof_email = $1", [prof_email]);
+        const {prof_email} = req.params
+        // console.log("email ", prof_email)
+        const get_prof = await pool.query(`SELECT * FROM prof WHERE prof_email = $1;`, [prof_email]);
         res.json(get_prof.rows);
     }
     catch(err ){

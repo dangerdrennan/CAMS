@@ -20,7 +20,7 @@ export class AssessmentComponent implements OnInit {
   assessmentInfo: AssessmentDisplay
   submissionStatus: boolean
   comments:ScoreComment[] = []
-  
+
 
 
   constructor(private router: Router, public auth:AuthService, public assessmentService: AssessmentService) {
@@ -43,25 +43,25 @@ export class AssessmentComponent implements OnInit {
     if (this.assessmentService.assID == undefined){
       this.router.navigateByUrl('/projects');
     }
-    }
+  }
 
-    addScore(grade: [string, number]){
-      this.grades.push({
-        score_id: grade[0],
-        grade: grade[1]
-      })
-    }
-    addComment(comment:ScoreComment){
-      this.comments.push(comment)
-      console.log(this.comments)
-    }
+  addScore(grade: [string, number]){
+    this.grades.push({
+      score_id: grade[0],
+      grade: grade[1]
+    })
+  }
+  addComment(comment:ScoreComment){
+    this.comments.push(comment)
+    console.log(this.comments)
+  }
 
 
-    submitScores(){
-      this.submissionStatus = this.assessmentService.submitAssessment(this.grades,this.comments)
-      
-    }
-    
+  submitScores(){
+    this.submissionStatus = this.assessmentService.submitAssessment(this.grades,this.comments)
+
+  }
+
 
   setDescriptions(arr : string[], degree: 'CS' | 'CSE'){
     const num_array:number[] = []

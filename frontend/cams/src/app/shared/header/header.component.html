@@ -3,7 +3,7 @@
     <div class="divider">
         <div class="vertical_line"></div>
     </div>
-    <div class="name" >{{this.profDashService.userLastName}}</div>
+    <div class="name" *ngFor="let item of this.profService.professor">{{item.l_name}}</div>
     <div class="avi">
         <img class="avi_icon" src="../../../assets/images/user.png" alt="avi_icon">
     </div>

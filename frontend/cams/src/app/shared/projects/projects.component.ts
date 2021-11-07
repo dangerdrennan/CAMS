@@ -13,22 +13,22 @@ import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
   styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent implements OnInit {
-  
-  user: string
+
+  user: string | undefined
   currentAssessments: AssessmentDisplay[] = []
 
-  
-  constructor(private router: Router, public profDashService: ProfDashboardService, public assessmentService:AssessmentService, loginService:LoginService , public auth:AuthService) { 
+
+  constructor(private router: Router, public profDashService: ProfDashboardService, public assessmentService:AssessmentService, loginService:LoginService , public auth:AuthService) {
     this.user = loginService.email
     this.auth.user$.subscribe(res => {
       this.user = res!.email
     })
-    
+
   }
 
   ngOnInit(): void {
-    console.log('what is this? ', this.user)
-    this.assessmentService.getCurrentAssessmentsbyProf(this.user).subscribe((res: any)=>{
+    // console.log('what is this? ', this.user)
+    this.assessmentService.getCurrentAssessmentsbyProf(this.user!).subscribe((res: any)=>{
       console.log('hit: ', res)
       this.currentAssessments = res
       this.currentAssessments.sort((a, b) => a.assessment_id - b.assessment_id)
@@ -45,7 +45,7 @@ export class ProjectsComponent implements OnInit {
     this.profDashService.isAssessing = true;
     this.assessmentService.assID = project.assessment_id
     this.assessmentService.assessment = project
-    
+
     this.router.navigateByUrl("/assessment");
   }
 

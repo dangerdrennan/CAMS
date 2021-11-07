@@ -14,30 +14,30 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class SuboutcomeComponent implements OnInit {
 
-  @Input() outcome_cat: string
-  @Input() outcome_description: string
-  @Input() assID: number
-  @Input() assessmentInfo: AssessmentDisplay
+  @Input() outcome_cat!: string
+  @Input() outcome_description!: string
+  @Input() assID!: number
+  @Input() assessmentInfo!: AssessmentDisplay
   @Output() newGrade = new EventEmitter<[string, number]>();
   @Output() newComment = new EventEmitter<ScoreComment>();
 
-  suboutcomeDetails: Suboutcome[]
+  suboutcomeDetails!: Suboutcome[]
   subOutcomeNames: string[] = []
-  subDeets$: Observable<Suboutcome[]>
+  subDeets$!: Observable<Suboutcome[]>
   subDeets: Suboutcome[] = []
   suboutcome_grade: { score_id: number}[] = []
-  comment: ScoreComment
+  comment!: ScoreComment
   commentSubmitted=false
   setCommentForm:FormGroup
-  formBuilder: FormBuilder
-  twoCents:string
+  // formBuilder: FormBuilder
+  twoCents!:string
 
-  constructor(public assessmentService: AssessmentService, fB: FormBuilder) {
-    this.formBuilder = fB
-    this.setCommentForm = this.formBuilder.group({
-      comment: ['', Validators.required]
+  constructor(public assessmentService: AssessmentService, private fB: FormBuilder) {
+    // this.formBuilder = fB
+    this.setCommentForm = this.fB.group({
+      comment: ['']
     })
-    
+
    }
 
    recordGrade(score_id: string, grade: number){
@@ -48,33 +48,33 @@ export class SuboutcomeComponent implements OnInit {
     //console.log('in suboutcome component: ', this.assessmentService.suboutcome_grade)
     switch(grade) {
       case 1:
-        poor_box.className = "scoreable selected"
-        developing_box.className = "scoreable"
-        satisfactory_box.className = "scoreable"
-        excellent_box.className = "scoreable"
+        poor_box!.className = "scoreable selected"
+        developing_box!.className = "scoreable"
+        satisfactory_box!.className = "scoreable"
+        excellent_box!.className = "scoreable"
         break;
       case 2:
-        poor_box.className = "scoreable"
-        developing_box.className = "scoreable selected"
-        satisfactory_box.className = "scoreable"
-        excellent_box.className = "scoreable"
+        poor_box!.className = "scoreable"
+        developing_box!.className = "scoreable selected"
+        satisfactory_box!.className = "scoreable"
+        excellent_box!.className = "scoreable"
         break;
       case 3:
-        poor_box.className = "scoreable"
-        developing_box.className = "scoreable"
-        satisfactory_box.className = "scoreable selected"
-        excellent_box.className = "scoreable"
+        poor_box!.className = "scoreable"
+        developing_box!.className = "scoreable"
+        satisfactory_box!.className = "scoreable selected"
+        excellent_box!.className = "scoreable"
       break;
       case 4:
-        poor_box.className = "scoreable"
-        developing_box.className = "scoreable"
-        satisfactory_box.className = "scoreable"
-        excellent_box.className = "scoreable selected"
+        poor_box!.className = "scoreable"
+        developing_box!.className = "scoreable"
+        satisfactory_box!.className = "scoreable"
+        excellent_box!.className = "scoreable selected"
       break;
       default:
     }
    }
-  
+
   ngOnInit(): void {
     this.subDeets$ = this.assessmentService.getSuboutcomes(this.outcome_cat).pipe(shareReplay())
     this.assessmentService.getSuboutcomes(this.outcome_cat).subscribe(res => {
@@ -111,17 +111,18 @@ export class SuboutcomeComponent implements OnInit {
     return newStr
   }
   addComment(score_id:string, twoCents:string){
-    
-    let input = (document.getElementById(`${score_id}_comment`) as HTMLInputElement).value;
+
     this.comment = {
-      assessment_id: 3,
+      assessment_id: this.assID,
       comment: twoCents,
       score_id: score_id
     }
-    //let input= (document.getElementById(score_id+'_'+'comment'));
-    //let input = (document.getElementById(score_id+'_'+'comment') as HTMLInputElement).value;
     console.log(this.comment)
     this.newComment.emit(this.comment)
+    const show = document.getElementById(score_id+'_'+'commentSubmit');
+    show!.innerHTML += 'Comment Submitted!'
+
     this.commentSubmitted = true
+    this.setCommentForm.reset()
   }
 }

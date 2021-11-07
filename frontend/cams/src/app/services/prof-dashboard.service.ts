@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Observable } from 'rxjs';
 import { Professor } from '../prof';
+import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,9 @@ export class ProfDashboardService {
   public allProfs = [];
   public profByEmail = [];
 
+  professor: any = []
+
+
   endPoint = "http://localhost:4201"
 
   constructor(public http: HttpClient) { }
@@ -30,8 +34,8 @@ export class ProfDashboardService {
   };
 
   // api call to get prof info
-  getProfInfoByEmail(prof_email: string):Observable<any> {
-    return this.http.get<any>(this.endPoint + '/get_prof/' + prof_email)
+  getProfInfoByEmail(prof_email: string):Observable<Professor> {
+    return this.http.get<Professor>(this.endPoint + '/get_prof/' + prof_email)
   }
 
 
