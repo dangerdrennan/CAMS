@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'app-projects',
@@ -10,7 +11,7 @@ import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 export class ProjectsComponent implements OnInit {
   
   user: string
-  constructor(private router: Router, public profDashService: ProfDashboardService) { 
+  constructor(private router: Router, public profDashService: ProfDashboardService, public projectService: ProjectService) { 
     this.user = profDashService.userEmail
   }
 
