@@ -12,17 +12,17 @@
           </tr>
         </thead>
         <tbody >
-          <tr *ngFor="let proj of Projectss" (click)="assessments()" onmouseover="" style="cursor: pointer;">
-            <td scope="row">{{proj.p_name}}</td>
-            <td>{{proj.s_name}}</td>
-            <td>{{proj.term}}</td>
+          <tr *ngFor="let proj of currentAssessments" (click)="assessments(proj)" onmouseover="" style="cursor: pointer;">
+            <td scope="row">{{proj.title}}</td>
+            <td>{{proj.f_name}} {{proj.l_name}}</td>
+            <td>{{proj.semester}} {{proj.year}}</td>
 
-            <td *ngIf="proj.status==='Graded';else notGraded">
-              <button disabled class="btn btn-outline-success btn-sm">{{proj.status}}</button>
+            <td *ngIf="proj.graded==true;else notGraded">
+              <button disabled class="btn btn-outline-success btn-sm">Graded</button>
             </td>
             <ng-template #notGraded>
               <td>
-                <button disabled class="btn btn-outline-danger btn-sm">{{proj.status}}</button>
+                <button disabled class="btn btn-outline-danger btn-sm">Not Graded</button>
               </td>
             </ng-template>
           </tr>

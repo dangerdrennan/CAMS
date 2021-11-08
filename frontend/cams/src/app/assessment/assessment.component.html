@@ -1,6 +1,39 @@
-<div class="main">
-  <p>assessments will be here</p>
-  <button class="btn btn-secondary" (click)="goBack()">back</button>
+<div class="main" style="overflow-y: scroll;">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <div class='title'>{{this.assessmentInfo.f_name}} {{this.assessmentInfo.l_name}}</div>
+            <div class='ass-header' style="font-family: 'Mulish';">{{this.assessmentInfo.title}} - {{this.assessmentInfo.semester}}, {{this.assessmentInfo.year}}</div>
+            <br>
+            <div *ngIf = "!this.submissionStatus; else graded">
+              <div>
+                <!-- style="height:650px;width:1500px;overflow:auto;" -->
+                <div >
+                  <div *ngFor="let req of outcome_cats; let i = index">
+                    <strong style="font-size: larger;font-family: 'Mulish';">{{this.outcome_des[i].outcome_description}}</strong>
+                      <app-suboutcome class= 'scroll'
+                      [outcome_cat] = "req"
+                      [assID] = "this.assessmentInfo.assessment_id"
+                      [assessmentInfo]="this.assessmentInfo"
+                      (newGrade)="addScore($event)"
+                      (newComment)="addComment($event)"></app-suboutcome>
+                      <br>
+                    </div>
+                    <button class="btn btn-secondary" style='float: left;'(click)="goBack()">back</button>
+                    <button class='btn btn-primary' style='float: right;' [disabled]="" (click) = "submitScores()">Track Assessment Grades</button>
+                  </div>
+                </div>
+            </div>
+            <ng-template #graded>
+              <app-assessment-completed></app-assessment-completed>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
 
+  </div>
 
 </div>

@@ -18,5 +18,6 @@ export class SidebarComponent {
 
   logout(){
     this.auth.logout({returnTo: this.doc.location.origin})
+    this.profDashService.professor = []
   }
 }

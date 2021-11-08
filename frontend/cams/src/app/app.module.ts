@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -17,6 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.component';
+import { SuboutcomeComponent } from './suboutcome/suboutcome.component';
+import { AssessmentCompletedComponent } from './assessment-completed/assessment-completed.component';
 
 
 @NgModule({
@@ -28,11 +30,13 @@ import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.co
     AssessmentComponent,
     ProjectsComponent,
     LogoutButtonComponent,
-PastAssessmentsComponent,
+    PastAssessmentsComponent,
     LogoutButtonComponent,
     ManageAdminsComponent,
     ManageProjectsComponent,
-    ManageAssessorsComponent
+    ManageAssessorsComponent,
+    SuboutcomeComponent,
+    AssessmentCompletedComponent
   ],
   imports: [
     BrowserModule,

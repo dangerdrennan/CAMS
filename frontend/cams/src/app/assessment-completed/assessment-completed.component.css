@@ -1,0 +1,34 @@
+.rect {
+    position: absolute;
+    width: 1033px;
+    height: 823px;
+    left: 308px;
+    top: 166px;
+
+    border: 1px solid #DFE0EB;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.success {
+    display: flex;
+    justify-content: center;
+    background: #FFFFFF;
+    border-radius: 5px;
+    width: auto;
+}
+
+.big {
+
+/* Bold 24 (0.3 px) */
+
+font-family: Mulish;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 30px;
+text-align: center;
+letter-spacing: 0.3px;
+
+color: #000000;
+}

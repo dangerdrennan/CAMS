@@ -13,7 +13,8 @@ import { ProfDashboardService } from '../services/prof-dashboard.service';
 
 
 export class HomeComponent implements OnInit {
-  user?: string
+  user?: string;
+  professor!: Professor
 
 
   constructor(public loginService: LoginService, private builder: FormBuilder, public profService: ProfDashboardService, private router: Router) {
@@ -21,10 +22,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = this.loginService.user
-    this.grabAllProfs();
-    this.grabProfByEmail('rowling@potter.co.uk') // this.user!
-    this.profService.isAssessing=false
+    // this.user = this.loginService.user
+    // this.grabAllProfs();
+    // this.grabProfByEmail(this.user!) // this.user!
+    // this.profService.isAssessing=false
 
   }
 
@@ -40,40 +41,43 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl('/manage-assessors');
   }
 
-  setAll(email: string, fname: string, lname: string, department: string, isAdmin: boolean, isGrader: boolean) {
-    this.profService.userEmail = email;
-    this.profService.userFirstName = fname;
-    this.profService.userLastName = lname;
-    this.profService.department = department;
-    this.profService.isAdmin = isAdmin;
-    this.profService.isGrader = isGrader;
-    console.log(this.profService.userEmail)
-  }
+//   setAll(email: string, fname: string, lname: string, department: string, isAdmin: boolean, isGrader: boolean) {
+//     this.profService.userEmail = email;
+//     this.profService.userFirstName = fname;
+//     this.profService.userLastName = lname;
+//     this.profService.department = department;
+//     this.profService.isAdmin = isAdmin;
+//     this.profService.isGrader = isGrader;
+//     console.log(this.profService.userEmail)
+//   }
 
-  getAll() {
-    return this.profService.userEmail, this.profService.userFirstName, this.profService.userLastName, this.profService.department, this.profService.isAdmin, this.profService.isGrader
- }
+//   getAll() {
+//     return this.profService.userEmail, this.profService.userFirstName, this.profService.userLastName, this.profService.department, this.profService.isAdmin, this.profService.isGrader
+//  }
 
-  grabProfByEmail(email: string) {
-    return this.profService.getProfInfoByEmail(email).subscribe((data: any) => {
-      this.profService.profByEmail = data;
-      this.storeProfData();
-    })
-  }
+//   grabProfByEmail(email: string) {
+//     console.log("made it***")
+//     return this.profService.getProfInfoByEmail(email).subscribe((data: any) => {
 
-  storeProfData() {
-    this.profService.profByEmail.filter((item: Professor) => {
-      this.setAll(item.prof_email, item.f_name, item.l_name, item.department, item.is_admin, item.is_grader);
-      return this.getAll();
-    })
-  }
+//       this.professor = data;
+//       console.log("prof data ", this.professor)
+//       this.storeProfData();
+//     })
+//   }
 
-  // not sure if needed but stored it profService anyways
-  grabAllProfs() {
-    return this.profService.getAllProfs().subscribe((data: any) => {
-      this.profService.allProfs = data;
-    })
-  }
+//   storeProfData() {
+//     this.profService.profByEmail.filter((item: Professor) => {
+//       this.setAll(item.prof_email, item.f_name, item.l_name, item.department, item.is_admin, item.is_grader);
+//       return this.getAll();
+//     })
+//   }
+
+//   // not sure if needed but stored it profService anyways
+//   grabAllProfs() {
+//     return this.profService.getAllProfs().subscribe((data: any) => {
+//       this.profService.allProfs = data;
+//     })
+//   }
 }
 
 
