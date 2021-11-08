@@ -64,6 +64,16 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+  usersRouter.get('/current_proj', async (req, res) => {
+    try{
+        const get_proj = await pool.query(`select * from project INNER JOIN get_current_term() ON project.term_id = get_current_term`);
+        res.json(get_proj.rows);
+    }
+    catch(err ){
+        console.log('error has occurred in backend function "current_proj"')
+    }
+  });
+
   usersRouter.get('/students_by_project/:id', async (req, res) => {
     try{
         const {id} = req.params
@@ -80,7 +90,7 @@ usersRouter.get('/all_profs', async (req, res) => {
   usersRouter.get('/current_term', async (req, res) => {
     try{
         const get_current_term = await pool.query(`
-        SELECT semester, year from term where term_id = get_current_term()`);
+        SELECT semester, year from term where term_id = get_current_term() LIMIT 1`);
         res.json(get_current_term.rows);
     }
     catch(err ){
@@ -119,9 +129,9 @@ usersRouter.get('/all_profs', async (req, res) => {
 
     usersRouter.post("/add_prof", async(req, res) => {
         try{
-            console.log('hit backend')
+            // console.log('hit backend')
             const {prof_email, f_name, l_name, department} = req.body;
-            console.log(req.body)
+            // console.log(req.body)
             const add_prof = await pool.query(`
             INSERT INTO prof 
             (prof_email, f_name, l_name, department, is_grader, is_admin) 

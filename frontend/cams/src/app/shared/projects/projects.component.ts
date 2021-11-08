@@ -5,7 +5,8 @@ import { AssessmentService } from 'src/app/services/assessment.service';
 import { LoginService } from 'src/app/services/login.service';
 import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 import { AssessmentDisplay } from 'src/app/AssessmentDisplay';
-import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
+
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'app-projects',
@@ -23,8 +24,6 @@ export class ProjectsComponent implements OnInit {
     this.auth.user$.subscribe(res => {
       this.user = res!.email
     })
-
-  }
 
   ngOnInit(): void {
     // console.log('what is this? ', this.user)
