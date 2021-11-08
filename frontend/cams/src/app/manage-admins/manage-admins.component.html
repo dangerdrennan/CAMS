@@ -1,4 +1,411 @@
-<div class="main">
-  <p>manage-admins works!</p>
-  <button class="btn btn-secondary" (click)="goBack()">back</button>
+<div class="main" style="overflow-y: scroll;">
+  <div class="container" style="max-height: fit-content;width: fit-content;">
+
+    <!-- Current term -->
+    <div class="row">
+      <div class="col">
+        <div class="card" style="margin-bottom: 30px;">
+          <div class="card-body">
+            <div class="title" style="font-size: medium;" ><strong>Current Term </strong>
+              <label > {{this.semester}} {{this.year}}</label>
+              <!-- <span *ngFor="let item of this.term;let j = index">
+                <label *ngIf="this.term.at(-1)">{{item }}</label>
+              </span> -->
+
+              <button type="button" class="btn btn-sm btn-primary rounded" style="position: absolute;left: 90%;" data-bs-toggle="modal" data-bs-target="#staticBackdropTerm"><img
+                  src="../../assets/images/edit_white_24dp.svg" style="width: 17px;height: 17px;" alt="edit-icon">
+              </button>
+            </div>
+
+            <div class="modal fade" id="staticBackdropTerm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+              aria-labelledby="staticBackdropLabelTerm" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+
+                    <h5 class="modal-title" id="staticBackdropLabelTerm">Edit Term</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#staticBackdropTerm"
+                      aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form [formGroup]="setTermForm">
+                      <div class="select-container" style="text-align: left;margin: 4px;">
+                        <div class="container" style="display: flex;justify-content: left;margin-left: -8px;">
+                          <div class="dropdown" style="margin-right: 8px;">
+                            <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="semester"
+                              required="required">
+                              <option value="">Select Term</option>
+                              <option value="Fall">Fall</option>
+                              <option value="Spring">Spring</option>
+                            </select>
+                          </div>
+
+                          <div class="dropdown">
+                            <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year"
+                              required="required">
+                              <option value="">Select Year</option>
+                              <option value="2018">2018</option>
+                              <option value="2019">2019</option>
+                              <option value="2020">2020</option>
+                              <option value="2021">2021</option>
+                              <option value="2022">2022</option>
+                              <option value="2023">2023</option>
+                              <option value="2024">2024</option>
+                              <option value="2025">2025</option>
+                              <option value="2026">2026</option>
+                              <option value="2027">2027</option>
+                              <option value="2028">2028</option>
+                              <option value="2029">2029</option>
+                              <option value="2030">2030</option>
+                            </select>
+                          </div>
+
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                      data-bs-target="#staticBackdropTerm">Close</button>
+                    <button type="submit" [disabled]="this.setTermForm.invalid" class="btn btn-success btn-sm"
+                      style="margin-left: 12px;" (click)="this.submitUpdateTerm()" data-bs-dismiss="modal"
+                      data-bs-target="#staticBackdropTerm">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current graders -->
+    <div class="row">
+      <div class="col">
+        <div class="card" id="displayCard">
+          <div class="card-body" id="displayCardBody">
+            <div class="title"><strong>Current Graders</strong></div>
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Email</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Department</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let grader of this.graders; let j = index">
+                  <td scope="row">{{grader.prof_email}}</td>
+                  <td>{{grader.f_name}}</td>
+                  <td>{{grader.l_name}}</td>
+                  <td>{{grader.department}}</td>
+                  <td>
+                    <button type="button" class="btn btn-sm btn-primary rounded" style="margin-right: 4px;" data-bs-toggle="modal"
+                      data-bs-target="#staticBackdropGrader" (click)="this.editGrader=true;this.deleteGrader=false;graderIndex=j"><img
+                        src="../../assets/images/edit_white_24dp.svg" style="width: 17px;height: 17px;" alt="edit-icon"></button>
+                    <button type="button" class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#staticBackdropGrader"
+                      (click)="this.deleteGrader=true;this.editGrader=false;graderIndex=j"><img src="../../assets/images/delete_white_24dp.svg"
+                        style="width: 17px;height: 17px;" alt="delete-icon"></button>
+
+
+                    <!-- Modal to edit or remove grader -->
+                    <div class="modal fade" id="staticBackdropGrader" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                      aria-labelledby="staticBackdropLabelGrader" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content" *ngIf="this.editGrader;else remove">
+                          <div class="modal-header">
+
+                            <h5 class="modal-title" id="staticBackdropLabelGrader">Edit Professor</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <form [formGroup]="editGraderForm">
+                              <div class="row g-3">
+                                <div class="col-auto">
+                                  <label for="fname">First Name</label>
+                                  <input id="fname" type="text" class="form-control" formControlName="f_name" [ngClass]="{ 'is-invalid': getEdit.f_name.errors && submitted }">
+
+                                  <div *ngIf="getEdit.f_name.errors && getEdit.f_name.touched">
+                                    <small class="text-danger" *ngIf="getEdit.f_name.errors.pattern">Invalid first name.</small>
+                                    <small class="text-danger" *ngIf="getEdit.f_name.errors.required">First name is required.</small>
+                                  </div>
+                                </div>
+                                <div class="col-auto">
+                                  <label for="lname">Last Name</label>
+                                  <input id="lname" type="text" class="form-control" formControlName="l_name" [ngClass]="{ 'is-invalid': getEdit.l_name.errors && submitted }">
+
+                                  <div *ngIf="getEdit.l_name.errors && getEdit.l_name.touched">
+                                    <small class="text-danger" *ngIf="getEdit.l_name.errors.pattern">Invalid last name.</small>
+                                    <small class="text-danger" *ngIf="getEdit.l_name.errors.required">Last name is required.</small>
+                                  </div>
+                                </div>
+                                <!-- <div class="col-auto">
+                                  <label for="department">Department</label>
+                                  <input id="department" type="text" class="form-control" formControlName="department">
+
+                                </div> -->
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" (click)="resetEditForms()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" (click)="submitGraderUpdate()" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="this.editGraderForm.pristine">Submit</button>
+                          </div>
+                        </div>
+
+                        <ng-template #remove>
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <h5>Are you sure you want to remove Professor as grader?</h5>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                              <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="submitRemoveGrader(this.graderIndex)">Remove</button>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </div>
+                    </div>
+
+
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+
+            <!-- drop down to add a grader -->
+            <div class="accordion accordion" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    Add Grader
+                  </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                  data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+
+                    <form [formGroup]="addGraderform" (ngSubmit)="submitAddGrader()">
+                      <div class="row">
+
+                        <div class="col-6">
+                          <label for="fname">First Name</label>
+                          <input id="fname" type="text" class="form-control" formControlName="f_name" [ngClass]="{ 'is-invalid': f.f_name.errors && submitted }">
+
+                          <div *ngIf="f.f_name.errors && f.f_name.touched">
+                            <small class="text-danger" *ngIf="f.f_name.errors.pattern">Invalid first name.</small>
+                            <small class="text-danger" *ngIf="f.f_name.errors.required">First name is required.</small>
+                          </div>
+
+                        </div>
+
+                        <div class="col-6">
+                          <label for="lname">Last Name</label>
+                          <input id="lname" type="text" class="form-control" formControlName="l_name" [ngClass]="{ 'is-invalid': f.l_name.errors && submitted }">
+
+                          <div *ngIf="f.l_name.errors && f.l_name.touched">
+                            <small class="text-danger" *ngIf="f.l_name.errors.pattern">Invalid last name.</small>
+                            <small class="text-danger" *ngIf="f.l_name.errors.required">Last name is required.</small>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <label for="email">Email</label>
+                          <input id="email" type="email" class="form-control" formControlName="prof_email" [ngClass]="{ 'is-invalid': f.prof_email.errors && submitted }">
+
+                          <div *ngIf="f.prof_email.errors && f.prof_email.touched" >
+                            <small class="text-danger" *ngIf="f.prof_email.errors.pattern">Invalid email.</small>
+                            <small class="text-danger" *ngIf="f.prof_email.errors.required">Email is required.</small>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <label for="department">Department</label>
+                          <input id="department" type="text" class="form-control" formControlName="department" [ngClass]="{ 'is-invalid': f.department.errors && submitted }">
+
+                          <div *ngIf="f.department.errors && f.department.touched">
+                            <small class="text-danger" *ngIf="f.department.errors.pattern">Invalid department.</small>
+                            <small class="text-danger" *ngIf="f.department.errors.required">Department is required.</small>
+
+                          </div>
+                        </div>
+
+                        <div class="col-auto">
+                          <button type="submit" (click)="submitAddGrader()"
+                            class="btn btn-primary mb-3" style="margin-top: 24px;" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne" [disabled]="this.addGraderform.invalid">Add</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+      <!-- Current Capstone Professor -->
+      <div class="row">
+        <div class="col">
+          <div class="card" id="displayCard"
+            style="position: relative; max-width: 1300px;margin-top: 30px;">
+            <div class="card-body" id="displayCardBody">
+              <div class="title" style="font-size: medium;"><strong>Capstone Professor</strong></div>
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Department</th>
+
+                  </tr>
+                </thead>
+                <tbody *ngFor="let grader of this.graders">
+                  <tr *ngIf="grader.curr_cap_prof==true">
+                    <td scope="row">{{grader.prof_email}}</td>
+                    <td>{{grader.f_name}}</td>
+                    <td>{{grader.l_name}}</td>
+                    <td>{{grader.department}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- add a professor as the current capstone professor -->
+              <div class="accordion accordion" id="accordionFlushExampleCurrProf">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingOneCurrProf">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOneCurrProf" aria-expanded="false" aria-controls="flush-collapseOne">
+                      Update Professor
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOneCurrProf" class="accordion-collapse collapse"
+                    aria-labelledby="flush-headingOneCurrProf" data-bs-parent="#accordionFlushExampleCurrProf">
+                    <div class="accordion-body" >
+                      <ul id="admins" class="list-group" *ngFor="let grader of this.graders;let i = index">
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="!grader.curr_cap_prof">
+                          {{grader.f_name}}  {{grader.l_name}} - {{grader.prof_email}}
+                            <button class="btn btn-sm btn-primary" (click)="submitCapProf(grader)">Select</button>
+
+                        </li>
+
+                      </ul>
+                      <div *ngFor="let grader of this.graders;let i = index">
+                        <span *ngIf="i==0">
+                        <small>*Add a professor to grading list to allow current capstone professor.</small>
+                      </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Current system admins -->
+      <div class="row">
+        <div class="col">
+          <div class="card" id="displayCard"
+            style="position: relative; max-width: 1300px;margin-top: 30px; margin-bottom: 30px;">
+            <div class="card-body" id="displayCardBody">
+              <div class="title" style="font-size: medium;"><strong>System Administrators</strong></div>
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let grader of this.graders;let i=index">
+                  <tr *ngIf="grader.is_admin===true">
+                    <td scope="row">{{grader.prof_email}}</td>
+                    <td>{{grader.f_name}}</td>
+                    <td>{{grader.l_name}}</td>
+                    <td>{{grader.department}}</td>
+                    <td>
+                      <button type="button" class="btn btn-sm btn-danger rounded" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdropSysAdmin" (click)="this.deleteGrader=true;this.editGrader=false;this.graderIndex=i"><img
+                          src="../../assets/images/delete_white_24dp.svg" style="width: 17px;height: 17px;"
+                          alt="delete-icon"></button>
+
+                          <!-- Modal to remove professor from system admin -->
+                        <div class="modal fade" id="staticBackdropSysAdmin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                        aria-labelledby="staticBackdropLabelSysAdmin" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <!-- <h5 class="modal-title" id="staticBackdropLabel"></h5> -->
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <h5>Are you sure you want to revoke system privileges?</h5>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="submitRemoveAdmin(this.graderIndex)">Remove</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+
+              <!-- accordion to select from list of graders to allow system admin privileges -->
+              <div class="accordion accordion" id="accordionFlushExampleCurrAdmin">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingOneCurAdmin">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOneCurrAdmin" aria-expanded="false" aria-controls="flush-collapseOne">
+                      Add Administrator
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOneCurrAdmin" class="accordion-collapse collapse"
+                    aria-labelledby="flush-headingOneCurrAdmin" data-bs-parent="#accordionFlushExampleCurrAdmin">
+                    <div class="accordion-body" >
+                      <ul id="admins" class="list-group" *ngFor="let grader of this.graders;let i = index">
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="!grader.is_admin">
+                          {{grader.f_name}}  {{grader.l_name}} - {{grader.prof_email}}
+                            <button class="btn btn-sm btn-primary" (click)="submitAdmin(grader)">Add</button>
+
+                        </li>
+
+                      </ul>
+                      <div *ngFor="let grader of this.graders;let i = index">
+                        <span *ngIf="i==0">
+                        <small>*Add a professor to grading list to allow system privileges.</small>
+                      </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>

@@ -106,9 +106,9 @@ usersRouter.get('/all_profs', async (req, res) => {
 
     usersRouter.post("/add_prof", async(req, res) => {
         try{
-            console.log('hit backend')
+            // console.log('hit backend')
             const {prof_email, f_name, l_name, department} = req.body;
-            console.log(req.body)
+            // console.log(req.body)
             const add_prof = await pool.query(`
             INSERT INTO prof 
             (prof_email, f_name, l_name, department, is_grader, is_admin) 
