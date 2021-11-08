@@ -19,11 +19,12 @@ export class ProjectsComponent implements OnInit {
   currentAssessments: AssessmentDisplay[] = []
 
 
-  constructor(private router: Router, public profDashService: ProfDashboardService, public assessmentService:AssessmentService, loginService:LoginService , public auth:AuthService) {
+  constructor(private router: Router, public profDashService: ProfDashboardService, public assessmentService:AssessmentService, loginService:LoginService , public auth:AuthService, public projectService: ProjectService) {
     this.user = loginService.email
     this.auth.user$.subscribe(res => {
       this.user = res!.email
     })
+  }
 
   ngOnInit(): void {
     // console.log('what is this? ', this.user)
