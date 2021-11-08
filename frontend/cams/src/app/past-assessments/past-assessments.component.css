@@ -1,0 +1,13 @@
+@media (max-width: 768px) {
+  #displayCard{
+    position: relative;
+    height: 450px !important;
+    max-width: 100% !important;
+  }
+
+  #displayCardBody {
+    overflow-y: scroll ;
+    scroll-behavior: smooth;
+  }
+
+}
