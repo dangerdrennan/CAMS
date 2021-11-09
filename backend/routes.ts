@@ -74,6 +74,18 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+  //test to pass array in req body
+  usersRouter.post('/pass_array_test', async (req, res) => {
+    try{
+        const {cats} = req.body
+        const pass_array_test = await pool.query(`select my_method()`);
+        res.json(pass_array_test.rows);
+    }
+    catch(err ){
+        console.log('error has occurred in backend function "current_proj"')
+    }
+  });
+
   usersRouter.get('/students_by_project/:id', async (req, res) => {
     try{
         const {id} = req.params

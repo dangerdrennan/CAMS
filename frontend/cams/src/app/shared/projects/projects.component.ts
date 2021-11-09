@@ -7,6 +7,7 @@ import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 import { AssessmentDisplay } from 'src/app/AssessmentDisplay';
 
 import { ProjectService } from 'src/app/services/project.service';
+import { ResultsServiceService } from 'src/app/services/results-service.service';
 
 @Component({
   selector: 'app-projects',
@@ -19,11 +20,21 @@ export class ProjectsComponent implements OnInit {
   currentAssessments: AssessmentDisplay[] = []
 
 
-  constructor(private router: Router, public profDashService: ProfDashboardService, public assessmentService:AssessmentService, loginService:LoginService , public auth:AuthService, public projectService: ProjectService) {
+  constructor(private router: Router,
+    public profDashService: ProfDashboardService,
+    public assessmentService:AssessmentService,
+    loginService:LoginService, 
+    public auth:AuthService,
+    public projectService: ProjectService,
+    public rS:ResultsServiceService) 
+    
+    {
     this.user = loginService.email
     this.auth.user$.subscribe(res => {
       this.user = res!.email
     })
+    rS.arrayTest([1,2,3,4,5]).subscribe()
+    
   }
 
   ngOnInit(): void {

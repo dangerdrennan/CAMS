@@ -1,0 +1,1 @@
+select * from assessment where score_1_1 is null;

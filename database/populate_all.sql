@@ -16,4 +16,5 @@
 \i set_grade.sql
 \i get_grade.sql
 \i create_comments.sql
+\i results_service_functions/get_term_id.sql
 SELECT setval('project_proj_id_seq', (SELECT MAX(proj_id) FROM project));

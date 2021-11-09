@@ -252,6 +252,8 @@ export class PastAssessmentsComponent implements OnInit {
     }
   ]
 
+  // get all assessments by term
+
   constructor(private router: Router, private builder: FormBuilder) { }
 
   ngOnInit(): void {
