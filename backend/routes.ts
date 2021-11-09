@@ -344,7 +344,7 @@ usersRouter.get('/all_profs', async (req, res) => {
     usersRouter.delete("/delete_student/:student", async(req, res) => {
         try{
             const {student} = req.params;
-            const delete_student= await pool.query(`DELETE FROM student WHERE student_id = $1`,
+            const delete_student= await pool.query(`select delete_student($1)`,
             [student]);
             res.json(delete_student);
         }

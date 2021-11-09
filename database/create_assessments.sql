@@ -6,7 +6,6 @@
     student_id INT REFERENCES student(student_id) ON DELETE CASCADE,
     term_id INT REFERENCES term(term_id),
     degree TEXT CHECK (degree = 'CS' OR degree = 'CSE'),
-    degree TEXT,
     graded BOOLEAN DEFAULT false
  );
 
