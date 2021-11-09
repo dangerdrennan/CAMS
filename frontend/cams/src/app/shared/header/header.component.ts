@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   constructor(public loginService: LoginService, public profService: ProfDashboardService) { }
 
   ngOnInit() {
-
+    this.profService.setCurrentTerm().pipe(take(1)).subscribe()
   }
 
 

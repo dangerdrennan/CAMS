@@ -32,6 +32,7 @@ export class ProjectsComponent implements OnInit {
       console.log('hit: ', res)
       this.currentAssessments = res
       this.currentAssessments.sort((a, b) => a.assessment_id - b.assessment_id)
+      console.log(res)
     }
     )
     this.getDisplayInfo()

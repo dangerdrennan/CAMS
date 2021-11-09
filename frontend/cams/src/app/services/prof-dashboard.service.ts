@@ -43,5 +43,9 @@ export class ProfDashboardService {
     return this.http.get<Professor>(this.endPoint + '/all_profs')
   }
 
+  setCurrentTerm(){
+    return this.http.get<any>(this.endPoint + '/term_check')
+  }
+
 
 }

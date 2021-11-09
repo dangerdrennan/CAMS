@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ResultsService } from '../services/results.service';
 
 @Component({
   selector: 'app-past-assessments',
@@ -252,7 +253,11 @@ export class PastAssessmentsComponent implements OnInit {
     }
   ]
 
-  constructor(private router: Router, private builder: FormBuilder) { }
+  // get all available terms
+
+  constructor(private router: Router, private builder: FormBuilder) {
+    
+   }
 
   ngOnInit(): void {
 

@@ -16,4 +16,6 @@
 \i set_grade.sql
 \i get_grade.sql
 \i create_comments.sql
+\i set_current_term.sql
+select set_term('Spring', 2021); -- this line is for testing the term-function-update branch. delete for production 'delete_note'
 SELECT setval('project_proj_id_seq', (SELECT MAX(proj_id) FROM project));

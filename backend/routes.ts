@@ -217,12 +217,25 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
+
+    // select * from set_term('Spring',(SELECT date_part('year', now())::INT)) // Par of an alternative query for setting the term
     usersRouter.post("/update_term", async(req, res) => {
         try{
             const {semester, year} = req.body;
             const update_term = await pool.query(`
             SELECT set_term($1,$2)`,
                 [semester, year]);
+            res.json(update_term.rows);
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "update_term"');
+        }
+    });
+
+    usersRouter.get("/term_check", async(req, res) => {
+        try{
+            const update_term = await pool.query(`
+            SELECT set_current_term()`);
             res.json(update_term.rows);
         }
         catch(err ){
