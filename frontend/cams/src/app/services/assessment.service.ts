@@ -42,6 +42,11 @@ export class AssessmentService {
     return this.http.get<any[]>(url)
   }
 
+  getPastAssessmentsbyProf(email:string): any{
+    const url = `${this.endPoint}/past_assessments_by_prof/${email}`
+    return this.http.get<any[]>(url)
+  }
+
   getCurrentSemesterRequirements(): Observable<SemesterReqs>{
     return this.http.get<SemesterReqs>(`${this.endPoint}/current_outcome_reqs`)
   }
