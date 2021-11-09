@@ -21,11 +21,12 @@ export class ProfDashboardService {
 
   endPoint = "http://localhost:4201"
 
-  constructor(public http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   httpHeader = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": "*"
     })
   };
 

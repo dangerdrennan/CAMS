@@ -1,19 +1,24 @@
 import { Router } from "express";
 import { Pool } from "pg";
+var cors = require('cors')
 
 const usersRouter = Router();
 
 const pool = new Pool({
-    user: "cams",
-    password: "pswd",
-    database: "cams",
+    user: "capstone",
+    password: "470capston3",
+    database: "capstone",
     host: "localhost",
     port: 5432
 });
 
-usersRouter.get('/all_profs', async (req, res) => {
+
+usersRouter.get('/all_profs', async (req, res, next) => {
+    console.log(req.body)
+ 
     try{
-        const get_profs = await pool.query('SELECT * FROM prof');
+        const get_profs = await pool.query(`SELECT * FROM prof`);
+     
         res.status(200).json(get_profs.rows);
     }
     catch(err ){
@@ -22,7 +27,7 @@ usersRouter.get('/all_profs', async (req, res) => {
   });
   usersRouter.get('/all_graders', async (req, res) => {
     try{
-        const get_profs = await pool.query('SELECT * FROM prof WHERE is_grader = true');
+        const get_profs = await pool.query(`SELECT * FROM prof WHERE is_grader = true`);
         res.status(200).json(get_profs.rows);
     }
     catch(err ){

@@ -66,12 +66,17 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            
+            
+          },
           "configurations": {
             "production": {
               "browserTarget": "cams:build:production"
             },
             "development": {
               "browserTarget": "cams:build:development"
+              
             }
           },
           "defaultConfiguration": "development"

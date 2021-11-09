@@ -36,8 +36,8 @@ export class ManageAdminsComponent implements OnInit {
     // this.adminService.getCurrentTerm().pipe(first()).subscribe(res=>{
     //   console.log(`${res[0].semester} ${res[0].year}`)
     // })
-    this.populateCurrentSemester()
-    this.setCurrentCapstoneProf(this.accessor)
+    //this.populateCurrentSemester()
+    //this.setCurrentCapstoneProf(this.accessor)
     
   }
 
