@@ -1,4 +1,4 @@
-CREATE FUNCTION get_current_term()
+CREATE OR REPLACE FUNCTION get_current_term()
 RETURNS integer AS $$
 DECLARE current_term integer;
 BEGIN

@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS student;
 CREATE TABLE IF NOT EXISTS student (
     student_id SERIAL PRIMARY KEY,
     degree VARCHAR( 3 ),

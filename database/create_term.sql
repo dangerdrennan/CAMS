@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS assessment;
+DROP TABLE IF EXISTS student;
+DROP TABLE IF EXISTS sem_req;
+DROP TABLE IF EXISTS project;
+
 CREATE TABLE IF NOT EXISTS term (
     term_id SERIAL PRIMARY KEY,
     semester TEXT CHECK (semester = 'Summer' OR semester = 'Spring' OR semester = 'Fall'),

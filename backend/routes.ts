@@ -5,9 +5,9 @@ var cors = require('cors')
 const usersRouter = Router();
 
 const pool = new Pool({
-    user: "capstone",
-    password: "470capston3",
-    database: "capstone",
+    user: "cpstuser",
+    password:"470capston3",
+    database: "cams",
     host: "localhost",
     port: 5432
 });
@@ -22,7 +22,7 @@ usersRouter.get('/all_profs', async (req, res, next) => {
         res.status(200).json(get_profs.rows);
     }
     catch(err ){
-        console.log('error has occurred in backend function "all_profs"')
+        console.log(err, 'error has occurred in backend function "all_profs"')
     }
   });
   usersRouter.get('/all_graders', async (req, res) => {
@@ -31,18 +31,19 @@ usersRouter.get('/all_profs', async (req, res, next) => {
         res.status(200).json(get_profs.rows);
     }
     catch(err ){
-        console.log('error has occurred in backend function "all_graders"')
+        console.log(err, 'error has occurred in backend function "all_graders"')
     }
   });
 
   usersRouter.get('/get_prof/:prof_email', async (req, res) => {
     try{
+        console.log(req.params)
         const prof_email = req.params.prof_email
         const get_prof = await pool.query("SELECT * FROM prof WHERE prof_email = $1", [prof_email]);
         res.json(get_prof.rows);
     }
     catch(err ){
-        console.log('error has occurred in backend function "get_prof"')
+        console.log(err, 'error has occurred in backend function "get_prof"')
     }
     });
 

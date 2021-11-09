@@ -1,4 +1,4 @@
-CREATE FUNCTION find_proj_id(p_name TEXT)
+CREATE OR REPLACE FUNCTION find_proj_id(p_name TEXT)
 RETURNS integer AS $$
 DECLARE id integer;
 BEGIN
