@@ -443,6 +443,21 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+  usersRouter.get('/past_outcome_reqs/:sem/:year', async (req, res) => {
+    try{
+        const {sem, year} = req.params
+        console.log('/past_outcome_reqs/:sem/:year ', sem, year)
+        const past_outcome_reqs = await pool.query(`
+        SELECT outcome_cats_cs, outcome_cats_cse, suboutcomes_cs, suboutcomes_cse FROM sem_req INNER JOIN get_term_id($1,$2) ON sem_req.term_id = get_term_id`,
+        [sem,year]);
+        //SELECT * from sem_req INNER JOIN get_term_id('Fall', 2021) ON sem_req.term_id = get_term_id;
+        res.json(past_outcome_reqs.rows[0]);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "past_outcome_reqs"')
+    }
+  });
+
   usersRouter.get('/get_cs_outcome_desc/:degree/:ids', async (req, res) => {
     try{
         const {degree, ids} = req.params

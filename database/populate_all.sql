@@ -17,4 +17,5 @@
 \i get_grade.sql
 \i create_comments.sql
 \i results_service_functions/get_term_id.sql
+\i results_service_functions/make_dynamic_tbl.sql
 SELECT setval('project_proj_id_seq', (SELECT MAX(proj_id) FROM project));
