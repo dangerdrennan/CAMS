@@ -43,7 +43,7 @@ import { AssessmentCompletedComponent } from './assessment-completed/assessment-
     AppRoutingModule,
     AuthModule.forRoot(
       {
-        ...env.auth
+        ... env.auth
       }
     ),
     CommonModule,

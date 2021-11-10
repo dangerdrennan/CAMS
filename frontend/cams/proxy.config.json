@@ -1,0 +1,8 @@
+{
+    "localhost:4201/*":{
+        "target": "localhost:4201/",
+        "secure":false,
+        "changeOrigin":true,
+        "logLevel":"debug"
+    } 
+}
