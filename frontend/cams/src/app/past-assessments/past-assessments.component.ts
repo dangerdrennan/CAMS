@@ -255,6 +255,15 @@ export class PastAssessmentsComponent implements OnInit {
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder) { }
+  // public displayPast: boolean = false;
+  // public displayOutcome: boolean = false;
+  // public outcomeNum: number = 1;
+  // outcomeIdCS:any = []
+  // outcomeIdCSE:any = []
+  // outcomeTitle:any = []
+  // subTitle: any = []
+  // outcomeForm!: FormGroup;
+  // pastForm!: FormGroup;
 
   ngOnInit(): void {
 
@@ -296,6 +305,7 @@ export class PastAssessmentsComponent implements OnInit {
       term: '',
       year: ''
     })
+    console.log(this.outcomeForm.value)
     this.displayPast = false;
     this.displayOutcome = true;
     this.outcomeTitle = []

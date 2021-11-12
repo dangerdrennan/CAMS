@@ -11,7 +11,8 @@ const httpOptions =
     'Content-Type': 'application/json'
   })
 }
-
+// steps of result service
+// return 
 @Injectable({
   providedIn: 'root'
 })
@@ -33,7 +34,7 @@ export class ResultsService {
     
   }
 
-  getTermId(sem:string, year:number){}
+  getTermId(sem:string, year:number){ }
 
   getPastSemesterRequirements(sem:string,year:number): Observable<SemesterReqs>{
     console.log(' in getPastSemesterRequirements', sem, year)
