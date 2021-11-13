@@ -1,10 +1,10 @@
-create or replace function sub_grades (score_id TEXT, degree TEXT)
+create or replace function outcome_trends (cat_id int)
 RETURNS TABLE(
     total BIGINT,
-    poor_count BIGINT,
-    developing_count BIGINT,
-    satisfactory_count BIGINT,
-    excellent_count BIGINT
+    poor_percentage float,
+    developing_percentage float,
+    satisfactory_percentage float,
+    excellent_percentage float
 ) AS $$
 begin
 RETURN QUERY EXECUTE 'SELECT count(*),

@@ -16,6 +16,11 @@
 \i set_grade.sql
 \i get_grade.sql
 \i create_comments.sql
-\i results_service_functions/get_term_id.sql
-\i results_service_functions/make_dynamic_tbl.sql
+\i results_functions/get_term_id.sql
+\i results_functions/sub_grades.sql
+\i results_functions/sub_results_past.sql
+\i results_functions/get_cs_sub_descriptions.sql
+\i results_functions/get_cse_sub_descriptions.sql
+\i results_functions/get_subs_by_outcome.sql
+\i results_functions/outcome_suboutcome_pairs.sql
 SELECT setval('project_proj_id_seq', (SELECT MAX(proj_id) FROM project));

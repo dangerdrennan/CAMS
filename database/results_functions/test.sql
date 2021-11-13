@@ -1,0 +1,1 @@
+Select outcome_cats_cs, suboutcome_details_cs from sem_req inner join suboutcome_details_cs on suboutcomes_details_cs.outcome_cat_id;

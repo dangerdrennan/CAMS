@@ -1,7 +1,7 @@
 DROP TABLE suboutcome_details_cse;
 
 CREATE TABLE suboutcome_details_cse (
-    cse_suboutcome_name TEXT PRIMARY KEY,
+    suboutcome_name TEXT PRIMARY KEY,
     score_id TEXT,
     outcome_cat_id INT,
     suboutcome_description TEXT,
@@ -11,7 +11,7 @@ CREATE TABLE suboutcome_details_cse (
     excellent_description TEXT
 );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '1.1',
         'score_1_1',
@@ -23,7 +23,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Clearly identifies the challenge and  embedded issues and formulates an appropriate solution'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '1.2',
         'score_1_2',
@@ -35,7 +35,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'In-depth and comprehensive utilization of science, math, and engineering principles in solution'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '2.1',
         'score_2_1',
@@ -47,7 +47,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Creates an exceptional final product which exceeds expectations'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '2.2',
         'score_2_2',
@@ -59,7 +59,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Exceptional and comprehensive consideration of specified factors with strong tie to engineering design'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '3.1',
         'score_3_1',
@@ -71,7 +71,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'All information presented logically'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '3.2',
         'score_3_2',
@@ -83,7 +83,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Full command of subject matter'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '3.3',
         'score_3_3',
@@ -95,7 +95,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Communicates  details exceptionally well'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '3.4',
         'score_3_4',
@@ -107,7 +107,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Text and diagrams strongly reinforce the presentation'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '3.5',
         'score_3_5',
@@ -119,7 +119,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Negligible errors'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '3.6',
         'score_3_6',
@@ -131,7 +131,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Clear voice, steady rate, strong audience contact, enthusiastic, confident; on time'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '5.1',
         'score_5_1',
@@ -143,7 +143,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Exceeds expectations with respect to team role duties'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '5.2',
         'score_5_2',
@@ -155,7 +155,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Is exceptionally adept at addressing other team members'' ideas or concerns'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '5.3',
         'score_5_3',
@@ -167,7 +167,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Works exceptionally well to provide documentation of progress'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '6.1',
         'score_6_1',
@@ -179,7 +179,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Exceeds expectations in developing and conducting experiment'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '6.2',
         'score_6_2',
@@ -191,7 +191,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Exceeds expectations in analysis and interpretation with engineering judgment'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '7.1',
         'score_7_1',
@@ -203,7 +203,7 @@ INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id
         'Demonstrates exceptional knowledge of the technical issues and the latest developments'
     );
 
-INSERT INTO suboutcome_details_cse(cse_suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cse(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
     VALUES (
         '7.2',
         'score_7_2',

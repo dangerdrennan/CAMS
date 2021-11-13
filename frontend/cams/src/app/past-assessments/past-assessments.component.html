@@ -1,4 +1,8 @@
 
+
+<!-- {{this.outcomeIdCS.outcome_cats_cs}} -->
+<app-outcome-trends [outcomeList] = "this.test$" [degree] = "this.degree"></app-outcome-trends>
+
 <div class="main">
   <div class="container" style="max-height: fit-content;width: fit-content">
     <div class="row">
@@ -16,7 +20,7 @@
                       <option value="spring">Spring</option>
                     </select>
                   </div>
-                  <!-- disable until we have the semester -->
+
                   <div class="dropdown">
                     <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
                       <option value="">Select Year</option>
@@ -89,6 +93,7 @@
 
     <!-- table that displays past assessments -->
     <div class="row" *ngIf="displayPast" >
+      
       <div class="col-12" style="align-items: center;">
         <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
           <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">

@@ -110,7 +110,7 @@ export class AssessmentService {
 
   getOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
     console.log('what is this id type? ', typeof(ids), ' what is this')
-    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_cs_outcome_desc/${this.assessment.degree}/${ids}`)
+    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outcome_desc/${this.assessment.degree}/${ids}`)
   }
 
   getSuboutcomes(outcome_name: string): Observable<Suboutcome[]>{

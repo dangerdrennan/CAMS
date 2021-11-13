@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { concat, Observable, Subscription } from 'rxjs';
+import { last, take } from 'rxjs/operators';
+import { SemesterReqs } from '../SemesterReqs';
+import { ResultsService } from '../services/results.service';
 
 @Component({
   selector: 'app-past-assessments',
@@ -11,13 +15,176 @@ export class PastAssessmentsComponent implements OnInit {
   public displayPast: boolean = false;
   public displayOutcome: boolean = false;
   public outcomeNum: number = 1;
-  outcomeIdCS:any = []
-  outcomeIdCSE:any = []
-  outcomeTitle:any = []
-  subTitle: any = []
+  outcomeIdCS:any
+  outcomeIdCSE:any[] = []
+  outcomeTitle:any[] = []
+  subTitle: any[] = []
   outcomeForm!: FormGroup;
   pastForm!: FormGroup;
+  ready = false
+  test$: Observable<SemesterReqs>
+  num1:number
+  num2:number
+  degree = 'CS'
 
+  // get all assessments by term
+
+  constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) { 
+    const someObservable = this.resultsService.getPastSemesterRequirements('Fall', 2021)
+    this.test$ = this.resultsService.getPastSemesterRequirements('Fall', 2021).pipe(last())
+    //const someOtherObservable = this.resultsService.getPastOutcomeDescription('CS', 'Fall', 2021)
+  }
+  setReq(a:any){
+    this.outcomeIdCS = a
+  }
+  ngOnInit(): void {
+    this.displayPast = false;
+    this.displayOutcome = false;
+    this.outcomeForm = this.builder.group({
+      term: ['', Validators.required],
+      year: ['', Validators.required],
+      degree: ['', Validators.required]
+    })
+
+    this.pastForm = this.builder.group({
+      term: ['', Validators.required],
+      year: ['', Validators.required],
+      degree: ['', Validators.required]
+    })
+  }
+
+  // trigger to find past assessment
+  findPast() {
+    this.outcomeForm.reset({
+      term: '',
+      year: ''
+    })
+    const deg = this.pastForm.get('degree')
+    const sem = this.pastForm.get('term')
+    const year = this.pastForm.get('year')
+
+    this.resultsService.getPastSemesterRequirements(sem.value, year.value).subscribe(
+      res => {
+        this.outcomeIdCS = res.outcome_cats_cs
+        this.outcomeIdCSE = res.outcome_cats_cse
+      }
+    )
+
+    //this.test_observable$ = this.resultsService.getPastSemesterRequirements(sem.value, year.value)
+
+    this.displayOutcome = false;
+    this.displayPast = true;
+
+    this.outcomeIdCS = []
+    this.outcomeIdCSE = []
+    this.outcomeNum = 1
+    this.getTitles()
+    this.getOutcomeNum()
+    this.changeOutcomes(this.outcomeNum)
+
+  }
+
+  // trigger to find outcome trends
+  findTrends() {
+    this.pastForm.reset({
+      term: '',
+      year: ''
+    })
+    console.log(this.outcomeForm.value)
+    this.displayPast = false;
+    this.displayOutcome = true;
+    this.outcomeTitle = []
+    this.getTitles()
+
+  }
+
+  // updates the current past assessment outcome being viewed
+  changeOutcomes(id: number) {
+    if(id) {
+      this.outcomeNum = id
+      this.subTitle = []
+      this.getDescription(this.outcomeNum)
+    }
+    return this.outcomeNum
+  }
+
+  // get the evaluation criteria from each past assessment sub outcome
+  getDescription(id: number) {
+    // cs sub outcome descriptions(evaluation criteria)
+    if(this.pastForm.get('degree')?.value === 'CS') {
+      this.subCS.filter((item) => {
+        if(item.outcomeCS_id === id) {
+          this.subTitle.push(item.description)
+        }
+      })
+      return this.subTitle
+    }
+    // cse sub outcome descriptions(evaluation criteria)
+    else if(this.pastForm.get('degree')?.value === 'CSE') {
+      this.subCSE.filter((item) => {
+        if(item.outcomeCSE_id === id) {
+          this.subTitle.push(item.description)
+        }
+      })
+      return this.subTitle
+    }
+    return this.subTitle
+  }
+
+
+  // stores past assessment outcome numbers for easy access
+  getOutcomeNum() {
+    // cs past assessment outcome number
+    if(this.pastForm.get('degree')?.value === 'CS') {
+      this.outcomeCSE.filter((item) => {
+        this.outcomeIdCSE.push(item.id)
+
+      })
+      return this.outcomeIdCSE
+    }
+    // cse past assessment outcome number
+    
+    else if(this.pastForm.get('degree')?.value === 'CSE') {
+      this.outcomeCSE.filter((item) => {
+        this.outcomeIdCSE.push(item.id)
+
+      })
+      return this.outcomeIdCSE
+    }
+    return this.outcomeIdCSE
+  }
+
+  // store the past assessment outcome titles
+  getTitles() {
+    // cs past assessment outcome title
+    if((this.pastForm.get('degree')?.value === 'CS') || (this.outcomeForm.get('degree')?.value === 'CS')) {
+      this.outcomeCS.filter((item) => {
+        this.outcomeTitle.push(item.description)
+      })
+      return this.outcomeTitle
+    }
+    // cse past assessment outcome title
+    else if((this.pastForm.get('degree')?.value === 'CSE') || (this.outcomeForm.get('degree')?.value === 'CSE')) {
+      this.outcomeCSE.filter((item) => {
+        this.outcomeTitle.push(item.description)
+      })
+      return this.outcomeTitle
+    }
+    return this.outcomeTitle
+  }
+
+
+  ngDestroy() {
+    this.outcomeForm.reset({
+      term: '',
+      year: ''
+    })
+
+    this.pastForm.reset({
+      term: '',
+      year: ''
+    })
+  }
   outcomeCS = [
     {
       id: 1,
@@ -251,149 +418,4 @@ export class PastAssessmentsComponent implements OnInit {
       excellent:  'Exceptional and comprehensive consideration of specified factors with strong tie to engineering design'
     }
   ]
-
-  // get all assessments by term
-
-  constructor(private router: Router, private builder: FormBuilder) { }
-  // public displayPast: boolean = false;
-  // public displayOutcome: boolean = false;
-  // public outcomeNum: number = 1;
-  // outcomeIdCS:any = []
-  // outcomeIdCSE:any = []
-  // outcomeTitle:any = []
-  // subTitle: any = []
-  // outcomeForm!: FormGroup;
-  // pastForm!: FormGroup;
-
-  ngOnInit(): void {
-
-    this.displayPast = false;
-    this.displayOutcome = false;
-    this.outcomeForm = this.builder.group({
-      term: ['', Validators.required],
-      year: ['', Validators.required],
-      degree: ['', Validators.required]
-    })
-
-    this.pastForm = this.builder.group({
-      term: ['', Validators.required],
-      year: ['', Validators.required],
-      degree: ['', Validators.required]
-    })
-  }
-
-  // trigger to find past assessment
-  findPast() {
-    this.outcomeForm.reset({
-      term: '',
-      year: ''
-    })
-    this.displayOutcome = false;
-    this.displayPast = true;
-    this.outcomeIdCS = []
-    this.outcomeIdCSE = []
-    this.outcomeNum = 1
-    this.getTitles()
-    this.getOutcomeNum()
-    this.changeOutcomes(this.outcomeNum)
-
-  }
-
-  // trigger to find outcome trends
-  findTrends() {
-    this.pastForm.reset({
-      term: '',
-      year: ''
-    })
-    console.log(this.outcomeForm.value)
-    this.displayPast = false;
-    this.displayOutcome = true;
-    this.outcomeTitle = []
-    this.getTitles()
-
-  }
-
-  // updates the current past assessment outcome being viewed
-  changeOutcomes(id: number) {
-    if(id) {
-      this.outcomeNum = id
-      this.subTitle = []
-      this.getDescription(this.outcomeNum)
-    }
-    return this.outcomeNum
-  }
-
-  // get the evaluation criteria from each past assessment sub outcome
-  getDescription(id: number) {
-    // cs sub outcome descriptions(evaluation criteria)
-    if(this.pastForm.get('degree')?.value === 'CS') {
-      this.subCS.filter((item) => {
-        if(item.outcomeCS_id === id) {
-          this.subTitle.push(item.description)
-        }
-      })
-      return this.subTitle
-    }
-    // cse sub outcome descriptions(evaluation criteria)
-    else if(this.pastForm.get('degree')?.value === 'CSE') {
-      this.subCSE.filter((item) => {
-        if(item.outcomeCSE_id === id) {
-          this.subTitle.push(item.description)
-        }
-      })
-      return this.subTitle
-    }
-  }
-
-
-  // stores past assessment outcome numbers for easy access
-  getOutcomeNum() {
-    // cs past assessment outcome number
-    if(this.pastForm.get('degree')?.value === 'CS') {
-      this.outcomeCS.filter((item) => {
-        this.outcomeIdCS.push(item.id)
-
-      })
-      return this.outcomeIdCS
-    }
-    // cse past assessment outcome number
-    else if(this.pastForm.get('degree')?.value === 'CSE') {
-      this.outcomeCSE.filter((item) => {
-        this.outcomeIdCSE.push(item.id)
-
-      })
-      return this.outcomeIdCSE
-    }
-  }
-
-  // store the past assessment outcome titles
-  getTitles() {
-    // cs past assessment outcome title
-    if((this.pastForm.get('degree')?.value === 'CS') || (this.outcomeForm.get('degree')?.value === 'CS')) {
-      this.outcomeCS.filter((item) => {
-        this.outcomeTitle.push(item.description)
-      })
-      return this.outcomeTitle
-    }
-    // cse past assessment outcome title
-    else if((this.pastForm.get('degree')?.value === 'CSE') || (this.outcomeForm.get('degree')?.value === 'CSE')) {
-      this.outcomeCSE.filter((item) => {
-        this.outcomeTitle.push(item.description)
-      })
-      return this.outcomeTitle
-    }
-  }
-
-
-  ngDestroy() {
-    this.outcomeForm.reset({
-      term: '',
-      year: ''
-    })
-
-    this.pastForm.reset({
-      term: '',
-      year: ''
-    })
-  }
 }

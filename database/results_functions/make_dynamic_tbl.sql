@@ -16,7 +16,6 @@ BEGIN
        RAISE NOTICE 'value of ids : %', f;
        end loop;
        
-
 END;
 $BODY$
 LANGUAGE 'plpgsql' ;

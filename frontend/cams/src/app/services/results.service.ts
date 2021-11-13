@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
 import { Suboutcome } from '../Suboutcome';
+import { SuboutcomeDescription } from '../SuboutcomeDescription';
 
 const httpOptions =
 {
@@ -20,6 +21,7 @@ export class ResultsService {
 
   endPoint = "http://localhost:4201"
   assessment: any // change
+  pastSemReq: any
 
   constructor(private http: HttpClient) { 
 
@@ -27,7 +29,7 @@ export class ResultsService {
     this.getPastSemesterRequirements('Fall',2021).subscribe(
       res=>
       {
-        console.log(res)
+        this.pastSemReq = res
       }
     )
     
@@ -41,17 +43,22 @@ export class ResultsService {
     return this.http.get<SemesterReqs>(`${this.endPoint}/past_outcome_reqs/${sem}/${year}`)
   }
 
-  getPastOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
+  getPastOutcomeDescription(degree:string, ids: number[]): Observable<OutcomeDescriptions[]>{
     console.log('what is this id type? ', typeof(ids), ' what is this')
-    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_past_outcome_desc/${this.assessment.degree}/${ids}`)
+    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outcome_desc/${degree}/${ids}`)
   }
 
   getSuboutcomes(outcome_name: string): Observable<Suboutcome[]>{
     return this.http.get<Suboutcome[]>(`${this.endPoint}/get_past_suboutcomes/${this.assessment.degree}/${outcome_name}`)
   }
 
-  getPastSemesterAssessments(outcome_names:string[]){
-    
+  // getPastSemesterAssessments(outcome_names:string[],degree:string): Observable<SuboutcomeDescription[]>{
+
+  //   return this.http.get<SuboutcomeDescription[]>(`${this.endPoint}/get_past_suboutcomes/${degree}/${outcome_names}`)
+  // }
+
+  getSuboutcomesByCategory(cat_id: number, degree:string): Observable<SuboutcomeDescription>{
+    return this.http.get<SuboutcomeDescription>(`${this.endPoint}/sub_descriptions/${degree}/${cat_id}`)
   }
 
   outcomeCatsTest(arr: any[]) {
