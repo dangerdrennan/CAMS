@@ -458,6 +458,22 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+  usersRouter.get('/all_past_info/:sem/:year/:degree', async (req, res) => {
+    try{
+        const {sem, year,degree} = req.params
+        console.log('sem at ', sem, ' year at ', year, ' degree at ', degree)
+        const all_past_info = await pool.query(`
+        SELECT * from super_cs_grader($1, $2, $3)`, [sem, year, degree]);
+        //SELECT * from sem_req INNER JOIN get_term_id('Fall', 2021) ON sem_req.term_id = get_term_id;
+        res.json(all_past_info.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "all_past_info"')
+    }
+  });
+
+  
+
   usersRouter.get('/sub_descriptions/:degree/:id', async (req, res) => {
     try{
         const {degree, id} = req.params

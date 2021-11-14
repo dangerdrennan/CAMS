@@ -1,4 +1,4 @@
-create or replace function super_cs_grader(term int) returns table(
+create or replace function super_cs_grader(sem text, ye int, degree text) returns table(
     cat_id text,
     s_id text,
     s_description text,
@@ -15,8 +15,10 @@ create or replace function super_cs_grader(term int) returns table(
 AS $$
 #variable_conflict use_column
 declare
-f text[]:= (select suboutcomes_cs from sem_req where term_id = term );
+f text[]; -- (select suboutcomes_cs from sem_req where term_id = term );
 v text;
+-- degree text:= (SELECT lower('CS'));
+term int; -- (SELECT get_term_id(sem, ye));
 score text;
 t bigint;
 p bigint;
@@ -28,8 +30,13 @@ dp float;
 sp float;
 ep float;
 begin
-drop table curr;
-create temporary table curr(
+
+select get_term_id from get_term_id(sem, ye) into term;
+execute 'select suboutcomes_'|| (SELECT lower(degree)) ||' from sem_req where term_id = '|| term ||';' into f;
+
+drop table if exists curr;
+raise notice '%', term;
+create temporary table if not exists curr(
     cat_id text,
     s_id text,
     s_description text,
@@ -48,18 +55,18 @@ BEGIN
    FOREACH v IN array f
   Loop
   execute 'insert into curr(s_id) values (''' || v || ''');
-        update curr set cat_id = (SELECT outcome_cat_id from suboutcome_details_cs where score_id = ''' || v || ''') where s_id = ''' || v || ''';
-        update curr set s_description = (SELECT suboutcome_description from suboutcome_details_cs where score_id = ''' || v || ''') where s_id = ''' || v || ''';';
+        update curr set cat_id = (SELECT outcome_cat_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where score_id = ''' || v || ''') where s_id = ''' || v || ''';
+        update curr set s_description = (SELECT suboutcome_description from suboutcome_details_'|| (SELECT lower(degree)) ||' where score_id = ''' || v || ''') where s_id = ''' || v || ''';';
     END LOOP;
 END;
 
 for score in select s_id from curr
 loop
-select (select total from sub_grades(score, 'CS', term)) into t;
-select (select poor_count from sub_grades(score, 'CS', term)) into p;
-select (select developing_count from sub_grades(score, 'CS', term)) into d;
-select (select satisfactory_count from sub_grades(score, 'CS', term)) into s;
-select (select excellent_count from sub_grades(score, 'CS', term)) into e;
+execute 'select (select total from sub_grades('''|| score ||''', '''|| degree ||''', '|| term ||'))' into t;
+execute 'select (select poor_count from sub_grades('''|| score ||''', '''|| degree ||''', '|| term ||'))' into p;
+execute 'select (select developing_count from sub_grades('''|| score ||''', '''|| degree ||''', '|| term ||'))' into d;
+execute 'select (select satisfactory_count from sub_grades('''|| score ||''', '''|| degree ||''', '|| term ||'))' into s;
+execute 'select (select excellent_count from sub_grades('''|| score ||''', '''|| degree ||''', '|| term ||'))' into e;
 update curr set total = t where s_id = score;
 update curr set poor_count = p where s_id = score;
 update curr set developing_count = d where s_id = score;

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { concat, Observable, Subscription } from 'rxjs';
 import { last, take } from 'rxjs/operators';
+import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { SemesterReqs } from '../SemesterReqs';
 import { ResultsService } from '../services/results.service';
 
@@ -25,14 +26,22 @@ export class PastAssessmentsComponent implements OnInit {
   test$: Observable<SemesterReqs>
   num1:number
   num2:number
+  test: PastAssessmentDisplay[] = []
   degree = 'CS'
+  cs_subs = []
 
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) { 
-    const someObservable = this.resultsService.getPastSemesterRequirements('Fall', 2021)
-    this.test$ = this.resultsService.getPastSemesterRequirements('Fall', 2021).pipe(last())
+    //const someObservable = this.resultsService.getPastSemesterRequirements('Fall', 2021)
+    //this.test$ = this.resultsService.getPastSemesterRequirements('Fall', 2021).pipe(last())
     //const someOtherObservable = this.resultsService.getPastOutcomeDescription('CS', 'Fall', 2021)
+
+    this.resultsService.getAllPast('Fall', 2021, 'CS').subscribe( res=> {
+      this.test = res
+      
+    })
+    
   }
   setReq(a:any){
     this.outcomeIdCS = a
@@ -59,16 +68,20 @@ export class PastAssessmentsComponent implements OnInit {
       term: '',
       year: ''
     })
-    const deg = this.pastForm.get('degree')
-    const sem = this.pastForm.get('term')
-    const year = this.pastForm.get('year')
+    const deg = this.pastForm.get('degree').value
+    const sem = this.pastForm.get('term').value
+    const year = this.pastForm.get('year').value
 
-    this.resultsService.getPastSemesterRequirements(sem.value, year.value).subscribe(
-      res => {
-        this.outcomeIdCS = res.outcome_cats_cs
-        this.outcomeIdCSE = res.outcome_cats_cse
-      }
-    )
+    // this.resultsService.getPastSemesterRequirements(sem.value, year.value).subscribe(
+    //   res => {
+    //     this.outcomeIdCS = res.outcome_cats_cs
+    //     this.outcomeIdCSE = res.outcome_cats_cse
+    //   }
+    // )
+    this.resultsService.getAllPast(sem, year, deg).subscribe( res=> {
+      this.test = res
+      console.log(res)
+    })
 
     //this.test_observable$ = this.resultsService.getPastSemesterRequirements(sem.value, year.value)
 

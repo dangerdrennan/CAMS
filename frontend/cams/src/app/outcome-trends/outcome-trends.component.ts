@@ -14,14 +14,10 @@ export class OutcomeTrendsComponent implements OnInit {
   outcomeList: Observable<SemesterReqs>
   @Input()
   degree:string
-  scores: {
-    score_description: string,
-    total: number
-    poor: number,
-    developing: number,
-    satisfactory: number,
-    excellent: number,
-  }
+  @Input()
+  semester:string
+  @Input()
+  year:number
   runninTotal: number
   result: any
   suboutcomeDescriptions: SuboutcomeDescription

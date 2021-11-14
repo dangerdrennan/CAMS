@@ -16,8 +16,8 @@
                   <div class="dropdown" style="margin-right: 8px;">
                     <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
                       <option value="">Select Term</option>
-                      <option value="fall">Fall</option>
-                      <option value="spring">Spring</option>
+                      <option value="Fall">Fall</option>
+                      <option value="Spring">Spring</option>
                     </select>
                   </div>
 
@@ -27,6 +27,7 @@
                       <option value="2018">2018</option>
                       <option value="2019">2019</option>
                       <option value="2020">2020</option>
+                      <option value="2021">2021</option>
                     </select>
                   </div>
                 </div>
@@ -58,8 +59,8 @@
                   <div class="dropdown" style="margin-right: 8px;">
                     <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
                       <option value="">Select Term</option>
-                      <option value="fall">Fall</option>
-                      <option value="spring">Spring</option>
+                      <option value="Fall">Fall</option>
+                      <option value="Spring">Spring</option>
                     </select>
                   </div>
 
@@ -69,6 +70,7 @@
                       <option value="2018">2018</option>
                       <option value="2019">2019</option>
                       <option value="2020">2020</option>
+                      <option value="2021">2021</option>
                     </select>
                   </div>
                 </div>
@@ -100,9 +102,9 @@
               <div *ngIf="this.pastForm.get('degree')?.value ==='CS';else cse">
                 <div class="d-flex justify-content-start">
                   <div id="title">
-                    <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
+                    <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}} display uses this.outcomeTitle[this.outcomeNum - 2</strong>
                     <ng-template #normal>
-                      <strong>{{this.outcomeTitle[this.outcomeNum - 1]}}</strong>
+                      <strong>{{this.outcomeTitle[this.outcomeNum - 1]}} display uses outcomeTitle[outcomeNum -1]</strong>
                     </ng-template>
                   </div>
                 </div>

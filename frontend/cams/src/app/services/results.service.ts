@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
+import { PastAssessmentsComponent } from '../past-assessments/past-assessments.component';
+import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { SemesterReqs } from '../SemesterReqs';
 import { Suboutcome } from '../Suboutcome';
 import { SuboutcomeDescription } from '../SuboutcomeDescription';
@@ -50,6 +52,10 @@ export class ResultsService {
 
   getSuboutcomes(outcome_name: string): Observable<Suboutcome[]>{
     return this.http.get<Suboutcome[]>(`${this.endPoint}/get_past_suboutcomes/${this.assessment.degree}/${outcome_name}`)
+  }
+//all_past_info/:sem/:year/:degree
+  getAllPast(sem:string,year:number,degree:string): Observable<PastAssessmentDisplay[]>{
+    return this.http.get<PastAssessmentDisplay[]>(`${this.endPoint}/all_past_info/${sem}/${year}/${degree}`)
   }
 
   // getPastSemesterAssessments(outcome_names:string[],degree:string): Observable<SuboutcomeDescription[]>{
