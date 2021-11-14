@@ -30,21 +30,23 @@ BEGIN
     END LOOP;
 END; $$;
 
-ALTER TABLE assessment ADD COLUMN score_1_1 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_1_2 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_2_1 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_2_2 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_2_3 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_3_1 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_3_2 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_3_3 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_3_4 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_3_5 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_3_6 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_5_1 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_5_2 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_5_3 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_6_1 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_6_2 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_7_1 INTEGER;
-ALTER TABLE assessment ADD COLUMN score_7_2 INTEGER;
+
+-- NOTE- have not run npm build yet, so the default to 0 might be wonky
+ALTER TABLE assessment ADD COLUMN score_1_1 default 0;
+ALTER TABLE assessment ADD COLUMN score_1_2 default 0;
+ALTER TABLE assessment ADD COLUMN score_2_1 default 0;
+ALTER TABLE assessment ADD COLUMN score_2_2 default 0;
+ALTER TABLE assessment ADD COLUMN score_2_3 default 0;
+ALTER TABLE assessment ADD COLUMN score_3_1 default 0;
+ALTER TABLE assessment ADD COLUMN score_3_2 default 0;
+ALTER TABLE assessment ADD COLUMN score_3_3 default 0;
+ALTER TABLE assessment ADD COLUMN score_3_4 default 0;
+ALTER TABLE assessment ADD COLUMN score_3_5 default 0;
+ALTER TABLE assessment ADD COLUMN score_3_6 default 0;
+ALTER TABLE assessment ADD COLUMN score_5_1 default 0;
+ALTER TABLE assessment ADD COLUMN score_5_2 default 0;
+ALTER TABLE assessment ADD COLUMN score_5_3 default 0;
+ALTER TABLE assessment ADD COLUMN score_6_1 default 0;
+ALTER TABLE assessment ADD COLUMN score_6_2 default 0;
+ALTER TABLE assessment ADD COLUMN score_7_1 default 0;
+ALTER TABLE assessment ADD COLUMN score_7_2 default 0;
