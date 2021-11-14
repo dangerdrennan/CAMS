@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { concat, Observable, Subscription } from 'rxjs';
-import { last, take } from 'rxjs/operators';
+import { last, take, takeLast } from 'rxjs/operators';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { SemesterReqs } from '../SemesterReqs';
 import { ResultsService } from '../services/results.service';
+import { OutcomeDescriptions } from '../OutcomeDescriptions';
 
 @Component({
   selector: 'app-past-assessments',
@@ -29,12 +30,31 @@ export class PastAssessmentsComponent implements OnInit {
   test: PastAssessmentDisplay[] = []
   degree = 'CS'
   cs_subs = []
+  outDescriptions: Observable<OutcomeDescriptions>
+  outcome_cats_cs: string[] | number[]
+  outcome_cats_cse: string[] | number[]
+  suboutcomes_cs: string[]
+  suboutcomes_cse:string[]
+  allInfo: PastAssessmentDisplay[]
+  percentsArray: {poor: number, developing: number, satisfactory: number, excellent: number}[] = []
 
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) { 
-    //const someObservable = this.resultsService.getPastSemesterRequirements('Fall', 2021)
-    //this.test$ = this.resultsService.getPastSemesterRequirements('Fall', 2021).pipe(last())
+    const someObservable = this.resultsService.getPastSemesterRequirements('Fall', 2021)
+    this.test$ = this.resultsService.getPastSemesterRequirements('Fall', 2021)
+    this.resultsService.getPastSemesterRequirements('Fall', 2021).pipe(last()).subscribe(
+      res => {
+        this.outcome_cats_cs = res.outcome_cats_cs
+        this.outcome_cats_cse = res.outcome_cats_cse
+        this.suboutcomes_cs = res.suboutcomes_cs
+        this.suboutcomes_cse = res.suboutcomes_cse
+      }
+    )
+    this.resultsService.getAllPast('Fall', 2021, 'CS').subscribe( res=> {
+      console.log(res)
+      
+    })
     //const someOtherObservable = this.resultsService.getPastOutcomeDescription('CS', 'Fall', 2021)
 
     this.resultsService.getAllPast('Fall', 2021, 'CS').subscribe( res=> {
@@ -106,6 +126,11 @@ export class PastAssessmentsComponent implements OnInit {
     console.log(this.outcomeForm.value)
     this.displayPast = false;
     this.displayOutcome = true;
+    this.resultsService.getAllPast('Fall', 2021, 'CS').subscribe( res=> {
+      this.allInfo = res
+      this.getOutcomePercents()
+      
+    })
     this.outcomeTitle = []
     this.getTitles()
 
@@ -124,6 +149,20 @@ export class PastAssessmentsComponent implements OnInit {
   // get the evaluation criteria from each past assessment sub outcome
   getDescription(id: number) {
     // cs sub outcome descriptions(evaluation criteria)
+    console.log('in getDescription ')
+    this.resultsService.getPastSemesterRequirements('Fall', 2021).pipe(last()).subscribe(
+      res => {
+        this.outcome_cats_cs = res.outcome_cats_cs
+        this.resultsService.getPastOutcomeDescription('CS', res.outcome_cats_cs).pipe(last()).subscribe(x=>
+          {
+            console.log('in getDescription ', x )
+            
+          })
+      }
+    )
+
+    
+      
     if(this.pastForm.get('degree')?.value === 'CS') {
       this.subCS.filter((item) => {
         if(item.outcomeCS_id === id) {
@@ -170,6 +209,15 @@ export class PastAssessmentsComponent implements OnInit {
   // store the past assessment outcome titles
   getTitles() {
     // cs past assessment outcome title
+    console.log('hit in get Titles')
+    const degree = this.pastForm.get('degree').value
+    this.resultsService.getPastSemesterRequirements('Fall', 2021).subscribe( res =>
+      {
+      this.resultsService.getPastOutcomeDescription(degree, [])
+      }
+      )
+    
+
     if((this.pastForm.get('degree')?.value === 'CS') || (this.outcomeForm.get('degree')?.value === 'CS')) {
       this.outcomeCS.filter((item) => {
         this.outcomeTitle.push(item.description)
@@ -185,7 +233,37 @@ export class PastAssessmentsComponent implements OnInit {
     }
     return this.outcomeTitle
   }
-
+  getOutcomePercents(){
+    console.log('get outcome percents')
+    const cats = this.outcome_cats_cs
+    console.log(this.allInfo)
+    for (let i = 0; i < cats.length; i++){
+      const checkStr = cats[i].toString()
+      let categoryAvg = this.allInfo.filter( el =>
+        el.cat_id == checkStr)
+      let p = 0
+      let d = 0
+      let s = 0
+      let e = 0
+      let t = 0
+      categoryAvg.forEach(element => {
+        p = element.poor_count
+        d += element.developing_count
+        s += element.satisfactory_count
+        e += element.excellent_count
+        t += element.total
+      });
+      this.percentsArray.push(
+        {
+          poor: p/t,
+          developing: d/t,
+          satisfactory: s/t,
+          excellent: s/t,
+        }
+      )
+    }
+    console.log(this.percentsArray)
+  }
 
   ngDestroy() {
     this.outcomeForm.reset({

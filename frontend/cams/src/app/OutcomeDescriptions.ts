@@ -1,4 +1,4 @@
 export interface OutcomeDescriptions {
-    cat_id: string,
+    cat_id: number,
     outcome_description: string
 }

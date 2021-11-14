@@ -4,6 +4,7 @@ export interface PastAssessmentDisplay {
     s_description: string,
     poor_count: number,
     developing_count: number,
+    satisfactory_count: number,
     excellent_count: number,
     poor_percent: number,
     developing_percent: number,
