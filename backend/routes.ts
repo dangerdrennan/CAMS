@@ -121,6 +121,19 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(err, 'error has occurred in backend function "get_current_term"')
     }
   });
+
+  usersRouter.get('/outcome_trends/:sem/:year/:degree', async (req, res) => {
+    try{
+        const {sem, year, degree} = req.params
+        const outcome_trends = await pool.query(`
+        SELECT * from get_outcome_percents($1,$2,$3)`, [sem,year,degree]);
+        console.log(outcome_trends.rows);
+        res.json(outcome_trends.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "outcome_trends"')
+    }
+  });
   
     usersRouter.post("/add_project/:project", async(req, res) => {
         try{

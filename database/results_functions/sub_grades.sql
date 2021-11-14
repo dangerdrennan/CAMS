@@ -19,5 +19,5 @@ RETURN QUERY EXECUTE '(SELECT '''||score_id||''',
             from assessment, term where 
             assessment.'|| score_id || ' is not null and 
             assessment.degree = '''|| degree ||'''  
-            and term.term_id = '|| past_term ||');';
+            and term.term_id = '|| past_term ||' and assessment.graded = true);';
 end; $$ language plpgsql;

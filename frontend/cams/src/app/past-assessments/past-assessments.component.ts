@@ -7,7 +7,7 @@ import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { SemesterReqs } from '../SemesterReqs';
 import { ResultsService } from '../services/results.service';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
-
+import { OutcomeTrends } from '../OutcomeTrends';
 @Component({
   selector: 'app-past-assessments',
   templateUrl: './past-assessments.component.html',
@@ -29,14 +29,16 @@ export class PastAssessmentsComponent implements OnInit {
   num2:number
   test: PastAssessmentDisplay[] = []
   degree = 'CS'
+  outcomeTrends: OutcomeTrends[] = []
+  outcomeTrends$: Observable<OutcomeTrends[]>
   cs_subs = []
   outDescriptions: Observable<OutcomeDescriptions>
-  outcome_cats_cs: string[] | number[]
-  outcome_cats_cse: string[] | number[]
+  outcome_cats_cs: number[]
+  outcome_cats_cse: number[]
   suboutcomes_cs: string[]
   suboutcomes_cse:string[]
   allInfo: PastAssessmentDisplay[]
-  percentsArray: {poor: number, developing: number, satisfactory: number, excellent: number}[] = []
+  
 
   // get all assessments by term
 
@@ -58,7 +60,7 @@ export class PastAssessmentsComponent implements OnInit {
     //const someOtherObservable = this.resultsService.getPastOutcomeDescription('CS', 'Fall', 2021)
 
     this.resultsService.getAllPast('Fall', 2021, 'CS').subscribe( res=> {
-      this.test = res
+      // this.test = res
       
     })
     
@@ -99,7 +101,7 @@ export class PastAssessmentsComponent implements OnInit {
     //   }
     // )
     this.resultsService.getAllPast(sem, year, deg).subscribe( res=> {
-      this.test = res
+      // this.test = res
       console.log(res)
     })
 
@@ -125,11 +127,10 @@ export class PastAssessmentsComponent implements OnInit {
     })
     console.log(this.outcomeForm.value)
     this.displayPast = false;
-    this.displayOutcome = true;
+    //this.displayOutcome = true;
+    this.getOutcomePercents()
     this.resultsService.getAllPast('Fall', 2021, 'CS').subscribe( res=> {
       this.allInfo = res
-      this.getOutcomePercents()
-      
     })
     this.outcomeTitle = []
     this.getTitles()
@@ -149,17 +150,17 @@ export class PastAssessmentsComponent implements OnInit {
   // get the evaluation criteria from each past assessment sub outcome
   getDescription(id: number) {
     // cs sub outcome descriptions(evaluation criteria)
-    console.log('in getDescription ')
-    this.resultsService.getPastSemesterRequirements('Fall', 2021).pipe(last()).subscribe(
-      res => {
-        this.outcome_cats_cs = res.outcome_cats_cs
-        this.resultsService.getPastOutcomeDescription('CS', res.outcome_cats_cs).pipe(last()).subscribe(x=>
-          {
-            console.log('in getDescription ', x )
+    // console.log('in getDescription ')
+    // this.resultsService.getPastSemesterRequirements('Fall', 2021).pipe(last()).subscribe(
+    //   res => {
+    //     this.outcome_cats_cs = res.outcome_cats_cs
+    //     this.resultsService.getPastOutcomeDescription('CS', res.outcome_cats_cs).pipe(last()).subscribe(x=>
+    //       {
+    //         console.log('in nested subscribe of getDescription ', x )
             
-          })
-      }
-    )
+    //       })
+    //   }
+    // )
 
     
       
@@ -233,36 +234,18 @@ export class PastAssessmentsComponent implements OnInit {
     }
     return this.outcomeTitle
   }
-  getOutcomePercents(){
+  getOutcomePercents(): any{
     console.log('get outcome percents')
-    const cats = this.outcome_cats_cs
-    console.log(this.allInfo)
-    for (let i = 0; i < cats.length; i++){
-      const checkStr = cats[i].toString()
-      let categoryAvg = this.allInfo.filter( el =>
-        el.cat_id == checkStr)
-      let p = 0
-      let d = 0
-      let s = 0
-      let e = 0
-      let t = 0
-      categoryAvg.forEach(element => {
-        p = element.poor_count
-        d += element.developing_count
-        s += element.satisfactory_count
-        e += element.excellent_count
-        t += element.total
-      });
-      this.percentsArray.push(
-        {
-          poor: p/t,
-          developing: d/t,
-          satisfactory: s/t,
-          excellent: s/t,
-        }
-      )
-    }
-    console.log(this.percentsArray)
+    const degree = this.outcomeForm.get('degree').value
+    const sem = this.outcomeForm.get('term').value
+    const year = this.outcomeForm.get('year').value
+    this.outcomeTrends$ = this.resultsService.getOutcomeTrends(sem,year,degree)
+    this.resultsService.getOutcomeTrends(sem,year,degree).pipe(last()).subscribe(res =>{
+      console.log('in sub', res)
+      this.outcomeTrends = res
+      
+    })
+    this.displayOutcome = true
   }
 
   ngDestroy() {

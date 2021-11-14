@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
+import { OutcomeTrends } from '../OutcomeTrends';
 import { PastAssessmentsComponent } from '../past-assessments/past-assessments.component';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { SemesterReqs } from '../SemesterReqs';
@@ -45,7 +46,7 @@ export class ResultsService {
     return this.http.get<SemesterReqs>(`${this.endPoint}/past_outcome_reqs/${sem}/${year}`)
   }
 
-  getPastOutcomeDescription(degree:string, ids: string[]): Observable<OutcomeDescriptions[]>{
+  getPastOutcomeDescription(degree:string, ids: number[]): Observable<OutcomeDescriptions[]>{
     console.log('what is this id type? ', typeof(ids), ' what is this')
     return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outcome_desc/${degree}/${ids}`)
   }
@@ -65,6 +66,10 @@ export class ResultsService {
 
   getSuboutcomesByCategory(cat_id: number, degree:string): Observable<SuboutcomeDescription>{
     return this.http.get<SuboutcomeDescription>(`${this.endPoint}/sub_descriptions/${degree}/${cat_id}`)
+  }
+
+  getOutcomeTrends(sem:string, year:number, degree:string): Observable<OutcomeTrends[]>{
+    return this.http.get<OutcomeTrends[]>(`${this.endPoint}/outcome_trends/${sem}/${year}/${degree}`)
   }
 
   outcomeCatsTest(arr: any[]) {

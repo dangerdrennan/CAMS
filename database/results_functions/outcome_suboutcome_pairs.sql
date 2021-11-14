@@ -40,10 +40,10 @@ create temporary table if not exists curr(
     cat_id text,
     s_id text,
     s_description text,
-    poor_count bigint,
-    satisfactory_count bigint,
-    developing_count bigint,
-    excellent_count bigint,
+    poor_count bigint default 0,
+    satisfactory_count bigint default 0,
+    developing_count bigint default 0,
+    excellent_count bigint default 0,
     poor_percent FLOAT,
     developing_percent FLOAT,
     satisfactory_percent FLOAT,
@@ -74,7 +74,11 @@ update curr set satisfactory_count = s where s_id = score;
 update curr set excellent_count = e where s_id = score;
 
 end loop;
-
+update curr set total = 1 where total = 0;
+update curr set poor_count = 0 where poor_count is null;
+update curr set developing_count = 0 where developing_count is null;
+update curr set satisfactory_count = 0 where satisfactory_count is null;
+update curr set excellent_count = 0 where excellent_count is null;
 for score in select s_id from curr
 loop
 select (poor_count/total::float) from curr where s_id = score into pp;
@@ -90,6 +94,7 @@ update curr set poor_percent = ROUND(pp::numeric * 100,2) where s_id = score;
 update curr set developing_percent =  ROUND(dp::numeric * 100, 2) where s_id = score;
 update curr set satisfactory_percent =  ROUND(sp::numeric * 100, 2) where s_id = score;
 update curr set excellent_percent =  ROUND (ep::numeric * 100, 2) where s_id = score;
+
 
 end loop;
 return QUERY select * from curr;

@@ -181,15 +181,44 @@
     </div>
 
     <!-- display outcomes table -->
-    <div class="row" *ngIf="displayOutcome">
-      <div *ngIf="displayOutcome">
-        <div *ngIf="percentsArray">
-          <app-outcome-trends [year] = "this.outcomeForm.get('degree').value"
-          [degree] = "this.outcomeForm.get('year').value"
-          [allPastInfo] = "this.allInfo"
-          [cats] = "this.outcome_cats_cs"></app-outcome-trends>
-        </div>
+    <!-- <ng-container *ngIf="(this.outcomeTrends$ | async) as result">
+      <div *ngFor="let o of result; index as i">
+        {{result[i].cat_description}}
       </div>
-    </div>
-  </div>
-</div>
+    </ng-container> -->
+    <ng-container *ngIf="(this.outcomeTrends$ | async) as result">
+      
+        <div class="col-12" style="align-items: center;">
+          <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
+            <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
+    
+              <div id="title" style="text-align: center;">
+                <strong>{{degree}} Outcome Trend</strong>
+              </div>
+              <ng-container *ngIf="(this.outcomeTrends$ | async) as result">
+                <div *ngFor="let o of result; index as i">  
+              <table class="table" >
+                <thead >
+                  <tr>
+                    <th scope="col">Outcome</th>
+                    <th scope="col">Poor</th>
+                    <th scope="col">Developing</th>
+                    <th scope="col">Satisfactory</th>
+                    <th scope="col">Excellent</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    <tr >
+                        <td scope="row" style="max-width: 140px;">{{this.result[i].cat_description}}</td>
+                        <td scope="row">{{this.result[i].poor_percent}}%</td>
+                        <td scope="row">{{this.result[i].developing_percent}}%</td>
+                        <td scope="row">{{this.result[i].satisfactory_percent}}%</td>
+                        <td scop="row">{{this.result[i].excellent_percent}}%</td>
+                    </tr>
+                    </tbody>
+              </table>
+            </div>
+          </ng-container>
+            </div>
+          </div>
+        </div>

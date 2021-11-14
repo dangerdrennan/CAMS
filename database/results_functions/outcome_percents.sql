@@ -35,10 +35,10 @@ create temporary table if not exists curr(
     cat_id text,
     s_id text,
     s_description text,
-    poor_count bigint,
-    satisfactory_count bigint,
-    developing_count bigint,
-    excellent_count bigint,
+    poor_count bigint default 0,
+    satisfactory_count bigint default 0,
+    developing_count bigint default 0,
+    excellent_count bigint default 0,
     poor_percent FLOAT,
     developing_percent FLOAT,
     satisfactory_percent FLOAT,
@@ -85,13 +85,17 @@ create temporary table if not exists percents(
     satisfactory_percent FLOAT,
     excellent_percent FLOAT
 );
-
+update curr set total = 1 where total = 0;
+update curr set poor_count = 0 where poor_count is null;
+update curr set developing_count = 0 where developing_count is null;
+update curr set satisfactory_count = 0 where satisfactory_count is null;
+update curr set excellent_count = 0 where excellent_count is null;
 BEGIN
    FOREACH v IN array g
   Loop
   execute 'insert into percents(cat_id, poor_percent, developing_percent, satisfactory_percent, excellent_percent)
             values (' || v || ',
-            (select ROUND(sum(poor_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| v ||'),
+            (select  ROUND(sum(poor_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| v ||'),
             (select ROUND(sum(developing_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| v ||'),
             (select ROUND(sum(satisfactory_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| v ||'),
             (select ROUND(sum(excellent_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| v ||'));';
