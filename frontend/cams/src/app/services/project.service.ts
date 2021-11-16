@@ -65,6 +65,7 @@ export class ProjectService {
   }
 
   addAssessment(student: Student): Observable<any>{
+    console.log('in a add assessment the student is at', student)
     const url = `${this.endPoint}/add_assessments/${student.student_id}`
     return this.http.post<any[]>(url, student, httpOptions);
   }

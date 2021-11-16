@@ -61,7 +61,6 @@ export class ManageAdminsComponent implements OnInit {
 
     this.submitted = false
     this.getCurrentAssessors()
-    this.submitUpdateTerm()
     this.getCurrentTerm()
   }
 

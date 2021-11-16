@@ -251,8 +251,9 @@ usersRouter.get('/all_profs', async (req, res) => {
             INSERT INTO student (degree,
                 f_name,
                 l_name,
-                proj_id)
-                VALUES ($1, $2, $3, $4) RETURNING *;`,
+                proj_id,
+                term_id)
+                VALUES ($1, $2, $3, $4, get_current_term()) RETURNING *;`,
                 [degree, f_name, l_name, proj_id]);
             res.json(new_project.rows);
         }
