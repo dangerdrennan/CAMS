@@ -7,4 +7,3 @@ SELECT term_id into id from term where semester = sem and year = ye;
 return id;
 END; $$  LANGUAGE 'plpgsql';
 
-SELECT get_term_id('Fall', 2021);

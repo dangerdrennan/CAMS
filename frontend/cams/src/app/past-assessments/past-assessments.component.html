@@ -97,17 +97,24 @@
               <div *ngIf="this.pastForm.get('degree')?.value ==='CS';else cse">
                 <div class="d-flex justify-content-start">
                   <div id="title">
-                    <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
+                    <!-- <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
                     <ng-template #normal>
                       <strong>{{this.outcomeTitle[this.outcomeNum - 1]}}</strong>
-                    </ng-template>
+                    </ng-template> -->
+                    <!-- <div *ngIf="this.test$ | async"> -->
+                      <strong *ngFor="let title of this.displayTitle">{{title}}</strong>
+                    <!-- </div> -->
+
+
+
+
                   </div>
                 </div>
 
                 <div class="d-flex justify-content-end">
                   <div class="dropdown">
                     <select class="btn btn-secondary btn-sm dropdown-toggle">
-                      <option *ngFor="let i of this.outcomeIdCS" [value]="i" (click)="changeOutcomes(i)">Outcome {{i}}</option>
+                      <option *ngFor="let i of this.outcome_cats_cs" [value]="i" (click)="changeOutcomes(i)" >Outcome {{i}}</option>
                     </select>
                   </div>
                 </div>
@@ -117,17 +124,17 @@
               <ng-template #cse>
                 <div class="d-flex justify-content-start">
                   <div id="title">
-                    <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
+                    <!-- <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
                     <ng-template #normal>
                       <strong>{{this.outcomeTitle[this.outcomeNum - 1]}}</strong>
-                    </ng-template>
+                    </ng-template> -->
                   </div>
                 </div>
 
                 <div class="d-flex justify-content-end">
                   <div class="dropdown">
                     <select class="btn btn-secondary btn-sm dropdown-toggle">
-                      <option *ngFor="let i of this.outcomeIdCSE" [value]="i" (click)="changeOutcomes(i)">Outcome {{i}}</option>
+                      <option *ngFor="let i of this.outcome_cats_cse" >Outcome {{i}} </option>
                     </select>
                   </div>
                 </div>
@@ -147,8 +154,8 @@
               </thead>
 
                <tbody>
-                <tr *ngFor="let j of this.subTitle">
-                  <td scope="col" >{{j}}</td>
+                <tr *ngFor="let sub of this.subTitle">
+                  <td scope="col" >{{sub}}</td>
                   <td scope="row">1</td>
                   <td scope="row">2</td>
                   <td scope="row">3</td>
@@ -186,17 +193,17 @@
         {{result[i].cat_description}}
       </div>
     </ng-container> -->
-    <ng-container *ngIf="(this.outcomeTrends$ | async) as result">
-      
+    <ng-container *ngIf="displayOutcome && (this.outcomeTrends$ | async) as result">
+
         <div class="col-12" style="align-items: center;">
           <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
             <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
-    
+
               <div id="title" style="text-align: center;">
                 <strong>{{degree}} Outcome Trend</strong>
               </div>
               <ng-container *ngIf="(this.outcomeTrends$ | async) as result">
-                <div *ngFor="let o of result; index as i">  
+                <div *ngFor="let o of result; index as i">
               <table class="table" >
                 <thead >
                   <tr>
