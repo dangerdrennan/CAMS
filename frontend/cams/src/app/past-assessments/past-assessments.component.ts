@@ -192,6 +192,7 @@ export class PastAssessmentsComponent implements OnInit {
     let year = this.pastForm.get('year').value
 
     if(degree === 'CS') {
+      console.log("in get descrip")
       this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
       .subscribe(res=> {
         console.log("all cs info", res)

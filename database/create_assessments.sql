@@ -1,4 +1,4 @@
- DROP TABLE IF EXISTS assessment;
+DROP TABLE IF EXISTS assessment;
 
  CREATE TABLE assessment (
     assessment_id SERIAL PRIMARY KEY,
@@ -17,6 +17,10 @@ DECLARE f record;
 DECLARE g record;
 
 BEGIN
+    For t in select term_id
+        from term
+        loop
+        raise notice '%', t;
         FOR f IN SELECT prof_email
         FROM prof
         WHERE
@@ -25,13 +29,10 @@ BEGIN
             FOR g IN SELECT student_id, degree
                 FROM student
                     LOOP
-                        FOR t in select term_id
-                            from term
-                                LOOP
-                                    INSERT INTO assessment (prof_email, student_id, term_id,degree)
-                                        VALUES (f.prof_email, g.student_id, t.term_id, g.degree);
-                                        END LOOP;
-                                END LOOP;
+                        INSERT INTO assessment (prof_email, student_id, term_id, degree)
+                            VALUES (f.prof_email, g.student_id, t.term_id, g.degree);
+                            end loop;
+                        END LOOP;
             END LOOP;
 END; $$;
 

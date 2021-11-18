@@ -435,8 +435,10 @@ usersRouter.get('/all_profs', async (req, res) => {
             ON s.proj_id = p.proj_id
         INNER JOIN term t
             ON t.term_id = a.term_id
+        INNER JOIN get_current_term()
+            ON t.term_id <> (select * from get_current_term())
         WHERE
-            pr.prof_email = $1 and p.term_id = get_current_term()`,
+            pr.prof_email = ($1);`,
         [email]);
         res.json(current_assessments_by_prof.rows);
     }

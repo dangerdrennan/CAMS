@@ -16,7 +16,7 @@ const httpOptions =
   })
 }
 // steps of result service
-// return 
+// return
 @Injectable({
   providedIn: 'root'
 })
@@ -26,17 +26,17 @@ export class ResultsService {
   assessment: any // change
   pastSemReq: any
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
 
-    this.arrayTest([1,2,3,4,5])
-    this.getPastSemesterRequirements('Fall',2021).subscribe(
-      res=>
-      {
-        this.pastSemReq = res
-      }
-    )
-    
-    
+    // this.arrayTest([1,2,3,4,5])
+    // this.getPastSemesterRequirements('Fall',2021).subscribe(
+    //   res=>
+    //   {
+    //     this.pastSemReq = res
+    //   }
+    // )
+
+
   }
 
   getTermId(sem:string, year:number){ }
@@ -56,6 +56,7 @@ export class ResultsService {
   }
 //all_past_info/:sem/:year/:degree
   getAllPast(sem:string,year:number,degree:string): Observable<PastAssessmentDisplay[]>{
+    console.log("in service")
     return this.http.get<PastAssessmentDisplay[]>(`${this.endPoint}/all_past_info/${sem}/${year}/${degree}`)
   }
 

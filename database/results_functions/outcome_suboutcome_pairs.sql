@@ -15,7 +15,7 @@ create or replace function super_cs_grader(sem text, ye int, degree text) return
 AS $$
 #variable_conflict use_column
 declare
-f int[]; -- (select suboutcomes_cs from sem_req where term_id = term );
+f text[]; -- (select suboutcomes_cs from sem_req where term_id = term );
 v text;
 -- degree text:= (SELECT lower('CS'));
 term int; -- (SELECT get_term_id(sem, ye));
