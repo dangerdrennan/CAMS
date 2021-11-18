@@ -11,27 +11,30 @@
 
 
 do $$
+declare t record;
 DECLARE f record;
 
 DECLARE g record;
 
 BEGIN
-   FOR f IN SELECT prof_email
-   FROM prof
-   WHERE
-   is_grader = true
-   LOOP
-    FOR g IN SELECT student_id, degree
-        FROM student
-            LOOP
-            INSERT INTO assessment (prof_email, student_id, term_id,degree)
-                VALUES (f.prof_email, g.student_id, get_current_term(), g.degree);
+        FOR f IN SELECT prof_email
+        FROM prof
+        WHERE
+        is_grader = true
+        LOOP
+            FOR g IN SELECT student_id, degree
+                FROM student
+                    LOOP
+                        FOR t in select term_id
+                            from term
+                                LOOP
+                                    INSERT INTO assessment (prof_email, student_id, term_id,degree)
+                                        VALUES (f.prof_email, g.student_id, t.term_id, g.degree);
+                                        END LOOP;
+                                END LOOP;
             END LOOP;
-    END LOOP;
 END; $$;
 
-
--- NOTE- have not run npm build yet, so the default to 0 might be wonky
 ALTER TABLE assessment ADD COLUMN score_1_1 integer default 0;
 ALTER TABLE assessment ADD COLUMN score_1_2 integer default 0;
 ALTER TABLE assessment ADD COLUMN score_2_1 integer default 0;

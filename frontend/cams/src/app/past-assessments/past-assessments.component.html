@@ -97,17 +97,7 @@
               <div *ngIf="this.pastForm.get('degree')?.value ==='CS';else cse">
                 <div class="d-flex justify-content-start">
                   <div id="title">
-                    <!-- <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
-                    <ng-template #normal>
-                      <strong>{{this.outcomeTitle[this.outcomeNum - 1]}}</strong>
-                    </ng-template> -->
-                    <!-- <div *ngIf="this.test$ | async"> -->
                       <strong *ngFor="let title of this.displayTitle">{{title}}</strong>
-                    <!-- </div> -->
-
-
-
-
                   </div>
                 </div>
 
@@ -124,17 +114,14 @@
               <ng-template #cse>
                 <div class="d-flex justify-content-start">
                   <div id="title">
-                    <!-- <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
-                    <ng-template #normal>
-                      <strong>{{this.outcomeTitle[this.outcomeNum - 1]}}</strong>
-                    </ng-template> -->
+                    <strong *ngFor="let title of this.displayTitle">{{title}}</strong>
                   </div>
                 </div>
 
                 <div class="d-flex justify-content-end">
                   <div class="dropdown">
                     <select class="btn btn-secondary btn-sm dropdown-toggle">
-                      <option *ngFor="let i of this.outcome_cats_cse" >Outcome {{i}} </option>
+                      <option *ngFor="let i of this.outcome_cats_cse" [value]="i" (click)="changeOutcomes(i)" >Outcome {{i}}</option>
                     </select>
                   </div>
                 </div>
@@ -153,32 +140,35 @@
                 </tr>
               </thead>
 
-               <tbody>
-                <tr *ngFor="let sub of this.subTitle">
-                  <td scope="col" >{{sub}}</td>
-                  <td scope="row">1</td>
-                  <td scope="row">2</td>
-                  <td scope="row">3</td>
-                  <td scop="row">4</td>
-                  <td scop="row">11</td>
+               <tbody >
 
-                </tr>
-                <tr >
-                  <th scope="row">Total</th>
-                  <td scope="row">1</td>
-                  <td scope="row">2</td>
-                  <td scope="row">3</td>
-                  <td scop="row">4</td>
-                  <td scop="row">11</td>
-                </tr>
-                <tr>
-                  <th scope="row">Percentages</th>
-                  <td scope="row">1%</td>
-                  <td scope="row">2%</td>
-                  <td scope="row">3%</td>
-                  <td scop="row">4%</td>
-                  <td scop="row">%100</td>
-                </tr>
+                  <tr *ngFor="let sub of this.subInfo">
+                    <td scope="col" >{{sub.s_description}}</td>
+                    <td scope="row">{{sub.poor_count}}</td>
+                    <td scope="row">{{sub.developing_count}}</td>
+                    <td scope="row">{{sub.satisfactory_count}}</td>
+                    <td scope="row">{{sub.excellent_count}}</td>
+                    <td scope="row">{{sub.total}}</td>
+
+                  </tr>
+                  <tr>
+                    <th scope="row">Total</th>
+                    <td scope="row">{{totals[0]}}</td>
+                    <td scope="row">{{totals[1]}}</td>
+                    <td scope="row">{{totals[2]}}</td>
+                    <td scope="row">{{totals[3]}}</td>
+
+                  </tr>
+                  <tr >
+                    <th scope="row">Percentages</th>
+                    <td scope="row">{{percents[0]}}%</td>
+                    <td scope="row">{{percents[1]}}%</td>
+                    <td scope="row">{{percents[2]}}%</td>
+                    <td scope="row">{{percents[3]}}%</td>
+
+                  </tr>
+
+
               </tbody>
 
             </table>
