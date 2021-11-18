@@ -23,13 +23,7 @@ export class PastAssessmentsComponent implements OnInit {
   subInfo: any[] = []
   outcomeForm!: FormGroup;
   pastForm!: FormGroup;
-  category!: FormGroup;
-  ready = false
-  test$: Observable<any>
-  num1:number
-  num2:number
-  test: PastAssessmentDisplay[] = []
-  degree = 'CS'
+  categoryForm!: FormGroup;
   outcomeTrends: OutcomeTrends[] = []
   outcomeTrends$: Observable<OutcomeTrends[]>
   cs_subs = []
@@ -45,7 +39,6 @@ export class PastAssessmentsComponent implements OnInit {
 
   totals: any[] = []
   percents: any[] = []
-  a: any
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) {
@@ -66,8 +59,8 @@ export class PastAssessmentsComponent implements OnInit {
       year: ['', Validators.required],
       degree: ['', Validators.required]
     })
-    this.category = this.builder.group({
-      selected: [1, Validators.required]
+    this.categoryForm = this.builder.group({
+      selected: ["1", Validators.required]
     })
   }
 
@@ -80,6 +73,9 @@ export class PastAssessmentsComponent implements OnInit {
     this.displayOutcome = false;
     this.displayPast = true;
     this.changeOutcomes(this.defaultOutcome)
+    this.categoryForm.setValue({
+      selected: "1"
+    })
   }
 
   // trigger to find outcome trends
@@ -112,6 +108,7 @@ export class PastAssessmentsComponent implements OnInit {
   changeOutcomes(id: number) {
     console.log("id", id)
     let i = document.getElementById('change')
+    // i.innerHTML = "Outcome 1"
     console.log("iiiiii",i)
     this.getTitles(id)
     this.getDescription(id)
@@ -121,7 +118,7 @@ export class PastAssessmentsComponent implements OnInit {
 
   // Choose city using select dropdown
   changeOutcomes2(e) {
-    let id = this.category.get('selected').value
+    let id = this.categoryForm.get('selected').value
     const eventToNum = parseInt(id)
     this.changeOutcomes(id)
     // this.getTitles(eventToNum)
@@ -215,13 +212,10 @@ export class PastAssessmentsComponent implements OnInit {
       .subscribe(res=> {
         console.log("all cs info", res)
         this.allCSInfo = res
-        console.log("hiii")
+        console.log("ALLLL ", this.allCSInfo)
         for(let i = 0; i < this.allCSInfo.length; i++) {
-          console.log("ALLLL ", this.allCSInfo)
+          
           if(Number(this.allCSInfo[i].cat_id) == id) {
-            // console.log("i ", i)
-            // console.log("id ", id)
-            //console.log("all info", this.allCSInfo[i])
             this.subInfo.push(this.allCSInfo[i])
           }
         }
@@ -327,7 +321,7 @@ export class PastAssessmentsComponent implements OnInit {
 
       this.percents.push(poorPercent, developPercent, satisPercent, excelPercent)
 
-    }, 200)
+    }, 500)
 
   }
 

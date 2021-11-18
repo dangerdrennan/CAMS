@@ -82,7 +82,7 @@
               </div>
 
               <button type="submit" [disabled]="pastForm.invalid" class="btn btn-success btn-sm" style="margin-left: 12px;"
-                  (click)="findPast()">Find</button>
+                  (click)="findPast();">Find</button>
             </form>
           </div>
         </div>
@@ -105,7 +105,7 @@
                 
                   <div class="d-flex justify-content-end">
                     <div class="dropdown">
-                      <form [formGroup]="category" (change)="changeOutcomes2($event)">
+                      <form [formGroup]="categoryForm" (change)="changeOutcomes2($event)">
                       <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
                         <ng-container >
                           <option id = "change" *ngFor="let i of this.outcome_cats_cs" [ngValue]= "i" >Outcome {{i}}</option>
@@ -188,24 +188,23 @@
         
       </div>
     
-
+</div>
     <!-- display outcomes table -->
     <!-- <ng-container *ngIf="(this.outcomeTrends$ | async) as result">
       <div *ngFor="let o of result; index as i">
         {{result[i].cat_description}}
       </div>
     </ng-container> -->
-    <ng-container *ngIf="displayOutcome && (this.outcomeTrends$ | async) as result">
+    <ng-container *ngIf="displayOutcome">
 
         <div class="col-12" style="align-items: center;">
           <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
             <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
 
               <div id="title" style="text-align: center;">
-                <strong>{{degree}} Outcome Trend</strong>
+                <strong> Outcome Trend</strong>
               </div>
-              <ng-container *ngIf="(this.outcomeTrends$ | async) as result">
-                <div *ngFor="let o of result; index as i">
+              <ng-container *ngIf="(this.outcomeTrends$ | async)">
               <table class="table" >
                 <thead >
                   <tr>
@@ -217,16 +216,15 @@
                   </tr>
                 </thead>
                   <tbody>
-                    <tr >
-                        <td scope="row" style="max-width: 140px;">{{this.result[i].cat_description}}</td>
-                        <td scope="row">{{this.result[i].poor_percent}}%</td>
-                        <td scope="row">{{this.result[i].developing_percent}}%</td>
-                        <td scope="row">{{this.result[i].satisfactory_percent}}%</td>
-                        <td scop="row">{{this.result[i].excellent_percent}}%</td>
+                    <tr *ngFor= "let o of this.outcomeTrends">
+                        <td scope="row" style="max-width: 140px;">{{o.cat_description}}</td>
+                        <td scope="row">{{o.poor_percent}}%</td>
+                        <td scope="row">{{o.developing_percent}}%</td>
+                        <td scope="row">{{o.satisfactory_percent}}%</td>
+                        <td scop="row">{{o.excellent_percent}}%</td>
                     </tr>
                     </tbody>
               </table>
-            </div>
           </ng-container>
             </div>
           </div>

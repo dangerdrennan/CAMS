@@ -16,8 +16,10 @@ RETURN QUERY EXECUTE '(SELECT '''||score_id||''',
             sum(case when ' || score_id || ' = 2 then 1 else 0 end),
             sum(case when ' || score_id || ' = 3 then 1 else 0 end),
             sum(case when ' || score_id || ' = 4 then 1 else 0 end)
-            from assessment, term where 
-            assessment.'|| score_id || ' is not null and 
-            assessment.degree = '''|| degree ||'''  
-            and term.term_id = '|| past_term ||' and assessment.graded = true);';
+            from assessment where 
+            '|| score_id || ' is not null and 
+            degree = '''|| degree ||'''  
+            and graded = true and term_id = '|| past_term ||');';
 end; $$ language plpgsql;
+
+--------------------------------- PROBLEM FUNCTION!!!!!
