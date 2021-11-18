@@ -46,6 +46,7 @@ export class PastAssessmentsComponent implements OnInit {
 
   totals: any[] = []
   percents: any[] = []
+  a: any
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) {
@@ -107,6 +108,9 @@ export class PastAssessmentsComponent implements OnInit {
 
   // updates the outcome titles and sub descriptions being viewed
   changeOutcomes(id: number) {
+    console.log("id", id)
+    let i = document.getElementById('change')
+    console.log("iiiiii", i)
     this.getTitles(id)
     this.getDescription(id)
     this.calculateTotals()
@@ -193,6 +197,8 @@ export class PastAssessmentsComponent implements OnInit {
 
     if(degree === 'CS') {
       console.log("in get descrip")
+      this.a = this.resultsService.getAllPast(term, Number(year), degree)
+      console.log("AAAAA", this.a)
       this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
       .subscribe(res=> {
         console.log("all cs info", res)
@@ -201,11 +207,22 @@ export class PastAssessmentsComponent implements OnInit {
 
       // give the subscription time to finish before using its returned value
       setTimeout(() => {
-        this.allCSInfo.filter((item) => {
-          if(Number(item.cat_id) == id) {
-            this.subInfo.push(item)
+        console.log("hiii")
+        for(let i = 0; i < this.allCSInfo.length; i++) {
+          console.log("ALLLL ", this.allCSInfo)
+          if(Number(this.allCSInfo[i].cat_id) == id) {
+            // console.log("i ", i)
+            // console.log("id ", id)
+            console.log("all info", this.allCSInfo[i])
+            this.subInfo.push(this.allCSInfo[i])
           }
-        })
+        }
+
+        // this.allCSInfo.filter((item) => {
+        //   if(Number(item.cat_id) == id) {
+        //     this.subInfo.push(item)
+        //   }
+        // })
       }, 200)
     }
     // cse sub outcome descriptions(evaluation criteria)
@@ -223,6 +240,7 @@ export class PastAssessmentsComponent implements OnInit {
         })
       }, 200)
     }
+    console.log("subinfo ", this.subInfo)
     return this.subInfo
   }
 

@@ -104,7 +104,7 @@
                 <div class="d-flex justify-content-end">
                   <div class="dropdown">
                     <select class="btn btn-secondary btn-sm dropdown-toggle">
-                      <option *ngFor="let i of this.outcome_cats_cs" [value]="i" (click)="changeOutcomes(i)" >Outcome {{i}}</option>
+                      <option id="change" *ngFor="let i of this.outcome_cats_cs" [ngModel]="i" ngDefaultControl (click)="changeOutcomes(i)" >Outcome {{i}}</option>
                     </select>
                   </div>
                 </div>
@@ -142,6 +142,9 @@
 
                <tbody >
 
+                  <!-- <tr *ngFor="let item of this.allCSInfo"> -->
+
+                    <!-- <div *ngFor="let o in result; index as i"> -->
                   <tr *ngFor="let sub of this.subInfo">
                     <td scope="col" >{{sub.s_description}}</td>
                     <td scope="row">{{sub.poor_count}}</td>
@@ -149,7 +152,7 @@
                     <td scope="row">{{sub.satisfactory_count}}</td>
                     <td scope="row">{{sub.excellent_count}}</td>
                     <td scope="row">{{sub.total}}</td>
-
+                      <!-- </div> -->
                   </tr>
                   <tr>
                     <th scope="row">Total</th>
