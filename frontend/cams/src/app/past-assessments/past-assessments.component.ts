@@ -18,13 +18,12 @@ export class PastAssessmentsComponent implements OnInit {
   public displayPast: boolean = false;
   public displayOutcome: boolean = false;
   public defaultOutcome: number = 1;
-  // outcomeIdCS:any
-  // outcomeIdCSE:any[] = []
   displayTitle: any[] = []
   outcomeTitle:any[] = []
   subInfo: any[] = []
   outcomeForm!: FormGroup;
   pastForm!: FormGroup;
+  category!: FormGroup;
   ready = false
   test$: Observable<any>
   num1:number
@@ -66,6 +65,9 @@ export class PastAssessmentsComponent implements OnInit {
       term: ['', Validators.required],
       year: ['', Validators.required],
       degree: ['', Validators.required]
+    })
+    this.category = this.builder.group({
+      selected: [1, Validators.required]
     })
   }
 
@@ -110,13 +112,23 @@ export class PastAssessmentsComponent implements OnInit {
   changeOutcomes(id: number) {
     console.log("id", id)
     let i = document.getElementById('change')
-    console.log("iiiiii", i)
+    console.log("iiiiii",i)
     this.getTitles(id)
     this.getDescription(id)
     this.calculateTotals()
     this.calculatePercents()
   }
 
+  // Choose city using select dropdown
+  changeOutcomes2(e) {
+    let id = this.category.get('selected').value
+    const eventToNum = parseInt(id)
+    this.changeOutcomes(id)
+    // this.getTitles(eventToNum)
+    // this.getDescription(eventToNum)
+    // this.calculateTotals()
+    // this.calculatePercents()
+  }
 
    // store the past assessment outcome titles
   getTitles(id: number) {
@@ -194,36 +206,37 @@ export class PastAssessmentsComponent implements OnInit {
     let degree = this.pastForm.get('degree').value
     let term = this.pastForm.get('term').value
     let year = this.pastForm.get('year').value
+    console.log(`Degree:  ${degree} Term: ${term} Year: ${year}`)
+    console.log(this.pastForm.get('degree').value)
 
     if(degree === 'CS') {
       console.log("in get descrip")
-      this.a = this.resultsService.getAllPast(term, Number(year), degree)
-      console.log("AAAAA", this.a)
       this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
       .subscribe(res=> {
         console.log("all cs info", res)
-        return this.allCSInfo = res
-      })
-
-      // give the subscription time to finish before using its returned value
-      setTimeout(() => {
+        this.allCSInfo = res
         console.log("hiii")
         for(let i = 0; i < this.allCSInfo.length; i++) {
           console.log("ALLLL ", this.allCSInfo)
           if(Number(this.allCSInfo[i].cat_id) == id) {
             // console.log("i ", i)
             // console.log("id ", id)
-            console.log("all info", this.allCSInfo[i])
+            //console.log("all info", this.allCSInfo[i])
             this.subInfo.push(this.allCSInfo[i])
           }
         }
+      })
+
+      // give the subscription time to finish before using its returned value
+      
+        
 
         // this.allCSInfo.filter((item) => {
         //   if(Number(item.cat_id) == id) {
         //     this.subInfo.push(item)
         //   }
         // })
-      }, 200)
+    
     }
     // cse sub outcome descriptions(evaluation criteria)
     else if(degree === 'CSE') {

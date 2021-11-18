@@ -9,33 +9,6 @@ DROP TABLE IF EXISTS assessment;
     graded BOOLEAN DEFAULT false
  );
 
-
-do $$
-declare t record;
-DECLARE f record;
-
-DECLARE g record;
-
-BEGIN
-    For t in select term_id
-        from term
-        loop
-        raise notice '%', t;
-        FOR f IN SELECT prof_email
-        FROM prof
-        WHERE
-        is_grader = true
-        LOOP
-            FOR g IN SELECT student_id, degree
-                FROM student
-                    LOOP
-                        INSERT INTO assessment (prof_email, student_id, term_id, degree)
-                            VALUES (f.prof_email, g.student_id, t.term_id, g.degree);
-                            end loop;
-                        END LOOP;
-            END LOOP;
-END; $$;
-
 ALTER TABLE assessment ADD COLUMN score_1_1 integer default 0;
 ALTER TABLE assessment ADD COLUMN score_1_2 integer default 0;
 ALTER TABLE assessment ADD COLUMN score_2_1 integer default 0;
@@ -54,3 +27,58 @@ ALTER TABLE assessment ADD COLUMN score_6_1 integer default 0;
 ALTER TABLE assessment ADD COLUMN score_6_2 integer default 0;
 ALTER TABLE assessment ADD COLUMN score_7_1 integer default 0;
 ALTER TABLE assessment ADD COLUMN score_7_2 integer default 0;
+
+do $$
+DECLARE f record;
+
+DECLARE g record;
+
+BEGIN
+        FOR f IN SELECT prof_email
+        FROM prof
+        WHERE
+        is_grader = true
+        LOOP
+            FOR g IN SELECT student_id, term_id, degree
+                FROM student
+                    LOOP
+                        INSERT INTO assessment (prof_email, student_id, term_id, degree)
+                            VALUES (f.prof_email, g.student_id, g.term_id, g.degree);
+                        END LOOP;
+            END LOOP;
+END; $$;
+
+
+
+do $$
+DECLARE
+a record;
+
+BEGIN
+        FOR a IN SELECT assessment_id
+        FROM assessment
+        LOOP
+             UPDATE assessment set score_1_1 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_1_2 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_2_1 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_2_2 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_2_3 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_3_1 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_3_2 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_3_3 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_3_4 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_3_5 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_3_6 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_5_1 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_5_2 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_5_3 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_6_1 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_6_2 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_7_1 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set score_7_2 = (SELECT floor(random()*(4))+1) where assessment_id = a.assessment_id;
+            UPDATE assessment set graded = true where assessment_id = a.assessment_id;
+                        
+            END LOOP;
+END; $$;
+
+
