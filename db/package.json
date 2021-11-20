@@ -1,0 +1,14 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run create_admin && npm run create_tables && npm run populate_all",
+    "create_admin": "psql -U postgres -f create_admin.sql",
+    "create_tables": "psql -U camss -d camss -f create_tables.sql",
+    "populate_all": "psql -U camss -d camss -f populate_all.sql"
+  },
+  "author": "",
+  "license": "ISC"
+}

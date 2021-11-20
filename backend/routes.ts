@@ -6,7 +6,7 @@ const usersRouter = Router();
 const pool = new Pool({
     user: "cams",
     password: "pswd",
-    database: "cams",
+    database: "cams2",
     host: "localhost",
     port: 5432
 });
