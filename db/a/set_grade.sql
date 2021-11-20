@@ -5,7 +5,6 @@ create or replace function set_grade(score_id text, grade int, assessment_id int
 declare
 s_name text;
 begin
-    select 
     execute 'update assessment set ' || score_id || ' = ' || grade || ' where assessment_id = '|| assessment_id || ';';
 end;
 $$ language plpgsql;
@@ -19,7 +18,7 @@ create or replace function set_grade_by_id(id int, grade int, assessment_id int,
 declare
 s_name text;
 begin
-execute 'select suboutcomes_'|| (SELECT lower(degree)) ||' from sem_req where term_id = '|| term ||';' into f;
+execute 'select suboutcomes_'|| (SELECT lower(degree)) ||' from sem_req where term_id = '|| term ||';' into s_name;
 
     execute 'select score_id from suboutcomes_'|| (SELECT lower(degree)) ||' where id = '|| id ||';' into s_name;
     execute 'update assessment set ' || s_name || ' = ' || grade || ' where assessment_id = '|| assessment_id || ';';

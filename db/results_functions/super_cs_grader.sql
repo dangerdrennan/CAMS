@@ -1,6 +1,7 @@
 create or replace function super_cs_grader(sem text, ye int, degree text) returns table(
-    cat_id text,
+    cat_id int,
     s_id text,
+    id int,
     s_description text,
     poor_count bigint,
     satisfactory_count bigint,
@@ -17,8 +18,11 @@ AS $$
 declare
 f text[]; -- (select suboutcomes_cs from sem_req where term_id = term );
 v text;
--- degree text:= (SELECT lower('CS'));
-term int; -- (SELECT get_term_id(sem, ye));
+sub_id int;
+reqs int[];
+req int;
+term int;
+t_id int; -- (SELECT get_term_id(sem, ye));
 score text;
 t bigint;
 p bigint;
@@ -31,14 +35,23 @@ sp float;
 ep float;
 begin
 
+
 select get_term_id from get_term_id(sem, ye) into term;
-execute 'select suboutcomes_'|| (SELECT lower(degree)) ||' from sem_req where term_id = '|| term ||';' into f;
+select reqs_id from term where term_id = get_term_id(sem, year) into t_id;
+execute 'select array(select id from suboutcome_details_'|| (SELECT lower(degree)) ||' where reqs_id = '|| t_id ||' order by order_float)' into reqs;
+
+begin
+    foreach req in array reqs
+    loop
+    raise notice '%', req;
+    end loop;
+end;
 
 drop table if exists curr;
-raise notice '%', term;
 create temporary table if not exists curr(
-    cat_id text,
+    cat_id int,
     s_id text,
+    id int,
     s_description text,
     poor_count bigint default 0,
     satisfactory_count bigint default 0,
@@ -52,13 +65,16 @@ create temporary table if not exists curr(
 );
 
 BEGIN
-   FOREACH v IN array f
+   FOREACH req IN array reqs
   Loop
-  execute 'insert into curr(s_id) values (''' || v || ''');
-        update curr set cat_id = (SELECT outcome_cat_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where score_id = ''' || v || ''') where s_id = ''' || v || ''';
-        update curr set s_description = (SELECT suboutcome_description from suboutcome_details_'|| (SELECT lower(degree)) ||' where score_id = ''' || v || ''') where s_id = ''' || v || ''';';
+  execute 'insert into curr(id) values ('|| req ||');
+        update curr set s_id = (SELECT score_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';
+        update curr set cat_id = (SELECT outcome_cat_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';
+        update curr set s_description = (SELECT suboutcome_description from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';';
     END LOOP;
 END;
+
+
 
 for score in select s_id from curr
 loop
