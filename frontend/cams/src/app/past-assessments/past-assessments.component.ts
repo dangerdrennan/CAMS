@@ -94,7 +94,7 @@ export class PastAssessmentsComponent implements OnInit {
     // give the subscription time to finish before using its returned value
     setTimeout(() => {
       this.getOutcomePercents()
-    },200)
+    },500)
 
     this.resultsService.getAllPast(term, Number(year), degree).subscribe( res=> {
       this.allInfo = res
@@ -162,7 +162,7 @@ export class PastAssessmentsComponent implements OnInit {
                 }
               })
             })
-          }, 200)
+          }, 500)
         }
       )
     }
@@ -190,7 +190,7 @@ export class PastAssessmentsComponent implements OnInit {
                 }
               })
             })
-          }, 200)
+          }, 500)
         }
       )
     }
@@ -245,7 +245,7 @@ export class PastAssessmentsComponent implements OnInit {
             this.subInfo.push(item)
           }
         })
-      }, 200)
+      }, 500)
     }
     console.log("subinfo ", this.subInfo)
     return this.subInfo
@@ -295,7 +295,7 @@ export class PastAssessmentsComponent implements OnInit {
 
       // append the results to array for easy access
       this.totals.push(poorTot, developTot, satisTot, excelTot)
-    }, 200)
+    }, 500)
 
   }
 
