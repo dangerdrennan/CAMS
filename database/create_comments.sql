@@ -4,3 +4,5 @@ CREATE TABLE IF NOT EXISTS comment (
     comment text,
     score_id text
 );
+
+ALTER TABLE comment ADD CONSTRAINT num_vals UNIQUE (assessment_id, score_id);
