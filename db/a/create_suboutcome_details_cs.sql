@@ -1,19 +1,20 @@
 DROP TABLE suboutcome_details_cs;
 
 CREATE TABLE suboutcome_details_cs (
-    id int primary key,
+    id serial primary key,
     suboutcome_name TEXT,
-    sem_req_id int REFERENCES term_reqs(term_reqs),
+    reqs_id int REFERENCES sem_req(id),
     score_id TEXT,
-    outcome_cat_id INT,
+    outcome_cat_id INT REFERENCES outcome_details_cs(id),
     suboutcome_description TEXT,
     poor_description TEXT,
     developing_description TEXT,
     satisfactory_description TEXT,
-    excellent_description TEXT
+    excellent_description TEXT,
+    order_float float
 );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '1.1',
         1,
@@ -23,10 +24,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'No attempt or fails to analyze accurately',
         'Analyzes but key details are missing or confused',
         'Most details analyzed and key relationships identified',
-        'Clearly analyzes the challenge and embedded issues'
+        'Clearly analyzes the challenge and embedded issues',
+        1.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '1.2',
         1,
@@ -36,10 +38,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'Incorrect application of computing principles or fails to identify solutions',
         'Limited identification of solutions using computing principles',
         'Reasonable identification of solutions using computing principles',
-        'In-depth and comprehensive utilization of computing principles, identification of solution well beyond expectations'
+        'In-depth and comprehensive utilization of computing principles, identification of solution well beyond expectations',
+        2.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '2.1',
         1,
@@ -49,10 +52,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'Does not produce a design strategy, or the design strategy is especially poor',
         'Limited attempts to form a design strategy',
         'Produces a reasonable design strategy appropriate to the project',
-        'Produces an exceptional design strategy which exceeds expectations'
+        'Produces an exceptional design strategy which exceeds expectations',
+        3.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '2.2',
         1,
@@ -62,10 +66,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'Does not create a final product, or the final product is especially poor',
         'Makes a start on a final product but is unable to meet final specifications',
         'Creates a satisfactory final product which meets defined specifications',
-        'Creates an exceptional final product which exceeds expectations'
+        'Creates an exceptional final product which exceeds expectations',
+        3.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '2.3',
         1,
@@ -75,10 +80,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'Limited or no evaluation',
         'Basic evaluation but has gaps',
         'Satisfactory evaluation of solution, some utilization of computing principles (e.g. Big-O analysis, testing methodologies)',
-        'Exceptional and comprehensive evaluation of solution with strong tie to computing principles'
+        'Exceptional and comprehensive evaluation of solution with strong tie to computing principles',
+        4.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '3.1',
         1,
@@ -88,10 +94,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'No logical structure',
         'Some structure but erratic jumps in topic',
         'Most information presented logically',
-        'All information presented logically'
+        'All information presented logically',
+        5.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '3.2',
         1,
@@ -101,10 +108,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'No grasp of topic, cannot answer questions or extremely limited content',
         'Only rudimentary knowledge demonstrated',
         'At ease with content and provides some detail',
-        'Full command of subject matter'
+        'Full command of subject matter',
+        6.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '3.3',
         1,
@@ -114,10 +122,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'Is unable to effectively communicate',
         'Only able to answer/explain in a limited manner; limited detail',
         'Provides sufficient detail to describe/answer questions',
-        'Communicates  details exceptionally well'
+        'Communicates  details exceptionally well',
+        7.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '3.4',
         1,
@@ -127,10 +136,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         '4.	Provides effective and appropriate visual aids and graphics',
         'Weak support of the material, text or diagrams hard to see or understand',
         'Mostly supports the material, most text and diagrams understandable',
-        'Text and diagrams strongly reinforce the presentation'
+        'Text and diagrams strongly reinforce the presentation',
+        8.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '3.5',
         1,
@@ -140,10 +150,11 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'Significant errors',
         'Several errors',
         'Minor errors',
-        'Negligible errors'
+        'Negligible errors',
+        9.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '3.6',
         1,
@@ -153,44 +164,48 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, sub
         'Significant delivery problems, little to no audience contact; much too long or much too short',
         'Several mispronunciation, occasional audience contact; too long or too short',
         'Clear voice, steady rate, some audience contact; slightly too long or too short',
-        'Clear voice, steady rate, strong audience contact, enthusiastic, confident; on time'
+        'Clear voice, steady rate, strong audience contact, enthusiastic, confident; on time',
+        10.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '5.1',
         1,
         'score_5_1',
-        5,
+        4,
         '1.	Understands and fulfills roles and responsibilities',
         'Does not fulfill team role duties',
         'Fulfills some, but not all, team role duties',
         'Fulfills team role duties',
-        'Exceeds expectations with respect to team role duties'
+        'Exceeds expectations with respect to team role duties',
+        11.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '5.2',
         1,
         'score_5_2',
-        5,
+        4,
         '2.	Listens and works with others',
         'Does not consider other team members'' ideas or concerns',
         'Sometimes considers other team members'' ideas or concerns',
         'Often addresses other team members'' ideas or concerns',
-        'Is exceptionally adept at addressing other team members'' ideas or concerns'
+        'Is exceptionally adept at addressing other team members'' ideas or concerns',
+        12.0
     );
 
-INSERT INTO suboutcome_details_cs(suboutcome_name, score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description)
+INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         '5.3',
         1,
         'score_5_3',
-        5,
+        4,
         '3.	Communicates effectively with the group ',
         'Does not communicate to other members regarding the project progress',
         'Provides terse outline of status of the project and relevant updates',
         'Provides updates on a regular basis',
-        'Works exceptionally well to provide documentation of progress'
+        'Works exceptionally well to provide documentation of progress',
+        13.0
     );

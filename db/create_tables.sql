@@ -1,6 +1,6 @@
-\i create_sem_req.sql
-\i create_term.sql
-\i create_prof.sql
-\i create_projects.sql
-\i create_students.sql
+\i a/create_sem_req.sql
+\i a/create_term.sql
+\i a/create_prof.sql
+\i a/create_projects.sql
+\i a/create_students.sql
 

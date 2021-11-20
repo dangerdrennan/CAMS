@@ -1,10 +1,3 @@
--- CREATE PROCEDURE new_assessment(email text, s_id integer, t_id integer)
--- LANGUAGE SQL
--- AS $$
---     INSERT INTO assessment(prof_email, student_id, term_id)
---     VALUES(email, s_id, t_id);   
--- $$;
-
 CREATE OR REPLACE FUNCTION add_assessments_by_student (s_id INTEGER)
 RETURNS void as $$
 DECLARE
