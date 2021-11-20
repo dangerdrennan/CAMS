@@ -149,6 +149,23 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
+    usersRouter.post("/record_comment", async(req, res) => {
+        try{
+            const {assessment_id, score_id, comment} = req.body;
+            console.log('what are the variables at? ', assessment_id, score_id, comment)
+            const record_comment = await pool.query(`
+            INSERT INTO comment (assessment_id, score_id, comment)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (assessment_id, score_id) DO UPDATE
+            SET comment = $3`,
+            [assessment_id, score_id, comment]);
+            res.json(record_comment.rows);
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "record_comment"');
+        }
+    });
+
 
     // INSERT INTO prof (prof_email, f_name, l_name, department, is_grader, is_admin) VALUES ('rowling@potter.co.uk', 'test', 'test', 'test', false, true) ON CONFLICT (prof_email) DO UPDATE SET f_name='test', l_name='test', department='test', is_grader= true, is_admin = false;
 
