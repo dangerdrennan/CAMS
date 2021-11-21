@@ -98,8 +98,6 @@ export class ManageAdminsComponent implements OnInit {
 
     }
 
-
-
   }
 
   // trigger to update grader first name or last name or department
@@ -226,14 +224,9 @@ export class ManageAdminsComponent implements OnInit {
   }
 
   updateProfName(accessor:Accessor){
-    //, f_name:string, l_name:string, department:string
-    // accessor.f_name = f_name
-    // accessor.l_name = l_name
-    // accessor.department = department
     this.adminService.updateProf(accessor).pipe(first()).subscribe(() => {
       this.editGraderForm.reset()
     })
-    //
   }
 
   makeProfAdmin(accessor:Accessor){
@@ -265,11 +258,6 @@ export class ManageAdminsComponent implements OnInit {
       this.year = res[0].year
     })
   }
-
-  populateCurrentSemester(){
-    this.adminService.populateSemester().pipe(first()).subscribe()
-  }
-
 
   ngOnDestroy(){
     this.notifier.next()

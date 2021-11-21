@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { concat, Observable, Subscription } from 'rxjs';
-import { last, take, takeLast, map, takeUntil, first } from 'rxjs/operators';
+import { Observable, } from 'rxjs';
+import { last, first } from 'rxjs/operators';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
-import { SemesterReqs } from '../SemesterReqs';
 import { ResultsService } from '../services/results.service';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutcomeTrends } from '../OutcomeTrends';

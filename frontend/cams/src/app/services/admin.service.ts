@@ -85,14 +85,6 @@ export class AdminService {
     return this.http.get<number>(this.endPoint + '/current_term')
   }
 
-  // not sure if we want this or not, but we have it
-  // populates the assessment table with every grader and
-  // every student
-  populateSemester(): Observable<any>{
-    const url = `${this.endPoint}/populate_semester`;
-    return this.http.post<any[]>(url, {'empty': 'object'}, httpOptions)
-  }
-
   ngOnDestory(){
     this.notifier.next()
     this.notifier.complete()
