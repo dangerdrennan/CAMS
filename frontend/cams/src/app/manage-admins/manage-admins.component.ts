@@ -191,18 +191,23 @@ export class ManageAdminsComponent implements OnInit {
 
   // trigger to remove professor as a system administrator
   submitRemoveAdmin(index: number) {
-    this.revokePermissions(this.graders[index])
+    if (this.graders.filter(x=> x.is_admin).length > 1){
+      this.revokePermissions(this.graders[index])
+    }
+    else{
+      alert('There must be at least one admin.')
+    }
   }
 
-  // trigger to update the current term
-  submitUpdateTerm() {
-    let term = this.setTermForm.get("semester")?.value
-    let year = Number(this.setTermForm.get("year")?.value)
-    this.updateTerm(term, year)
-
-    this.semester = term
-    this.year = year
+  constantAdminCheck(): boolean{
+    if (this.graders.filter(x=> x.is_admin).length > 1){
+      return true
+    }
+    else{
+      return false
+    }
   }
+
 
   // get all current graders
   getCurrentAssessors(){
@@ -259,10 +264,6 @@ export class ManageAdminsComponent implements OnInit {
       this.semester = res[0].semester
       this.year = res[0].year
     })
-  }
-
-  updateTerm(semester:string, year:number){
-    this.adminService.updateTerm(semester,year).pipe(first()).subscribe()
   }
 
   populateCurrentSemester(){

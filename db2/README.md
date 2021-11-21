@@ -1,1 +1,0 @@
-For the database portion, you should be good to run 'npm build', and the database should pop up in postgres. Password for 'cams' is 'pswd'. We can change it later, but for now it's good to have something you can type quickly.

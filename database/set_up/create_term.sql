@@ -14,5 +14,5 @@ INSERT INTO term (reqs_id, semester, year, is_current) VALUES (1, 'Spring', 2019
 INSERT INTO term (reqs_id, semester, year, is_current) VALUES (1, 'Fall', 2019, null);
 INSERT INTO term (reqs_id, semester, year, is_current) VALUES (1, 'Spring', 2020, null);
 INSERT INTO term (reqs_id, semester, year, is_current) VALUES (1, 'Fall', 2020, null);
-INSERT INTO term (reqs_id, semester, year, is_current) VALUES (1, 'Spring', 2021, null);
-INSERT INTO term (reqs_id, semester, year, is_current) VALUES (1, 'Fall', 2021, true);
+INSERT INTO term (reqs_id, semester, year, is_current) VALUES (1, 'Spring', 2021, true);
+INSERT INTO term (reqs_id, semester, year, is_current) VALUES (1, 'Fall', 2014, null);

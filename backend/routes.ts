@@ -4,9 +4,9 @@ import { Pool } from "pg";
 const usersRouter = Router();
 
 const pool = new Pool({
-    user: "camss",
+    user: "cams",
     password: "pswd",
-    database: "camss",
+    database: "cams",
     host: "localhost",
     port: 5432
 });
@@ -87,11 +87,11 @@ usersRouter.get('/all_profs', async (req, res) => {
   usersRouter.get('/get_suboutcome_grade/:ass_id/:score_id', async (req, res) => {
     try{
         const {ass_id, score_id} = req.params
-        const get_current_term = await pool.query(`SELECT get_grade($1,$2)`, [ass_id,score_id]);
-        res.json(get_current_term.rows);
+        const get_suboutcome_grade = await pool.query(`SELECT get_grade($1,$2)`, [ass_id,score_id]);
+        res.json(get_suboutcome_grade.rows);
     }
     catch(err ){
-        console.log(err, 'error has occurred in backend function "get_current_term"')
+        console.log(err, 'error has occurred in backend function "get_suboutcome_grade"')
     }
   });
 
@@ -124,9 +124,7 @@ usersRouter.get('/all_profs', async (req, res) => {
 
     usersRouter.post("/add_prof", async(req, res) => {
         try{
-            // console.log('hit backend')
             const {prof_email, f_name, l_name, department} = req.body;
-            // console.log(req.body)
             const add_prof = await pool.query(`
             INSERT INTO prof 
             (prof_email, f_name, l_name, department, is_grader, is_admin) 
@@ -156,6 +154,23 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
+    usersRouter.post("/record_comment", async(req, res) => {
+        try{
+            const {assessment_id, score_id, comment} = req.body;
+            console.log('what are the variables at? ', assessment_id, score_id, comment)
+            const record_comment = await pool.query(`
+            INSERT INTO comment (assessment_id, score_id, comment)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (assessment_id, score_id) DO UPDATE
+            SET comment = $3`,
+            [assessment_id, score_id, comment]);
+            res.json(record_comment.rows);
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "record_comment"');
+        }
+    });
+
     usersRouter.post("/take_away_admin", async(req, res) => {
         try{
             const {prof_email} = req.body;
@@ -166,7 +181,7 @@ usersRouter.get('/all_profs', async (req, res) => {
             res.json(take_away_admin.rows);
         }
         catch(err ){
-            console.error(err, 'error has occurred in backend function "make_admin"');
+            console.error(err, 'error has occurred in backend function "take_away_admin"');
         }
     });
 
@@ -199,6 +214,17 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
+    usersRouter.get("/term_check", async(req, res) => {
+        try{
+            const term_check = await pool.query(`
+            SELECT set_current_term()`);
+            res.json(term_check.rows);
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "term_check"');
+        }
+    });
+
     usersRouter.post("/set_capstone_prof", async(req, res) => {
         try{
             const {prof_email} = req.body;
@@ -208,18 +234,6 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
         catch(err ){
             console.error(err, 'error has occurred in backend function "set_capstone_prof"');
-        }
-    });
-
-    usersRouter.post("/update_term", async(req, res) => {
-        try{
-            const {semester, year} = req.body;
-            const update_term = await pool.query(`SELECT set_term($1,$2)`,
-                [semester, year]);
-            res.json(update_term.rows);
-        }
-        catch(err ){
-            console.error(err, 'error has occurred in backend function "update_term"');
         }
     });
 
@@ -267,12 +281,12 @@ usersRouter.get('/all_profs', async (req, res) => {
         try{
             const {prof_email} = req.body;
 
-            const new_assessments = await pool.query(`SELECT add_assessments_by_prof($1)`, [prof_email]);
-            res.json(new_assessments.rows);
-            console.log(new_assessments.rows)
+            const add_assessments_by_prof = await pool.query(`SELECT add_assessments_by_prof($1)`, [prof_email]);
+            res.json(add_assessments_by_prof.rows);
+            console.log(add_assessments_by_prof.rows)
         }
         catch(err ){
-            console.error(err, 'error has occurred in backend function "new_assessments"');
+            console.error(err, 'error has occurred in backend function "add_assessments_by_prof"');
         }
     });
 
@@ -305,18 +319,6 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
-    usersRouter.delete("/delete_assessments_by_prof/:prof_email", async(req, res) => {
-        try{
-            const {prof_email} = req.params;
-            const deleted_assessments = await pool.query(`
-            DELETE FROM assessment WHERE prof_email = $1 AND term_id = get_current_term();`, [prof_email]);
-            res.json(deleted_assessments.rows);
-        }
-        catch(err ){
-            console.error(err, 'error has occurred in backend function "deleted"');
-        }
-    });
-
     usersRouter.delete("/delete_project/:project", async(req, res) => {
         try{
             const {project} = req.params;
@@ -331,11 +333,12 @@ usersRouter.get('/all_profs', async (req, res) => {
     usersRouter.delete("/delete_student/:student", async(req, res) => {
         try{
             const {student} = req.params;
+
             const delete_student= await pool.query(`DELETE FROM student WHERE student_id = $1`, [student]);
             res.json(delete_student);
         }
         catch(err ){
-            console.error("error has occured in backend function 'delete_student'");
+            console.error(err, "error has occured in backend function 'delete_student'");
         }
     });
 
