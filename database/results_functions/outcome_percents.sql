@@ -1,4 +1,5 @@
-create or replace function get_outcome_percents(sem text, ye int, degree text) returns table(
+create or replace function get_outcome_percents(sem text, ye int, degree text) returns
+table(
     cat_description text,
     cat_id int,
     poor_percent FLOAT,
@@ -12,6 +13,12 @@ declare
 f text[];
 g int[];
 v text;
+sub_id int;
+reqs int[];
+out_reqs int[];
+out_req int;
+req int;
+t_id int;
 term int;
 score text;
 t bigint;
@@ -26,14 +33,15 @@ ep float;
 begin
 
 select get_term_id from get_term_id(sem, ye) into term;
-execute 'select suboutcomes_'|| (SELECT lower(degree)) ||' from sem_req where term_id = '|| term ||';' into f;
-execute 'select outcome_cats_'|| (SELECT lower(degree)) ||' from sem_req where term_id = '|| term ||';' into g;
+select reqs_id from term where term_id = get_term_id(sem, year) into t_id;
+execute 'select array(select id from suboutcome_details_'|| (SELECT lower(degree)) ||' where reqs_id = '|| t_id ||' order by order_float)' into reqs;
+
 
 drop table if exists curr;
-raise notice '%', term;
-create temporary table if not exists curr(
-    cat_id text,
+create table if not exists curr(
+    cat_id int,
     s_id text,
+    id int,
     s_description text,
     poor_count bigint default 0,
     satisfactory_count bigint default 0,
@@ -47,13 +55,20 @@ create temporary table if not exists curr(
 );
 
 BEGIN
-   FOREACH v IN array f
+   FOREACH req IN array reqs
   Loop
-  execute 'insert into curr(s_id) values (''' || v || ''');
-        update curr set cat_id = (SELECT outcome_cat_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where score_id = ''' || v || ''') where s_id = ''' || v || ''';
-        update curr set s_description = (SELECT suboutcome_description from suboutcome_details_'|| (SELECT lower(degree)) ||' where score_id = ''' || v || ''') where s_id = ''' || v || ''';';
+  execute 'insert into curr(id) values ('|| req ||');
+        update curr set s_id = (SELECT score_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';
+        update curr set cat_id = (SELECT outcome_cat_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';
+        update curr set s_description = (SELECT suboutcome_description from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';';
     END LOOP;
 END;
+
+execute 'update curr set cat_id =
+    (select '|| (SELECT lower(degree)) ||'_cat_id 
+    from outcome_details_'|| (SELECT lower(degree)) ||' 
+    where curr.cat_id = outcome_details_'|| (SELECT lower(degree)) ||'.id);';
+
 
 for score in select s_id from curr
 loop
@@ -76,6 +91,9 @@ select (poor_count/total::float) from curr where s_id = score into pp;
 select (developing_count/total::float) from curr where s_id = score into dp;
 select (satisfactory_count/total::float) from curr where s_id = score into sp;
 select (excellent_count/total::float) from curr where s_id = score into ep;
+end loop;
+
+
 
 drop TABLE if exists percents;
 create temporary table if not exists percents(
@@ -90,19 +108,22 @@ update curr set poor_count = 0 where poor_count is null;
 update curr set developing_count = 0 where developing_count is null;
 update curr set satisfactory_count = 0 where satisfactory_count is null;
 update curr set excellent_count = 0 where excellent_count is null;
+
+execute 'select array(select '|| (SELECT lower(degree)) ||'_cat_id from outcome_details_'|| (SELECT lower(degree)) ||' where reqs_id = '|| t_id ||' order by order_float)' into out_reqs;
+
 BEGIN
-   FOREACH v IN array g
+   FOREACH out_req IN array out_reqs
   Loop
   execute 'insert into percents(cat_id, poor_percent, developing_percent, satisfactory_percent, excellent_percent)
-            values (' || v || ',
-            (select  ROUND(sum(poor_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| v ||'),
-            (select ROUND(sum(developing_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| v ||'),
-            (select ROUND(sum(satisfactory_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| v ||'),
-            (select ROUND(sum(excellent_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| v ||'));';
+            values (' || out_req || ',
+            (select  ROUND(sum(poor_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| out_req ||'),
+            (select ROUND(sum(developing_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| out_req ||'),
+            (select ROUND(sum(satisfactory_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| out_req ||'),
+            (select ROUND(sum(excellent_count) / sum(total)* 100, 2) from curr where cat_id::INT = '|| out_req ||'));';
     END LOOP;
     
 END;
-end loop;
 return query
 execute 'select outcome_details_'|| (SELECT lower(degree)) ||'.outcome_description, percents.* from percents left join outcome_details_'|| (SELECT lower(degree)) ||' on percents.cat_id = outcome_details_'|| (SELECT lower(degree)) ||'.'|| (SELECT lower(degree)) ||'_cat_id;';
+
 end; $$ language plpgsql;

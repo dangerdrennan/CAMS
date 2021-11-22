@@ -1,9 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
 import { Observable } from 'rxjs';
 import { Professor } from '../prof';
-import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +40,13 @@ export class ProfDashboardService {
   getAllProfs(): Observable<Professor> {
     return this.http.get<Professor>(this.endPoint + '/all_profs')
   }
+
+  newTermCheck(): Observable<any> {
+    console.log('hit in prof_dash')
+    return this.http.get<any>(this.endPoint + '/term_check')
+  }
+
+
 
 
 }

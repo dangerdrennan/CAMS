@@ -1,5 +1,5 @@
 export interface PastAssessmentDisplay {
-    cat_id: string,
+    cat_id: number,
     s_id: string,
     s_description: string,
     poor_count: number,

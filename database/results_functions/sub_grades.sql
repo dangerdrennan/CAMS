@@ -21,5 +21,3 @@ RETURN QUERY EXECUTE '(SELECT '''||score_id||''',
             degree = '''|| degree ||'''  
             and graded = true and term_id = '|| past_term ||');';
 end; $$ language plpgsql;
-
---------------------------------- PROBLEM FUNCTION!!!!!

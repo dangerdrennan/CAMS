@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { concat, Observable, Subscription } from 'rxjs';
-import { last, take, takeLast, map, takeUntil, first } from 'rxjs/operators';
+import { Observable, } from 'rxjs';
+import { last, first } from 'rxjs/operators';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
-import { SemesterReqs } from '../SemesterReqs';
 import { ResultsService } from '../services/results.service';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutcomeTrends } from '../OutcomeTrends';
@@ -32,6 +31,8 @@ export class PastAssessmentsComponent implements OnInit {
   outcome_cats_cse: number[]
   suboutcomes_cs: string[]
   suboutcomes_cse:string[]
+  out_names_cs: number[]
+  out_names_cse: number[]
   allInfo: PastAssessmentDisplay[]
 
   allCSInfo: PastAssessmentDisplay[]
@@ -60,7 +61,7 @@ export class PastAssessmentsComponent implements OnInit {
       degree: ['', Validators.required]
     })
     this.categoryForm = this.builder.group({
-      selected: ["1", Validators.required]
+      selected: [1, Validators.required]
     })
   }
 
@@ -74,7 +75,7 @@ export class PastAssessmentsComponent implements OnInit {
     this.displayPast = true;
     this.changeOutcomes(this.defaultOutcome)
     this.categoryForm.setValue({
-      selected: "1"
+      selected: 1
     })
   }
 
@@ -94,7 +95,7 @@ export class PastAssessmentsComponent implements OnInit {
     // give the subscription time to finish before using its returned value
     setTimeout(() => {
       this.getOutcomePercents()
-    },200)
+    },500)
 
     this.resultsService.getAllPast(term, Number(year), degree).subscribe( res=> {
       this.allInfo = res
@@ -141,6 +142,8 @@ export class PastAssessmentsComponent implements OnInit {
       this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(first()).subscribe(
         res => {
           console.log("res ", res)
+          this.out_names_cs = res.out_name_cs
+          this.out_names_cse = res.out_name_cse
           this.outcome_cats_cs = res.outcome_cats_cs
           this.outcome_cats_cse = res.outcome_cats_cse
           this.suboutcomes_cs = res.suboutcomes_cs
@@ -162,7 +165,7 @@ export class PastAssessmentsComponent implements OnInit {
                 }
               })
             })
-          }, 200)
+          }, 500)
         }
       )
     }
@@ -170,6 +173,8 @@ export class PastAssessmentsComponent implements OnInit {
     else if(degree === 'CSE') {
       this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(last()).subscribe(
         res => {
+          this.out_names_cs = res.out_name_cs
+          this.out_names_cse = res.out_name_cse
           this.outcome_cats_cs = res.outcome_cats_cs
           this.outcome_cats_cse = res.outcome_cats_cse
           this.suboutcomes_cs = res.suboutcomes_cs
@@ -190,7 +195,7 @@ export class PastAssessmentsComponent implements OnInit {
                 }
               })
             })
-          }, 200)
+          }, 500)
         }
       )
     }
@@ -245,7 +250,7 @@ export class PastAssessmentsComponent implements OnInit {
             this.subInfo.push(item)
           }
         })
-      }, 200)
+      }, 500)
     }
     console.log("subinfo ", this.subInfo)
     return this.subInfo
@@ -295,7 +300,7 @@ export class PastAssessmentsComponent implements OnInit {
 
       // append the results to array for easy access
       this.totals.push(poorTot, developTot, satisTot, excelTot)
-    }, 200)
+    }, 500)
 
   }
 

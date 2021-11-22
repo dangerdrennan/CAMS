@@ -67,14 +67,13 @@ export class AdminService {
     return this.http.post<Accessor[]>(url, accessor, httpOptions)
   }
 
-  addAssessmentsForNewGrader(accessor:Accessor): Observable<any[]>{
+  addAssessmentsForNewGrader(accessor:Accessor): Observable<string[]>{
     const url = `${this.endPoint}/add_assessments_by_prof`;
-    return this.http.post<any[]>(url, accessor, httpOptions)
+    return this.http.post<string[]>(url, accessor, httpOptions)
   }
 
   setProfAsNongrader(accessor: Accessor){
     this.revokeGraderStatus(accessor).pipe(takeUntil(this.notifier)).subscribe()
-    this.deleteNongraderAssessments(accessor).pipe(takeUntil(this.notifier)).subscribe()
   }
 
   revokeGraderStatus(accessor: Accessor): Observable<Accessor[]>{
@@ -82,26 +81,8 @@ export class AdminService {
     return this.http.post<Accessor[]>(url, accessor, httpOptions)
   }
 
-  deleteNongraderAssessments(accessor: Accessor): Observable<any>{
-    const url = `${this.endPoint}/delete_assessments_by_prof/${accessor.prof_email}`;
-    return this.http.delete<any>(url)
-  }
-
-  updateTerm(semester:string, year:number): Observable<any>{
-    const url = `${this.endPoint}/update_term`;
-    return this.http.post<any[]>(url, {semester, year}, httpOptions)
-  }
-
-  getCurrentTerm(): Observable<any>{
-    return this.http.get<any>(this.endPoint + '/current_term')
-  }
-
-  // not sure if we want this or not, but we have it
-  // populates the assessment table with every grader and
-  // every student
-  populateSemester(): Observable<any>{
-    const url = `${this.endPoint}/populate_semester`;
-    return this.http.post<any[]>(url, {'empty': 'object'}, httpOptions)
+  getCurrentTerm(): Observable<number>{
+    return this.http.get<number>(this.endPoint + '/current_term')
   }
 
   ngOnDestory(){

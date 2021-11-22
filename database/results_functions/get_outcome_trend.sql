@@ -1,3 +1,5 @@
+-- NOTE: not implemented but could be useful, not ready to delete quite yet 11/20/21
+
 create or replace function outcome_trends (cat_id int)
 RETURNS TABLE(
     total BIGINT,

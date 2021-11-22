@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { Observable } from 'rxjs';
-import { shareReplay, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { AssessmentService } from '../services/assessment.service';
 import { AssessmentDisplay } from '../AssessmentDisplay';
@@ -16,6 +15,7 @@ import { ScoreComment } from '../ScoreComment';
 export class AssessmentComponent implements OnInit {
   grades: { score_id: string, grade: number}[] = []
   outcome_des: OutcomeDescriptions[] = []
+  outcome_names: number[] = []
   outcome_cats?: number[]
   assessmentInfo: AssessmentDisplay
   submissionStatus: boolean
@@ -32,11 +32,13 @@ export class AssessmentComponent implements OnInit {
     this.assessmentService.getCurrentSemesterRequirements().pipe(take(1)).subscribe(res=> {
       if (this.assessmentInfo.degree =='CS'){
       this.outcome_cats = res.outcome_cats_cs
+      this.outcome_names = res.out_name_cs
       this.setDescriptions(this.outcome_cats, 'CS')
 
     }
     else if (this.assessmentInfo.degree =='CSE'){
       this.outcome_cats = res.outcome_cats_cse
+      this.outcome_names = res.out_name_cse
       this.setDescriptions(this.outcome_cats, 'CSE')
     }
     })

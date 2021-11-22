@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { Professor } from '../prof';
 import { ProfDashboardService } from './prof-dashboard.service'
 
@@ -37,11 +37,13 @@ export class LoginService{
       })
     })
 
+    this.profDashService.newTermCheck().pipe(take(1)).subscribe()
+
     this.auth.isAuthenticated$.subscribe(res => {
       this.isLoggedIn = res!
     })
   }
 
-
+  
 
 }

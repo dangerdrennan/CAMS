@@ -11,8 +11,8 @@
               <div>
                 <!-- style="height:650px;width:1500px;overflow:auto;" -->
                 <div >
-                  <div *ngFor="let req of outcome_cats">
-                    <strong style="font-size: larger;font-family: 'Mulish';">{{req}}</strong>
+                  <div *ngFor="let req of outcome_cats; index as i">
+                    <strong style="font-size: larger;font-family: 'Mulish';">{{this.outcome_names[i]}}</strong>
                       <app-suboutcome class= 'scroll'
                       [outcome_cat] = "req"
                       [assID] = "this.assessmentInfo.assessment_id"

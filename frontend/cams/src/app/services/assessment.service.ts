@@ -54,7 +54,7 @@ export class AssessmentService {
   submitAssessment(grades: { score_id: string, grade:number}[],comments:ScoreComment[]): boolean{
     try{
       this.recordAllSuboutcomeScores(grades)
-      //this.recordAllComments(comments)
+      this.recordAllComments(comments)
     }catch(err){
       console.log(err)
       alert(err)
@@ -95,7 +95,7 @@ export class AssessmentService {
 
   recordSingleComment(comment:ScoreComment){
     console.log('in record comment:', comment)
-    const url = `${this.endPoint}/record_comment/${this.assID}`
+    const url = `${this.endPoint}/record_comment`
     return this.http.post<{ score_id: number}>(url, comment, httpOptions);
   }
 

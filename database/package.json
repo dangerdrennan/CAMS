@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run create_admin && npm run create_tables && npm run populate_all",
-    "create_admin": "psql -U postgres -f create_admin.sql",
-    "create_tables": "psql -U cams -d cams -f create_tables.sql",
-    "populate_all": "psql -U cams -d cams -f populate_all.sql"
+    "create_admin": "psql -U postgres -f set_up/create_admin.sql",
+    "create_tables": "psql -U cams -d cams -f set_up/create_tables.sql",
+    "populate_all": "psql -U cams -d cams -f set_up/populate_all.sql"
   },
   "author": "",
   "license": "ISC"

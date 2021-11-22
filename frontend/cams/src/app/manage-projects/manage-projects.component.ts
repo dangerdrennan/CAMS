@@ -157,7 +157,7 @@ export class ManageProjectsComponent implements OnInit {
   // trigger to delete a student from a project in the modal
   deleteStudFromProjInModal(student: Student) {
     this.projectService.deleteStudent(student.student_id!).subscribe(() => {
-      location.reload()
+      //location.reload()
     })
   }
 
@@ -165,7 +165,11 @@ export class ManageProjectsComponent implements OnInit {
   generateAssessments(stud: Student) {
     this.projectService.addAssessment(stud).subscribe(() => {
     })
+
+    //location.reload()
+
     // location.reload()
+
   }
 
   getSemYear(){

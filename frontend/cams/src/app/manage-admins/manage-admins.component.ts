@@ -98,8 +98,6 @@ export class ManageAdminsComponent implements OnInit {
 
     }
 
-
-
   }
 
   // trigger to update grader first name or last name or department
@@ -191,18 +189,23 @@ export class ManageAdminsComponent implements OnInit {
 
   // trigger to remove professor as a system administrator
   submitRemoveAdmin(index: number) {
-    this.revokePermissions(this.graders[index])
+    if (this.graders.filter(x=> x.is_admin).length > 1){
+      this.revokePermissions(this.graders[index])
+    }
+    else{
+      alert('There must be at least one admin.')
+    }
   }
 
-  // trigger to update the current term
-  submitUpdateTerm() {
-    let term = this.setTermForm.get("semester")?.value
-    let year = Number(this.setTermForm.get("year")?.value)
-    this.updateTerm(term, year)
-
-    this.semester = term
-    this.year = year
+  constantAdminCheck(): boolean{
+    if (this.graders.filter(x=> x.is_admin).length > 1){
+      return true
+    }
+    else{
+      return false
+    }
   }
+
 
   // get all current graders
   getCurrentAssessors(){
@@ -221,14 +224,9 @@ export class ManageAdminsComponent implements OnInit {
   }
 
   updateProfName(accessor:Accessor){
-    //, f_name:string, l_name:string, department:string
-    // accessor.f_name = f_name
-    // accessor.l_name = l_name
-    // accessor.department = department
     this.adminService.updateProf(accessor).pipe(first()).subscribe(() => {
       this.editGraderForm.reset()
     })
-    //
   }
 
   makeProfAdmin(accessor:Accessor){
@@ -260,15 +258,6 @@ export class ManageAdminsComponent implements OnInit {
       this.year = res[0].year
     })
   }
-
-  updateTerm(semester:string, year:number){
-    this.adminService.updateTerm(semester,year).pipe(first()).subscribe()
-  }
-
-  populateCurrentSemester(){
-    this.adminService.populateSemester().pipe(first()).subscribe()
-  }
-
 
   ngOnDestroy(){
     this.notifier.next()

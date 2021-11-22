@@ -63,10 +63,10 @@ export class OutcomeTrendsComponent implements OnInit {
 
   
 
-  getSubDescriptions(cat_name: string){
-    const cat_id = parseInt(cat_name)
-    return this.resultsService.getSuboutcomesByCategory(cat_id, this.degree).pipe(take(1))
-  }
+  // getSubDescriptions(cat_name: string){
+  //   const cat_id = parseInt(cat_name)
+  //   return this.resultsService.getSuboutcomesByCategory(cat_id, this.degree).pipe(take(1))
+  // }
 
   getSingleScore(cat: number | string, score:string) {
     return 0
