@@ -5,69 +5,83 @@
 
     <!-- sidebar admin -->
     <div *ngIf="this.loginService.userAdmin;else prof">
-      <div class="tabs">
-        <!-- 'Assessment' link stays as home for admin since it starts there. -->
+      <!-- <div class="tabs">
+        <!-- 'Assessment' link stays as home for admin since it starts there.
         <a routerLink="/home" class="nav-link" routerLinkActive="active">
           <div class="tabs_title ">Home</div>
           <img class="tabs_icon" src="../../../assets/images/dashboard_customize_white_24dp.svg" alt="assessment_icon">
         </a>
 
+      </div> -->
+      <div *ngFor="let i of this.headerService.titles">
+        <div class="tabs">
+          <a routerLink="/past-results" class="nav-link" routerLinkActive="active">
+            <div class="tabs_title ">{{i.past_results}}</div>
+            <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
+          </a>
+
+        </div>
+        <div class="tabs">
+          <a routerLink="/manage-admins" class="nav-link" routerLinkActive="active">
+            <img class="tabs_icon" src="../../../assets/images/groups_white_24dp.svg" alt="admin_icon">
+            <div class="tabs_title">{{i.manage_admins}}</div>
+          </a>
+        </div>
+        <div class="tabs">
+          <a routerLink="/manage-projects" class="nav-link" routerLinkActive="active">
+            <div class="tabs_title ">{{i.manage_projects}}</div>
+            <img class="tabs_icon" src="../../../assets/images/manage_accounts_white_24dp.svg" alt="project_icon">
+          </a>
+
+        </div>
+        <div class="tabs">
+          <a routerLink="/past-projects" class="nav-link" routerLinkActive="active">
+            <div class="tabs_title ">{{i.past_projects}}</div>
+            <img class="tabs_icon" src="../../../assets/images/assignment_return_white_24dp.svg" alt="project_icon">
+          </a>
+
+        </div>
+        <div class="tabs">
+          <a routerLink="/projects" class="nav-link" routerLinkActive="active">
+            <div class="tabs_title ">{{i.projects}}</div>
+            <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
+          </a>
+
+        </div>
+
+
+        <div class="tabs_logout">
+          <img class="tabs_icon" src="../../../assets/images/logout_white_24dp.svg" alt="logout_icon">
+          <div class="tabs_title" (click)="logout()">{{i.logout}}</div>
+        </div>
       </div>
 
-      <div class="tabs">
-        <a routerLink="/past-assessments" class="nav-link" routerLinkActive="active">
-          <div class="tabs_title ">Assessments</div>
-          <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
-        </a>
+    </div>
 
-      </div>
-      <div class="tabs">
-        <a routerLink="/admins" class="nav-link" routerLinkActive="active">
-          <img class="tabs_icon" src="../../../assets/images/groups_white_24dp.svg" alt="admin_icon">
-          <div class="tabs_title">Manage Admins</div>
+    <!-- sidebar prof -->
+    <ng-template #prof>
+      <div *ngFor="let i of this.headerService.titles">
+        <div class="tabs">
+          <!-- 'Projects' link stays as home for prof since it starts there. -->
+          <a routerLink="/projects" class="nav-link" routerLinkActive="active">
+              <div class="tabs_title ">{{i.projects}}</div>
+            <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
         </a>
       </div>
       <div class="tabs">
-        <a routerLink="/manage-projects" class="nav-link" routerLinkActive="active">
-          <div class="tabs_title ">Manage Projects</div>
-          <img class="tabs_icon" src="../../../assets/images/manage_accounts_white_24dp.svg" alt="project_icon">
-        </a>
-
-      </div>
-      <div class="tabs">
-        <a routerLink="/projects" class="nav-link" routerLinkActive="active">
-          <div class="tabs_title ">Projects</div>
-          <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
+        <a routerLink="/past-projects" class="nav-link" routerLinkActive="active">
+          <div class="tabs_title ">{{i.past_projects}}</div>
+          <img class="tabs_icon" src="../../../assets/images/assignment_return_white_24dp.svg" alt="project_icon">
         </a>
 
       </div>
 
       <div class="tabs_logout">
         <img class="tabs_icon" src="../../../assets/images/logout_white_24dp.svg" alt="logout_icon">
-        <div class="tabs_title" (click)="logout()">Logout</div>
+          <div class= "tabs_title" (click)= "logout()">{{i.logout}}</div>
       </div>
-    </div>
+      </div>
 
-    <!-- sidebar prof -->
-    <ng-template #prof>
-        <div class="tabs">
-            <!-- 'Projects' link stays as home for prof since it starts there. -->
-            <a routerLink="/home" class="nav-link" routerLinkActive="active">
-                <div class="tabs_title ">Projects</div>
-              <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
-          </a>
-        </div>
-        <!-- Only display when taking assessment -->
-        <div class="tabs" *ngIf="this.profDashService.isAssessing">
-            <a routerLink="/assessment" class="nav-link" routerLinkActive="active" >
-                <div class="tabs_title ">Assessments</div>
-              <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
-            </a>
-        </div>
-        <div class="tabs_logout">
-          <img class="tabs_icon" src="../../../assets/images/logout_white_24dp.svg" alt="logout_icon">
-            <div class= "tabs_title" (click)= "logout()">Logout</div>
-        </div>
 
     </ng-template>
 </div>

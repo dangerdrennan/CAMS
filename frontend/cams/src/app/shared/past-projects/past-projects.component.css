@@ -1,0 +1,33 @@
+@media (max-width: 768px) {
+  .table-scroll {
+    position: relative;
+    height: 80%;
+    background: #FFFFFF;
+    border: 1px solid #DFE0EB;
+    border-radius: 8px;
+    margin-bottom: 20px !important;
+    overflow-y: scroll !important;
+  }
+
+  thead {
+    height: 5%;
+    font-size: small;
+  }
+
+  tr {
+    height: 15%;
+    font-size: small;
+  }
+}
+
+/* desktop styling */
+.table-scroll {
+  position: relative;
+  height: 80%;
+
+  background: #FFFFFF;
+  border: 1px solid #DFE0EB;
+  border-radius: 8px;
+  margin-bottom: 10px !important;
+  overflow-y: scroll !important;
+}
