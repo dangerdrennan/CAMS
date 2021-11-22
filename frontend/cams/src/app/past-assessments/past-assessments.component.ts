@@ -228,6 +228,12 @@ export class PastAssessmentsComponent implements OnInit {
       .subscribe(res=> {
         console.log('all Descriptions ', res)
         this.displayTitle = res
+        for(let i = 0; i < this.displayTitle.length; i++) {
+          if(this.displayTitle[i].cat_id == id) {
+            let inText = document.getElementById('outcomeDescription')
+            inText.innerText = this.displayTitle[i].cat_description
+          }
+        }
       })
 
       // give the subscription time to finish before using its returned value
