@@ -74,6 +74,18 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+  //test to pass array in req body
+  usersRouter.post('/pass_array_test', async (req, res) => {
+    try{
+        const {cats} = req.body
+        const pass_array_test = await pool.query(`select my_method()`);
+        res.json(pass_array_test.rows);
+    }
+    catch(err ){
+        console.log('error has occurred in backend function "current_proj"')
+    }
+  });
+
   usersRouter.get('/students_by_project/:id', async (req, res) => {
     try{
         const {id} = req.params
@@ -107,6 +119,19 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
     catch(err ){
         console.log(err, 'error has occurred in backend function "get_current_term"')
+    }
+  });
+
+  usersRouter.get('/outcome_trends/:sem/:year/:degree', async (req, res) => {
+    try{
+        const {sem, year, degree} = req.params
+        const outcome_trends = await pool.query(`
+        SELECT * from get_outcome_percents($1,$2,$3)`, [sem,year,degree]);
+        console.log(outcome_trends.rows);
+        res.json(outcome_trends.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "outcome_trends"')
     }
   });
   
@@ -410,8 +435,10 @@ usersRouter.get('/all_profs', async (req, res) => {
             ON s.proj_id = p.proj_id
         INNER JOIN term t
             ON t.term_id = a.term_id
+        INNER JOIN get_current_term()
+            ON t.term_id <> (select * from get_current_term())
         WHERE
-            pr.prof_email = $1 and p.term_id = get_current_term()`,
+            pr.prof_email = ($1);`,
         [email]);
         res.json(current_assessments_by_prof.rows);
     }
@@ -464,7 +491,65 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
-  usersRouter.get('/get_cs_outcome_desc/:degree/:ids', async (req, res) => {
+  usersRouter.get('/past_outcome_reqs/:sem/:year', async (req, res) => {
+    try{
+        const {sem, year} = req.params
+        console.log('/past_outcome_reqs/:sem/:year ', sem, year)
+        const past_outcome_reqs = await pool.query(`
+        SELECT outcome_cats_cs, outcome_cats_cse, suboutcomes_cs, suboutcomes_cse FROM sem_req INNER JOIN get_term_id($1,$2) ON sem_req.term_id = get_term_id`,
+        [sem,year]);
+        //SELECT * from sem_req INNER JOIN get_term_id('Fall', 2021) ON sem_req.term_id = get_term_id;
+        res.json(past_outcome_reqs.rows[0]);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "past_outcome_reqs"')
+    }
+  });
+
+  usersRouter.get('/all_past_info/:sem/:year/:degree', async (req, res) => {
+    try{
+        const {sem, year,degree} = req.params
+        console.log('sem at ', sem, ' year at ', year, ' degree at ', degree)
+        const all_past_info = await pool.query(`
+        SELECT * from super_cs_grader($1, $2, $3)`, [sem, year, degree]);
+        //SELECT * from sem_req INNER JOIN get_term_id('Fall', 2021) ON sem_req.term_id = get_term_id;
+        res.json(all_past_info.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "all_past_info"')
+    }
+  });
+
+  
+
+  usersRouter.get('/sub_descriptions/:degree/:id', async (req, res) => {
+    try{
+        const {degree, id} = req.params
+        console.log(id)
+        if (degree == 'CS'){
+            let query = `
+           select * from get_cs_sub_descriptions(${id});`
+            // console.log('this query is at ', query)
+
+            const sub_descriptions = await pool.query(`${query};`);
+            res.json(sub_descriptions.rows);
+        }
+        else {
+            let query = `
+            select * from get_cse_sub_descriptions(${id});`
+            // console.log('this query is at ', query)
+
+            const sub_descriptions = await pool.query(`${query};`);
+            res.json(sub_descriptions.rows);
+        }
+        }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "sub_descriptions"')
+    }
+  });
+
+
+  usersRouter.get('/get_outcome_desc/:degree/:ids', async (req, res) => {
     try{
         const {degree, ids} = req.params
         console.log(ids)
@@ -473,39 +558,48 @@ usersRouter.get('/all_profs', async (req, res) => {
             SELECT cs_cat_id AS cat_id, outcome_description FROM outcome_details_cs WHERE cs_cat_id in (${ids})`
             console.log('this query is at ', query)
 
-            const get_cs_outcome_desc = await pool.query(`${query};`);
-            res.json(get_cs_outcome_desc.rows);
+            const get_outcome_desc = await pool.query(`${query};`);
+            res.json(get_outcome_desc.rows);
         }
         else {
             let query = `
             SELECT cse_cat_id AS cat_id, outcome_description FROM outcome_details_cse WHERE cse_cat_id in (${ids})`
             console.log('this query is at ', query)
 
-            const get_cs_outcome_desc = await pool.query(`${query};`);
-            res.json(get_cs_outcome_desc.rows);
+            const get_outcome_desc = await pool.query(`${query};`);
+            res.json(get_outcome_desc.rows);
         }
         }
     catch(err ){
-        console.log(err, 'error has occurred in backend function "get_cs_outcome_desc"')
+        console.log(err, 'error has occurred in backend function "get_outcome_desc"')
     }
   });
 
-  usersRouter.get('/get_cse_outcome_desc/:ids', async (req, res) => {
+  usersRouter.get('/get_past_outcome_desc/:degree/:ids/:semester/:year', async (req, res) => {
     try{
-        const {ids} = req.params
+        const {degree, ids} = req.params
         console.log(ids)
-        // const num_array = ids.array.forEach(element => {
-            
-        // });
-        let query = `
-        SELECT * FROM outcome_details_cse WHERE cse_cat_id in (${ids})`
-        console.log('this query is at ', query)
+        if (degree == 'CS'){
+            let query = `
+            SELECT cs_cat_id AS cat_id, outcome_description
+             FROM outcome_details_cs WHERE
+              term_id = get_term_id() and cs_cat_id in (${ids})`
+            console.log('this query is at ', query)
 
-        const get_cse_outcome_desc = await pool.query(`${query};`);
-        res.json(get_cse_outcome_desc.rows);
-    }
+            const get_past_outcome_desc = await pool.query(`${query};`);
+            res.json(get_past_outcome_desc.rows);
+        }
+        else {
+            let query = `
+            SELECT cse_cat_id AS cat_id, outcome_description FROM outcome_details_cse WHERE term_id = get_current_term() and cse_cat_id in (${ids})`
+            console.log('this query is at ', query)
+
+            const get_past_outcome_desc = await pool.query(`${query};`);
+            res.json(get_past_outcome_desc.rows);
+        }
+        }
     catch(err ){
-        console.log(err, 'error has occurred in backend function "get_cse_outcome_desc"')
+        console.log(err, 'error has occurred in backend function "get_past_outcome_desc"')
     }
   });
 

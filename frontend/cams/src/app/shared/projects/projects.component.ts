@@ -7,6 +7,7 @@ import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 import { AssessmentDisplay } from 'src/app/AssessmentDisplay';
 
 import { ProjectService } from 'src/app/services/project.service';
+import { ResultsService } from 'src/app/services/results.service';
 
 @Component({
   selector: 'app-projects',
@@ -19,11 +20,25 @@ export class ProjectsComponent implements OnInit {
   currentAssessments: AssessmentDisplay[] = []
 
 
-  constructor(private router: Router, public profDashService: ProfDashboardService, public assessmentService:AssessmentService, loginService:LoginService , public auth:AuthService, public projectService: ProjectService) {
+  constructor(private router: Router,
+    public profDashService: ProfDashboardService,
+    public assessmentService:AssessmentService,
+    loginService:LoginService, 
+    public auth:AuthService,
+    public projectService: ProjectService,
+    public rS:ResultsService) 
+    
+    {
     this.user = loginService.email
     this.auth.user$.subscribe(res => {
       this.user = res!.email
     })
+    rS.getPastSemesterRequirements('Fall',2021).subscribe(
+      res => {
+        console.log(res)
+      }
+    )
+    
   }
 
   ngOnInit(): void {

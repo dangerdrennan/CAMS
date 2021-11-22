@@ -12,8 +12,8 @@
                   <div class="dropdown" style="margin-right: 8px;">
                     <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
                       <option value="">Select Term</option>
-                      <option value="fall">Fall</option>
-                      <option value="spring">Spring</option>
+                      <option value="Fall">Fall</option>
+                      <option value="Spring">Spring</option>
                     </select>
                   </div>
 
@@ -23,6 +23,7 @@
                       <option value="2018">2018</option>
                       <option value="2019">2019</option>
                       <option value="2020">2020</option>
+                      <option value="2021">2021</option>
                     </select>
                   </div>
                 </div>
@@ -54,8 +55,8 @@
                   <div class="dropdown" style="margin-right: 8px;">
                     <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
                       <option value="">Select Term</option>
-                      <option value="fall">Fall</option>
-                      <option value="spring">Spring</option>
+                      <option value="Fall">Fall</option>
+                      <option value="Spring">Spring</option>
                     </select>
                   </div>
 
@@ -65,6 +66,7 @@
                       <option value="2018">2018</option>
                       <option value="2019">2019</option>
                       <option value="2020">2020</option>
+                      <option value="2021">2021</option>
                     </select>
                   </div>
                 </div>
@@ -80,7 +82,7 @@
               </div>
 
               <button type="submit" [disabled]="pastForm.invalid" class="btn btn-success btn-sm" style="margin-left: 12px;"
-                  (click)="findPast()">Find</button>
+                  (click)="findPast();">Find</button>
             </form>
           </div>
         </div>
@@ -89,43 +91,45 @@
 
     <!-- table that displays past assessments -->
     <div class="row" *ngIf="displayPast" >
+      <!-- <form [formGroup]="outcomeForm" placeholder="outcome 1"> -->
       <div class="col-12" style="align-items: center;">
         <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
           <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
               <div *ngIf="this.pastForm.get('degree')?.value ==='CS';else cse">
+                
                 <div class="d-flex justify-content-start">
                   <div id="title">
-                    <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
-                    <ng-template #normal>
-                      <strong>{{this.outcomeTitle[this.outcomeNum - 1]}}</strong>
-                    </ng-template>
+                      <strong *ngFor="let title of this.displayTitle">{{title}}</strong>
                   </div>
                 </div>
-
-                <div class="d-flex justify-content-end">
-                  <div class="dropdown">
-                    <select class="btn btn-secondary btn-sm dropdown-toggle">
-                      <option *ngFor="let i of this.outcomeIdCS" [value]="i" (click)="changeOutcomes(i)">Outcome {{i}}</option>
-                    </select>
+                
+                  <div class="d-flex justify-content-end">
+                    <div class="dropdown">
+                      <form [formGroup]="categoryForm" (change)="changeOutcomes2($event)">
+                      <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
+                        <ng-container >
+                          <option id = "change" *ngFor="let i of this.outcome_cats_cs" [ngValue]= "i" >Outcome {{i}}</option>
+                        </ng-container>
+                      </select>
+                    </form>
+                    </div>
                   </div>
                 </div>
-              </div>
+                
+              
 
 
               <ng-template #cse>
                 <div class="d-flex justify-content-start">
                   <div id="title">
-                    <strong *ngIf="this.outcomeNum-1 === 4;else normal">{{this.outcomeTitle[this.outcomeNum - 2]}}</strong>
-                    <ng-template #normal>
-                      <strong>{{this.outcomeTitle[this.outcomeNum - 1]}}</strong>
-                    </ng-template>
+                    <strong *ngFor="let title of this.displayTitle">{{title}}</strong>
                   </div>
                 </div>
 
                 <div class="d-flex justify-content-end">
                   <div class="dropdown">
                     <select class="btn btn-secondary btn-sm dropdown-toggle">
-                      <option *ngFor="let i of this.outcomeIdCSE" [value]="i" (click)="changeOutcomes(i)">Outcome {{i}}</option>
+                      <option *ngFor="let i of this.outcome_cats_cse" [value]="i" (click)="changeOutcomes(i)" >Outcome {{i}}</option>
                     </select>
                   </div>
                 </div>
@@ -144,74 +148,84 @@
                 </tr>
               </thead>
 
-               <tbody>
-                <tr *ngFor="let j of this.subTitle">
-                  <td scope="col" >{{j}}</td>
-                  <td scope="row">1</td>
-                  <td scope="row">2</td>
-                  <td scope="row">3</td>
-                  <td scop="row">4</td>
-                  <td scop="row">11</td>
+               <tbody >
 
-                </tr>
-                <tr >
-                  <th scope="row">Total</th>
-                  <td scope="row">1</td>
-                  <td scope="row">2</td>
-                  <td scope="row">3</td>
-                  <td scop="row">4</td>
-                  <td scop="row">11</td>
-                </tr>
-                <tr>
-                  <th scope="row">Percentages</th>
-                  <td scope="row">1%</td>
-                  <td scope="row">2%</td>
-                  <td scope="row">3%</td>
-                  <td scop="row">4%</td>
-                  <td scop="row">%100</td>
-                </tr>
+                  <!-- <tr *ngFor="let item of this.allCSInfo"> -->
+
+                    <!-- <div *ngFor="let o in result; index as i"> -->
+                  <tr *ngFor="let sub of this.subInfo">
+                    <td scope="col" >{{sub.s_description}}</td>
+                    <td scope="row">{{sub.poor_count}}</td>
+                    <td scope="row">{{sub.developing_count}}</td>
+                    <td scope="row">{{sub.satisfactory_count}}</td>
+                    <td scope="row">{{sub.excellent_count}}</td>
+                    <td scope="row">{{sub.total}}</td>
+                      <!-- </div> -->
+                  </tr>
+                  <tr>
+                    <th scope="row">Total</th>
+                    <td scope="row">{{totals[0]}}</td>
+                    <td scope="row">{{totals[1]}}</td>
+                    <td scope="row">{{totals[2]}}</td>
+                    <td scope="row">{{totals[3]}}</td>
+
+                  </tr>
+                  <tr >
+                    <th scope="row">Percentages</th>
+                    <td scope="row">{{percents[0]}}%</td>
+                    <td scope="row">{{percents[1]}}%</td>
+                    <td scope="row">{{percents[2]}}%</td>
+                    <td scope="row">{{percents[3]}}%</td>
+
+                  </tr>
+
+
               </tbody>
 
             </table>
           </div>
         </div>
+        
       </div>
-    </div>
-
-    <!-- display outcomes table -->
-    <div class="row" *ngIf="displayOutcome">
-      <div class="col-12" style="align-items: center;">
-        <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
-          <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
-
-            <div id="title" style="text-align: center;">
-              <strong>{{this.outcomeForm.get('degree')?.value}} Outcome Trend {{this.outcomeForm.get('year')?.value}}</strong>
-            </div>
-            <table class="table" >
-              <thead >
-                <tr>
-                  <th scope="col">Outcome</th>
-                  <th scope="col">Poor</th>
-                  <th scope="col">Developing</th>
-                  <th scope="col">Satisfactory</th>
-                  <th scope="col">Excellent</th>
-                </tr>
-              </thead>
-
-               <tbody>
-                <tr *ngFor="let j of this.outcomeTitle">
-                  <td scope="row" style="max-width: 140px;">{{j}}</td>
-                  <td scope="row">1%</td>
-                  <td scope="row">2%</td>
-                  <td scope="row">3%</td>
-                  <td scop="row">4%</td>
-                </tr>
-              </tbody>
-
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    
 </div>
+    <!-- display outcomes table -->
+    <!-- <ng-container *ngIf="(this.outcomeTrends$ | async) as result">
+      <div *ngFor="let o of result; index as i">
+        {{result[i].cat_description}}
+      </div>
+    </ng-container> -->
+    <ng-container *ngIf="displayOutcome">
+
+        <div class="col-12" style="align-items: center;">
+          <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
+            <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
+
+              <div id="title" style="text-align: center;">
+                <strong> Outcome Trend</strong>
+              </div>
+              <ng-container *ngIf="(this.outcomeTrends$ | async)">
+              <table class="table" >
+                <thead >
+                  <tr>
+                    <th scope="col">Outcome</th>
+                    <th scope="col">Poor</th>
+                    <th scope="col">Developing</th>
+                    <th scope="col">Satisfactory</th>
+                    <th scope="col">Excellent</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    <tr *ngFor= "let o of this.outcomeTrends">
+                        <td scope="row" style="max-width: 140px;">{{o.cat_description}}</td>
+                        <td scope="row">{{o.poor_percent}}%</td>
+                        <td scope="row">{{o.developing_percent}}%</td>
+                        <td scope="row">{{o.satisfactory_percent}}%</td>
+                        <td scop="row">{{o.excellent_percent}}%</td>
+                    </tr>
+                    </tbody>
+              </table>
+          </ng-container>
+            </div>
+          </div>
+        </div>
