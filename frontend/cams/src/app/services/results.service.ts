@@ -6,6 +6,7 @@ import { OutcomeTrends } from '../OutcomeTrends';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { SemesterReqs } from '../SemesterReqs';
 import { Suboutcome } from '../Suboutcome';
+import { TotesPers } from '../TotesPers';
 
 const httpOptions =
 {
@@ -46,6 +47,11 @@ export class ResultsService {
 
   getOutcomeTrends(sem:string, year:number, degree:string): Observable<OutcomeTrends[]>{
     return this.http.get<OutcomeTrends[]>(`${this.endPoint}/outcome_trends/${sem}/${year}/${degree}`)
+  }
+
+  getTotalsAndPercents(sem:string, year:number, degree:string): Observable<TotesPers[]>{
+    return this.http.get<TotesPers[]>(`${this.endPoint}/totals_and_percents/${sem}/${year}/${degree}`)
+
   }
 
 }

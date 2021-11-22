@@ -105,7 +105,7 @@
                   
                     <div class="d-flex justify-content-end">
                       <div class="dropdown">
-                        <form [formGroup]="categoryForm" (change)="changeOutcomes2($event)">
+                        <form [formGroup]="categoryForm" (change)="changeOutcomes($event)">
                         <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
                           <ng-container >
                             <option id = "change" *ngFor="let i of this.unique" [ngValue]= "i" >Outcome {{i}}</option>
@@ -128,7 +128,7 @@
 
                 <div class="d-flex justify-content-end">
                   <div class="dropdown">
-                    <form [formGroup]="categoryForm" (change)="changeOutcomes2($event)">
+                    <form [formGroup]="categoryForm" (change)="changeOutcomes($event)">
                       <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
                         <ng-container >
                           <option id = "change" *ngFor="let i of this.unique" [ngValue]= "i" >Outcome {{i}}</option>
@@ -166,20 +166,21 @@
                     <td scope="row">{{sub.total}}</td>
                       <!-- </div> -->
                   </tr>
+
                   <tr>
                     <th scope="row">Total</th>
-                    <td scope="row">{{totals[0]}}</td>
-                    <td scope="row">{{totals[1]}}</td>
-                    <td scope="row">{{totals[2]}}</td>
-                    <td scope="row">{{totals[3]}}</td>
+                    <td scope="row">{{this.totes[num].poor_count}}</td>
+                    <td scope="row">{{this.totes[num].developing_count}}</td>
+                    <td scope="row">{{this.totes[num].satisfactory_count}}</td>
+                    <td scope="row">{{this.totes[num].excellent_count}}</td>
 
                   </tr>
                   <tr >
                     <th scope="row">Percentages</th>
-                    <td scope="row">{{percents[0]}}%</td>
-                    <td scope="row">{{percents[1]}}%</td>
-                    <td scope="row">{{percents[2]}}%</td>
-                    <td scope="row">{{percents[3]}}%</td>
+                    <td scope="row">{{this.totes[num].poor_percent}}%</td>
+                    <td scope="row">{{this.totes[num].developing_percent}}%</td>
+                    <td scope="row">{{this.totes[num].satis_percent}}%</td>
+                    <td scope="row">{{this.totes[num].ex_percent}}%</td>
 
                   </tr>
 

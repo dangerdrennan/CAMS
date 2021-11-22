@@ -8,6 +8,7 @@ import { ResultsService } from '../services/results.service';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutcomeTrends } from '../OutcomeTrends';
 import { Total } from '../Total';
+import { TotesPers } from '../TotesPers';
 @Component({
   selector: 'app-past-assessments',
   templateUrl: './past-assessments.component.html',
@@ -37,12 +38,11 @@ export class PastAssessmentsComponent implements OnInit {
   unique: number[]
   num: number
   oldDegree: 'CS' | 'CSE'
-
   allCSInfo: PastAssessmentDisplay[]
   allCSEInfo: PastAssessmentDisplay[]
-
-  totals: any[] = []
-  percents: any[] = []
+  totes: TotesPers[] = []
+  totals: number[] = []
+  percents: number[] = []
   switchDegree: boolean = true
   // get all assessments by term
 
@@ -81,7 +81,7 @@ export class PastAssessmentsComponent implements OnInit {
     this.categoryForm.setValue({
       selected: 1
     })
-    this.changeOutcomes2(this.defaultOutcome)
+    this.changeOutcomes(this.defaultOutcome)
   }
 
   silenceForm(){
@@ -124,27 +124,22 @@ export class PastAssessmentsComponent implements OnInit {
   }
 
   // updates the outcome titles and sub descriptions being viewed
-  changeOutcomes(id: number) {
+  dataChange(id: number) {
     // this.getTitles(id)
     this.getDescription(id)
     this.calculateTotals()
-    this.calculatePercents()
     this.switchDegree = false
     console.log('switchDegree is at ', this.switchDegree)
   }
 
-  // Choose city using select dropdown
-  changeOutcomes2(e) {
+  // check if data is current or if we need new service calls
+  changeOutcomes(e) {
 
     let id = this.categoryForm.get('selected').value
     const eventToNum = parseInt(id)
     console.log('switchDegree is at ', this.switchDegree)
-    console.log('switchDegree is at ', this.switchDegree)
-    console.log('switchDegree is at ', this.switchDegree)
-    console.log('switchDegree is at ', this.switchDegree)
-    console.log('switchDegree is at ', this.switchDegree)
     if (this.switchDegree == true){
-      this.changeOutcomes(id)
+      this.dataChange(id)
       console.log('we are now switching degrees!')
     }
     else{
@@ -155,74 +150,6 @@ export class PastAssessmentsComponent implements OnInit {
 
     }
   }
-
-   // store the past assessment outcome titles
-  // getTitles(id: number) {
-  //   // reset arrays
-  //   this.displayTitle = []
-  //   this.outcomeTitle = []
-  //   let degree = this.pastForm.get('degree').value
-  //   let term = this.pastForm.get('term').value
-  //   let year = this.pastForm.get('year').value
-
-  //   // cs past assessment outcome title
-  //   if(degree === 'CS') {
-  //     this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(first()).subscribe(
-  //       res => {
-  //         this.out_names_cs = res.out_name_cs
-  //         this.resultsService
-  //         .getPastOutcomeDescription(degree, term, year)
-  //         .pipe(first()).subscribe((res) => {
-  //           this.outcomeTitle.push(res);
-  //         });
-
-  //         // give the subscription time to finish before using its returned value
-  //         setTimeout(() => {
-  //           // filter out just the outcome title for easy access
-  //           this.outcomeTitle.forEach((item) => {
-  //             item.filter((i) => {
-  //               if(i.cat_id == id) {
-  //                 this.displayTitle.push(i.outcome_description)
-  //                 console.log(this.displayTitle)
-  //               }
-  //             })
-  //           })
-  //         }, 500)
-  //       }
-  //     )
-  //   }
-  //   // cse past assessment outcome title
-  //   else if(degree === 'CSE') {
-  //     this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(last()).subscribe(
-  //       res => {
-  //         this.out_names_cs = res.out_name_cs
-  //         this.out_names_cse = res.out_name_cse
-  //         this.outcome_cats_cs = res.outcome_cats_cs
-  //         this.outcome_cats_cse = res.outcome_cats_cse
-  //         this.suboutcomes_cs = res.suboutcomes_cs
-  //         this.suboutcomes_cse = res.suboutcomes_cse
-
-  //         this.resultsService
-  //         .getOutcomeTrends(term, year, degree)
-  //         .subscribe((res) => {
-  //           this.outcomeTitle.push(res);
-  //         });
-
-  //         // give the subscription time to finish before using its returned value
-  //         setTimeout(() => {
-  //           this.outcomeTitle.forEach((item) => {
-  //             item.filter((i) => {
-  //               if(i.cat_id == id) {
-  //                 this.displayTitle.push(i.outcome_description)
-  //               }
-  //             })
-  //           })
-  //         }, 500)
-  //       }
-  //     )
-  //   }
-  //   this.displayTitle
-  // }
 
   // get the evaluation criteria from each past assessment sub outcome
   getDescription(id: number) {
@@ -282,74 +209,13 @@ export class PastAssessmentsComponent implements OnInit {
 
   // calculate the column totals of each possible grade i.e poor, developing, satisfactory, excellent
   calculateTotals() {
-    // reset totals array at each new outcome
-    this.totals = []
-    let poorTot = 0
-    let developTot = 0
-    let satisTot = 0
-    let excelTot = 0
-    let tot: Total = {
-      poor_total: [],
-      developing_total: [],
-      satisfactory_total: [],
-      excellent_total: [],
-    }
-
-    // give the subscription time to finish before using its returned value to fill column values
-    setTimeout(() => {
-      this.subInfo.forEach((item) => {
-        tot.poor_total.push(Number(item.poor_count))
-        tot.developing_total.push(Number(item.developing_count))
-        tot.satisfactory_total.push(Number(item.satisfactory_count))
-        tot.excellent_total.push(Number(item.excellent_count))
-      })
-
-      // add up column totals of each possible grade
-      for (let i in tot.poor_total) {
-        poorTot += Number(tot.poor_total[i])
-      }
-
-      for (let i in tot.developing_total) {
-        developTot += Number(tot.developing_total[i])
-      }
-
-      for(let i in tot.satisfactory_total) {
-        satisTot += Number(tot.satisfactory_total[i])
-      }
-
-      for(let i in tot.excellent_total) {
-        excelTot += Number(tot.excellent_total[i])
-      }
-
-      // append the results to array for easy access
-      this.totals.push(poorTot, developTot, satisTot, excelTot)
-    }, 500)
-
-  }
-
-  // calculate the column percents of each possible grade i.e poor, developing, satisfactory, excellent
-  calculatePercents() {
-    // reset percents array at each new outcome
-    this.percents = []
-    let poorPercent = 0.0
-    let developPercent = 0.0
-    let satisPercent = 0.0
-    let excelPercent = 0.0
-
-    setTimeout(() => {
-      // calculate the percents of each column
-      poorPercent = +(this.totals[0]/(this.totals[0] + this.totals[1] + this.totals[2] + this.totals[3]) * 100).toFixed(1)
-
-
-      developPercent = +(this.totals[1]/(this.totals[0] + this.totals[1] + this.totals[2] + this.totals[3]) * 100).toFixed(1)
-
-      satisPercent = +(this.totals[2]/(this.totals[0] + this.totals[1] + this.totals[2] + this.totals[3]) * 100).toFixed(1)
-
-      excelPercent = +(this.totals[3]/(this.totals[0] + this.totals[1] + this.totals[2] + this.totals[3]) * 100).toFixed(1)
-
-      this.percents.push(poorPercent, developPercent, satisPercent, excelPercent)
-
-    }, 500)
+    let degree = this.pastForm.get('degree').value
+    let term = this.pastForm.get('term').value
+    let year = this.pastForm.get('year').value
+    this.resultsService.getTotalsAndPercents(term, year, degree).subscribe(res=>{
+      this.totes = res
+      console.log('what is this.totes at? ', this.totes)
+    })
 
   }
 

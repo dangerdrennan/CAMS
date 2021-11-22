@@ -453,6 +453,21 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(err, 'error has occurred in backend function "all_past_info"')
     }
   });
+
+  usersRouter.get('/totals_and_percents/:sem/:year/:degree', async (req, res) => {
+    try{
+        const {sem, year,degree} = req.params
+        console.log('sem at ', sem, ' year at ', year, ' degree at ', degree)
+        const totals_and_percents = await pool.query(`
+        SELECT * from get_totes_pers($1, $2, $3)`, [sem, year, degree]);
+        res.json(totals_and_percents.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "totals_and_percents"')
+    }
+  });
+
+
   // We have to watch this one, since we're grabbing by id and not "cat_id"s anymore.
   usersRouter.get('/get_outcome_desc/:degree/:sem/:year', async (req, res) => {
     try{
@@ -481,6 +496,8 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(err, 'error has occurred in backend function "get_outcome_desc"')
     }
   });
+
+  
 
   //get_cs_suboutcomes
 

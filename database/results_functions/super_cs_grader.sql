@@ -116,5 +116,5 @@ update curr set excellent_percent =  ROUND (ep::numeric * 100, 2) where s_id = s
 
 
 end loop;
-return QUERY select * from curr;
+return QUERY select * from curr order by cat_id, id;
 end; $$ language plpgsql;
