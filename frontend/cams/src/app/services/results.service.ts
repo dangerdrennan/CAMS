@@ -6,6 +6,7 @@ import { OutcomeTrends } from '../OutcomeTrends';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { SemesterReqs } from '../SemesterReqs';
 import { Suboutcome } from '../Suboutcome';
+import { TotesPers } from '../TotesPers';
 
 const httpOptions =
 {
@@ -31,9 +32,8 @@ export class ResultsService {
     return this.http.get<SemesterReqs>(`${this.endPoint}/past_outcome_reqs/${sem}/${year}`)
   }
 
-  getPastOutcomeDescription(degree:string, ids: number[]): Observable<OutcomeDescriptions[]>{
-    console.log('what is this id type? ', typeof(ids), ' what is this')
-    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outcome_desc/${degree}/${ids}`)
+  getPastOutcomeDescription(degree:string, sem:string, year:number): Observable<OutcomeDescriptions[]>{
+    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outcome_desc/${degree}/${sem}/${year}`)
   }
 
   getSuboutcomes(outcome_name: string): Observable<Suboutcome[]>{
@@ -47,6 +47,11 @@ export class ResultsService {
 
   getOutcomeTrends(sem:string, year:number, degree:string): Observable<OutcomeTrends[]>{
     return this.http.get<OutcomeTrends[]>(`${this.endPoint}/outcome_trends/${sem}/${year}/${degree}`)
+  }
+
+  getTotalsAndPercents(sem:string, year:number, degree:string): Observable<TotesPers[]>{
+    return this.http.get<TotesPers[]>(`${this.endPoint}/totals_and_percents/${sem}/${year}/${degree}`)
+
   }
 
 }

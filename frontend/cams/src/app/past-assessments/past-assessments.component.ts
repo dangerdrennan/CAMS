@@ -8,6 +8,7 @@ import { ResultsService } from '../services/results.service';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutcomeTrends } from '../OutcomeTrends';
 import { Total } from '../Total';
+import { TotesPers } from '../TotesPers';
 @Component({
   selector: 'app-past-assessments',
   templateUrl: './past-assessments.component.html',
@@ -17,7 +18,7 @@ export class PastAssessmentsComponent implements OnInit {
   public displayPast: boolean = false;
   public displayOutcome: boolean = false;
   public defaultOutcome: number = 1;
-  displayTitle: any[] = []
+  displayTitle: string[] = []
   outcomeTitle:any[] = []
   subInfo: any[] = []
   outcomeForm!: FormGroup;
@@ -34,16 +35,19 @@ export class PastAssessmentsComponent implements OnInit {
   out_names_cs: number[]
   out_names_cse: number[]
   allInfo: PastAssessmentDisplay[]
-
+  unique: number[]
+  num: number
+  oldDegree: 'CS' | 'CSE'
   allCSInfo: PastAssessmentDisplay[]
   allCSEInfo: PastAssessmentDisplay[]
-
-  totals: any[] = []
-  percents: any[] = []
+  totes: TotesPers[] = []
+  totals: number[] = []
+  percents: number[] = []
+  switchDegree: boolean = true
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) {
-
+    this.num = 0
   }
 
   ngOnInit(): void {
@@ -73,10 +77,24 @@ export class PastAssessmentsComponent implements OnInit {
     })
     this.displayOutcome = false;
     this.displayPast = true;
-    this.changeOutcomes(this.defaultOutcome)
+    
     this.categoryForm.setValue({
       selected: 1
     })
+    this.changeOutcomes(this.defaultOutcome)
+  }
+
+  silenceForm(){
+    this.displayPast = false
+    this.switchDegree = true
+  }
+
+  changeDegree(){
+    this.displayPast = false
+    this.switchDegree = true
+    this.num = 0
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log('in change degree, switchDegree is at ', this.switchDegree)
   }
 
   // trigger to find outcome trends
@@ -106,100 +124,31 @@ export class PastAssessmentsComponent implements OnInit {
   }
 
   // updates the outcome titles and sub descriptions being viewed
-  changeOutcomes(id: number) {
-    console.log("id", id)
-    let i = document.getElementById('change')
-    // i.innerHTML = "Outcome 1"
-    console.log("iiiiii",i)
-    this.getTitles(id)
+  dataChange(id: number) {
+    // this.getTitles(id)
     this.getDescription(id)
     this.calculateTotals()
-    this.calculatePercents()
+    this.switchDegree = false
+    console.log('switchDegree is at ', this.switchDegree)
   }
 
-  // Choose city using select dropdown
-  changeOutcomes2(e) {
+  // check if data is current or if we need new service calls
+  changeOutcomes(e) {
+
     let id = this.categoryForm.get('selected').value
     const eventToNum = parseInt(id)
-    this.changeOutcomes(id)
-    // this.getTitles(eventToNum)
-    // this.getDescription(eventToNum)
-    // this.calculateTotals()
-    // this.calculatePercents()
-  }
-
-   // store the past assessment outcome titles
-  getTitles(id: number) {
-    // reset arrays
-    this.displayTitle = []
-    this.outcomeTitle = []
-    let degree = this.pastForm.get('degree').value
-    let term = this.pastForm.get('term').value
-    let year = this.pastForm.get('year').value
-
-    // cs past assessment outcome title
-    if(degree === 'CS') {
-      this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(first()).subscribe(
-        res => {
-          console.log("res ", res)
-          this.out_names_cs = res.out_name_cs
-          this.out_names_cse = res.out_name_cse
-          this.outcome_cats_cs = res.outcome_cats_cs
-          this.outcome_cats_cse = res.outcome_cats_cse
-          this.suboutcomes_cs = res.suboutcomes_cs
-          this.suboutcomes_cse = res.suboutcomes_cse
-
-          this.resultsService
-          .getPastOutcomeDescription(degree, this.outcome_cats_cs)
-          .pipe(first()).subscribe((res) => {
-            return this.outcomeTitle.push(res);
-          });
-
-          // give the subscription time to finish before using its returned value
-          setTimeout(() => {
-            // filter out just the outcome title for easy access
-            this.outcomeTitle.forEach((item) => {
-              item.filter((i) => {
-                if(i.cat_id == id) {
-                  this.displayTitle.push(i.outcome_description)
-                }
-              })
-            })
-          }, 500)
-        }
-      )
+    console.log('switchDegree is at ', this.switchDegree)
+    if (this.switchDegree == true){
+      this.dataChange(id)
+      console.log('we are now switching degrees!')
     }
-    // cse past assessment outcome title
-    else if(degree === 'CSE') {
-      this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(last()).subscribe(
-        res => {
-          this.out_names_cs = res.out_name_cs
-          this.out_names_cse = res.out_name_cse
-          this.outcome_cats_cs = res.outcome_cats_cs
-          this.outcome_cats_cse = res.outcome_cats_cse
-          this.suboutcomes_cs = res.suboutcomes_cs
-          this.suboutcomes_cse = res.suboutcomes_cse
+    else{
+      this.subInfo = this.allInfo.filter(x => x.cat_id == eventToNum)
+      this.num = this.unique.indexOf(eventToNum)
+      // this.num = this.displayTitle.indexOf(eventToNum)
+      console.log('what is subinfo at now? ', this.subInfo)
 
-          this.resultsService
-          .getPastOutcomeDescription(degree, this.outcome_cats_cse)
-          .subscribe((res) => {
-            return this.outcomeTitle.push(res);
-          });
-
-          // give the subscription time to finish before using its returned value
-          setTimeout(() => {
-            this.outcomeTitle.forEach((item) => {
-              item.filter((i) => {
-                if(i.cat_id == id) {
-                  this.displayTitle.push(i.outcome_description)
-                }
-              })
-            })
-          }, 500)
-        }
-      )
     }
-    return this.displayTitle
   }
 
   // get the evaluation criteria from each past assessment sub outcome
@@ -209,124 +158,64 @@ export class PastAssessmentsComponent implements OnInit {
     let term = this.pastForm.get('term').value
     let year = this.pastForm.get('year').value
     console.log(`Degree:  ${degree} Term: ${term} Year: ${year}`)
-    console.log(this.pastForm.get('degree').value)
 
     if(degree === 'CS') {
       console.log("in get descrip")
       this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
       .subscribe(res=> {
-        console.log("all cs info", res)
-        this.allCSInfo = res
-        console.log("ALLLL ", this.allCSInfo)
-        for(let i = 0; i < this.allCSInfo.length; i++) {
+        this.allInfo = res
+        this.unique = [...new Set(res.map(item => item.cat_id))]
+        for(let i = 0; i < this.allInfo.length; i++) {
           
-          if(Number(this.allCSInfo[i].cat_id) == id) {
-            this.subInfo.push(this.allCSInfo[i])
+          if(this.allInfo[i].cat_id == id) {
+            this.subInfo.push(this.allInfo[i])
           }
+          
         }
       })
-
-      // give the subscription time to finish before using its returned value
-      
-        
-
-        // this.allCSInfo.filter((item) => {
-        //   if(Number(item.cat_id) == id) {
-        //     this.subInfo.push(item)
-        //   }
-        // })
+      this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())
+      .subscribe(res=> {
+        console.log('all Descriptions ', res)
+        this.displayTitle = [...new Set(res.map(item => item.outcome_description))];
+      })
     
     }
     // cse sub outcome descriptions(evaluation criteria)
-    else if(degree === 'CSE') {
-      this.resultsService.getAllPast(term, Number(year), degree).pipe(first()).subscribe( res=> {
-        return this.allCSEInfo = res
-      })
-
-      // give the subscription time to finish before using its returned value
-      setTimeout(() => {
-        this.allCSEInfo.filter((item) => {
-          if(Number(item.cat_id) == id) {
-            this.subInfo.push(item)
+    if(degree === 'CSE') {
+      this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
+      .subscribe(res=> {
+        console.log("all csE info", res)
+        this.allInfo = res
+        this.unique = [...new Set(res.map(item => item.cat_id))]
+        console.log("ALLLL ", this.allInfo)
+        for(let i = 0; i < this.allInfo.length; i++) {
+          
+          if(this.allInfo[i].cat_id == id) {
+            this.subInfo.push(this.allInfo[i])
           }
-        })
-      }, 500)
+          
+        }
+      })
+      this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())
+      .subscribe(res=> {
+        console.log('all Descriptions ', res)
+        this.displayTitle = [...new Set(res.map(item => item.outcome_description))];
+      })
     }
-    console.log("subinfo ", this.subInfo)
+
     return this.subInfo
   }
 
 
   // calculate the column totals of each possible grade i.e poor, developing, satisfactory, excellent
   calculateTotals() {
-    // reset totals array at each new outcome
-    this.totals = []
-    let poorTot = 0
-    let developTot = 0
-    let satisTot = 0
-    let excelTot = 0
-    let tot: Total = {
-      poor_total: [],
-      developing_total: [],
-      satisfactory_total: [],
-      excellent_total: [],
-    }
-
-    // give the subscription time to finish before using its returned value to fill column values
-    setTimeout(() => {
-      this.subInfo.forEach((item) => {
-        tot.poor_total.push(Number(item.poor_count))
-        tot.developing_total.push(Number(item.developing_count))
-        tot.satisfactory_total.push(Number(item.satisfactory_count))
-        tot.excellent_total.push(Number(item.excellent_count))
-      })
-
-      // add up column totals of each possible grade
-      for (let i in tot.poor_total) {
-        poorTot += Number(tot.poor_total[i])
-      }
-
-      for (let i in tot.developing_total) {
-        developTot += Number(tot.developing_total[i])
-      }
-
-      for(let i in tot.satisfactory_total) {
-        satisTot += Number(tot.satisfactory_total[i])
-      }
-
-      for(let i in tot.excellent_total) {
-        excelTot += Number(tot.excellent_total[i])
-      }
-
-      // append the results to array for easy access
-      this.totals.push(poorTot, developTot, satisTot, excelTot)
-    }, 500)
-
-  }
-
-  // calculate the column percents of each possible grade i.e poor, developing, satisfactory, excellent
-  calculatePercents() {
-    // reset percents array at each new outcome
-    this.percents = []
-    let poorPercent = 0.0
-    let developPercent = 0.0
-    let satisPercent = 0.0
-    let excelPercent = 0.0
-
-    setTimeout(() => {
-      // calculate the percents of each column
-      poorPercent = +(this.totals[0]/(this.totals[0] + this.totals[1] + this.totals[2] + this.totals[3]) * 100).toFixed(1)
-
-
-      developPercent = +(this.totals[1]/(this.totals[0] + this.totals[1] + this.totals[2] + this.totals[3]) * 100).toFixed(1)
-
-      satisPercent = +(this.totals[2]/(this.totals[0] + this.totals[1] + this.totals[2] + this.totals[3]) * 100).toFixed(1)
-
-      excelPercent = +(this.totals[3]/(this.totals[0] + this.totals[1] + this.totals[2] + this.totals[3]) * 100).toFixed(1)
-
-      this.percents.push(poorPercent, developPercent, satisPercent, excelPercent)
-
-    }, 500)
+    let degree = this.pastForm.get('degree').value
+    let term = this.pastForm.get('term').value
+    let year = this.pastForm.get('year').value
+    this.resultsService.getTotalsAndPercents(term, year, degree).subscribe(res=>{
+      this.totes = res
+      console.log('what is this.totes at? ', this.totes)
+    })
 
   }
 

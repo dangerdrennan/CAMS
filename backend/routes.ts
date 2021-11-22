@@ -453,25 +453,42 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(err, 'error has occurred in backend function "all_past_info"')
     }
   });
-  // We have to watch this one, since we're grabbing by id and not "cat_id"s anymore.
-  usersRouter.get('/get_outcome_desc/:degree/:ids', async (req, res) => {
+
+  usersRouter.get('/totals_and_percents/:sem/:year/:degree', async (req, res) => {
     try{
-        const {degree, ids} = req.params
-        console.log(ids)
+        const {sem, year,degree} = req.params
+        console.log('sem at ', sem, ' year at ', year, ' degree at ', degree)
+        const totals_and_percents = await pool.query(`
+        SELECT * from get_totes_pers($1, $2, $3)`, [sem, year, degree]);
+        res.json(totals_and_percents.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "totals_and_percents"')
+    }
+  });
+
+
+  // We have to watch this one, since we're grabbing by id and not "cat_id"s anymore.
+  usersRouter.get('/get_outcome_desc/:degree/:sem/:year', async (req, res) => {
+    try{
+        const {degree, sem, year} = req.params
+        console.log(`hitting in get_outcome_desc with degree at ${degree}, sem at ${sem}, and year at ${year}`)
         if (degree == 'CS'){
             let query = `
-            SELECT cs_cat_id AS cat_id, outcome_description FROM outcome_details_cs WHERE id in (${ids})`
+            select cs_cat_id, outcome_description from outcome_details_cs where reqs_id = (select reqs_id from term where semester='${sem}' and year=${year}) order by order_float;`
             console.log('this query is at ', query)
 
             const get_outcome_desc = await pool.query(`${query};`);
+            console.log(get_outcome_desc.rows)
             res.json(get_outcome_desc.rows);
         }
         else {
             let query = `
-            SELECT cse_cat_id AS cat_id, outcome_description FROM outcome_details_cse WHERE id in (${ids})`
+            select cse_cat_id, outcome_description from outcome_details_cse where reqs_id = (select reqs_id from term where semester='${sem}' and year=${year}) order by order_float;`
             console.log('this query is at ', query)
 
             const get_outcome_desc = await pool.query(`${query};`);
+            console.log(get_outcome_desc.rows)
             res.json(get_outcome_desc.rows);
         }
         }
@@ -479,6 +496,8 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(err, 'error has occurred in backend function "get_outcome_desc"')
     }
   });
+
+  
 
   //get_cs_suboutcomes
 

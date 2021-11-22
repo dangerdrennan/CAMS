@@ -2,6 +2,10 @@ create or replace function test(sem text, ye int, degree text) returns
 table(
     cat_description text,
     cat_id int,
+    poor_total bigint,
+    developing_total bigint,
+    satisfactory_total bigint,
+    excellent_total bigint,
     poor_percent FLOAT,
     developing_percent FLOAT,
     satisfactory_percent FLOAT,
@@ -55,7 +59,7 @@ create table if not exists curr(
 );
 
 BEGIN
-   FOREACH req IN array reqs
+   FOREACH out_req IN array reqs
   Loop
   execute 'insert into curr(id) values ('|| req ||');
         update curr set s_id = (SELECT score_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';
@@ -63,6 +67,16 @@ BEGIN
         update curr set s_description = (SELECT suboutcome_description from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';';
     END LOOP;
 END;
+
+-- BEGIN
+--    FOREACH req IN array reqs
+--   Loop
+--   execute 'insert into curr(id) values ('|| req ||');
+--         update curr set s_id = (SELECT score_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';
+--         update curr set cat_id = (SELECT outcome_cat_id from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';
+--         update curr set s_description = (SELECT suboutcome_description from suboutcome_details_'|| (SELECT lower(degree)) ||' where id = ''' || req || ''') where id = '|| req ||';';
+--     END LOOP;
+-- END;
 
 execute 'update curr set cat_id =
     (select '|| (SELECT lower(degree)) ||'_cat_id 

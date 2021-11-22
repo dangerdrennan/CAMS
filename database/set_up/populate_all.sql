@@ -16,6 +16,7 @@
 \i set_up/create_comments.sql
 \i helper_functions/set_current_term.sql
 \i get_reqs.sql
+\i results_functions/get_totes_pers.sql
 \i results_functions/get_term_id.sql
 \i results_functions/sub_grades.sql
 \i results_functions/get_cs_sub_descriptions.sql
