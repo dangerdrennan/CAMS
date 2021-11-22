@@ -17,7 +17,7 @@ export class PastAssessmentsComponent implements OnInit {
   public displayPast: boolean = false;
   public displayOutcome: boolean = false;
   public defaultOutcome: number = 1;
-  displayTitle: any[] = []
+  displayTitle: string[] = []
   outcomeTitle:any[] = []
   subInfo: any[] = []
   outcomeForm!: FormGroup;
@@ -34,16 +34,20 @@ export class PastAssessmentsComponent implements OnInit {
   out_names_cs: number[]
   out_names_cse: number[]
   allInfo: PastAssessmentDisplay[]
+  unique: number[]
+  num: number
+  oldDegree: 'CS' | 'CSE'
 
   allCSInfo: PastAssessmentDisplay[]
   allCSEInfo: PastAssessmentDisplay[]
 
   totals: any[] = []
   percents: any[] = []
+  switchDegree: boolean = true
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) {
-
+    this.num = 0
   }
 
   ngOnInit(): void {
@@ -73,10 +77,24 @@ export class PastAssessmentsComponent implements OnInit {
     })
     this.displayOutcome = false;
     this.displayPast = true;
-    this.changeOutcomes(this.defaultOutcome)
+    
     this.categoryForm.setValue({
       selected: 1
     })
+    this.changeOutcomes2(this.defaultOutcome)
+  }
+
+  silenceForm(){
+    this.displayPast = false
+    this.switchDegree = true
+  }
+
+  changeDegree(){
+    this.displayPast = false
+    this.switchDegree = true
+    this.num = 0
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log('in change degree, switchDegree is at ', this.switchDegree)
   }
 
   // trigger to find outcome trends
@@ -107,100 +125,104 @@ export class PastAssessmentsComponent implements OnInit {
 
   // updates the outcome titles and sub descriptions being viewed
   changeOutcomes(id: number) {
-    console.log("id", id)
-    let i = document.getElementById('change')
-    // i.innerHTML = "Outcome 1"
-    console.log("iiiiii",i)
-    this.getTitles(id)
+    // this.getTitles(id)
     this.getDescription(id)
     this.calculateTotals()
     this.calculatePercents()
+    this.switchDegree = false
+    console.log('switchDegree is at ', this.switchDegree)
   }
 
   // Choose city using select dropdown
   changeOutcomes2(e) {
+
     let id = this.categoryForm.get('selected').value
     const eventToNum = parseInt(id)
-    this.changeOutcomes(id)
-    // this.getTitles(eventToNum)
-    // this.getDescription(eventToNum)
-    // this.calculateTotals()
-    // this.calculatePercents()
+    console.log('switchDegree is at ', this.switchDegree)
+    console.log('switchDegree is at ', this.switchDegree)
+    console.log('switchDegree is at ', this.switchDegree)
+    console.log('switchDegree is at ', this.switchDegree)
+    console.log('switchDegree is at ', this.switchDegree)
+    if (this.switchDegree == true){
+      this.changeOutcomes(id)
+      console.log('we are now switching degrees!')
+    }
+    else{
+      this.subInfo = this.allInfo.filter(x => x.cat_id == eventToNum)
+      this.num = this.unique.indexOf(eventToNum)
+      // this.num = this.displayTitle.indexOf(eventToNum)
+      console.log('what is subinfo at now? ', this.subInfo)
+
+    }
   }
 
    // store the past assessment outcome titles
-  getTitles(id: number) {
-    // reset arrays
-    this.displayTitle = []
-    this.outcomeTitle = []
-    let degree = this.pastForm.get('degree').value
-    let term = this.pastForm.get('term').value
-    let year = this.pastForm.get('year').value
+  // getTitles(id: number) {
+  //   // reset arrays
+  //   this.displayTitle = []
+  //   this.outcomeTitle = []
+  //   let degree = this.pastForm.get('degree').value
+  //   let term = this.pastForm.get('term').value
+  //   let year = this.pastForm.get('year').value
 
-    // cs past assessment outcome title
-    if(degree === 'CS') {
-      this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(first()).subscribe(
-        res => {
-          console.log("res ", res)
-          this.out_names_cs = res.out_name_cs
-          this.out_names_cse = res.out_name_cse
-          this.outcome_cats_cs = res.outcome_cats_cs
-          this.outcome_cats_cse = res.outcome_cats_cse
-          this.suboutcomes_cs = res.suboutcomes_cs
-          this.suboutcomes_cse = res.suboutcomes_cse
+  //   // cs past assessment outcome title
+  //   if(degree === 'CS') {
+  //     this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(first()).subscribe(
+  //       res => {
+  //         this.out_names_cs = res.out_name_cs
+  //         this.resultsService
+  //         .getPastOutcomeDescription(degree, term, year)
+  //         .pipe(first()).subscribe((res) => {
+  //           this.outcomeTitle.push(res);
+  //         });
 
-          this.resultsService
-          .getPastOutcomeDescription(degree, this.outcome_cats_cs)
-          .pipe(first()).subscribe((res) => {
-            return this.outcomeTitle.push(res);
-          });
+  //         // give the subscription time to finish before using its returned value
+  //         setTimeout(() => {
+  //           // filter out just the outcome title for easy access
+  //           this.outcomeTitle.forEach((item) => {
+  //             item.filter((i) => {
+  //               if(i.cat_id == id) {
+  //                 this.displayTitle.push(i.outcome_description)
+  //                 console.log(this.displayTitle)
+  //               }
+  //             })
+  //           })
+  //         }, 500)
+  //       }
+  //     )
+  //   }
+  //   // cse past assessment outcome title
+  //   else if(degree === 'CSE') {
+  //     this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(last()).subscribe(
+  //       res => {
+  //         this.out_names_cs = res.out_name_cs
+  //         this.out_names_cse = res.out_name_cse
+  //         this.outcome_cats_cs = res.outcome_cats_cs
+  //         this.outcome_cats_cse = res.outcome_cats_cse
+  //         this.suboutcomes_cs = res.suboutcomes_cs
+  //         this.suboutcomes_cse = res.suboutcomes_cse
 
-          // give the subscription time to finish before using its returned value
-          setTimeout(() => {
-            // filter out just the outcome title for easy access
-            this.outcomeTitle.forEach((item) => {
-              item.filter((i) => {
-                if(i.cat_id == id) {
-                  this.displayTitle.push(i.outcome_description)
-                }
-              })
-            })
-          }, 500)
-        }
-      )
-    }
-    // cse past assessment outcome title
-    else if(degree === 'CSE') {
-      this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(last()).subscribe(
-        res => {
-          this.out_names_cs = res.out_name_cs
-          this.out_names_cse = res.out_name_cse
-          this.outcome_cats_cs = res.outcome_cats_cs
-          this.outcome_cats_cse = res.outcome_cats_cse
-          this.suboutcomes_cs = res.suboutcomes_cs
-          this.suboutcomes_cse = res.suboutcomes_cse
+  //         this.resultsService
+  //         .getOutcomeTrends(term, year, degree)
+  //         .subscribe((res) => {
+  //           this.outcomeTitle.push(res);
+  //         });
 
-          this.resultsService
-          .getPastOutcomeDescription(degree, this.outcome_cats_cse)
-          .subscribe((res) => {
-            return this.outcomeTitle.push(res);
-          });
-
-          // give the subscription time to finish before using its returned value
-          setTimeout(() => {
-            this.outcomeTitle.forEach((item) => {
-              item.filter((i) => {
-                if(i.cat_id == id) {
-                  this.displayTitle.push(i.outcome_description)
-                }
-              })
-            })
-          }, 500)
-        }
-      )
-    }
-    return this.displayTitle
-  }
+  //         // give the subscription time to finish before using its returned value
+  //         setTimeout(() => {
+  //           this.outcomeTitle.forEach((item) => {
+  //             item.filter((i) => {
+  //               if(i.cat_id == id) {
+  //                 this.displayTitle.push(i.outcome_description)
+  //               }
+  //             })
+  //           })
+  //         }, 500)
+  //       }
+  //     )
+  //   }
+  //   this.displayTitle
+  // }
 
   // get the evaluation criteria from each past assessment sub outcome
   getDescription(id: number) {
@@ -209,50 +231,51 @@ export class PastAssessmentsComponent implements OnInit {
     let term = this.pastForm.get('term').value
     let year = this.pastForm.get('year').value
     console.log(`Degree:  ${degree} Term: ${term} Year: ${year}`)
-    console.log(this.pastForm.get('degree').value)
 
     if(degree === 'CS') {
       console.log("in get descrip")
       this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
       .subscribe(res=> {
-        console.log("all cs info", res)
-        this.allCSInfo = res
-        console.log("ALLLL ", this.allCSInfo)
-        for(let i = 0; i < this.allCSInfo.length; i++) {
+        this.allInfo = res
+        this.unique = [...new Set(res.map(item => item.cat_id))]
+        for(let i = 0; i < this.allInfo.length; i++) {
           
-          if(Number(this.allCSInfo[i].cat_id) == id) {
-            this.subInfo.push(this.allCSInfo[i])
+          if(this.allInfo[i].cat_id == id) {
+            this.subInfo.push(this.allInfo[i])
           }
+          
         }
       })
-
-      // give the subscription time to finish before using its returned value
-      
-        
-
-        // this.allCSInfo.filter((item) => {
-        //   if(Number(item.cat_id) == id) {
-        //     this.subInfo.push(item)
-        //   }
-        // })
+      this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())
+      .subscribe(res=> {
+        console.log('all Descriptions ', res)
+        this.displayTitle = [...new Set(res.map(item => item.outcome_description))];
+      })
     
     }
     // cse sub outcome descriptions(evaluation criteria)
-    else if(degree === 'CSE') {
-      this.resultsService.getAllPast(term, Number(year), degree).pipe(first()).subscribe( res=> {
-        return this.allCSEInfo = res
-      })
-
-      // give the subscription time to finish before using its returned value
-      setTimeout(() => {
-        this.allCSEInfo.filter((item) => {
-          if(Number(item.cat_id) == id) {
-            this.subInfo.push(item)
+    if(degree === 'CSE') {
+      this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
+      .subscribe(res=> {
+        console.log("all csE info", res)
+        this.allInfo = res
+        this.unique = [...new Set(res.map(item => item.cat_id))]
+        console.log("ALLLL ", this.allInfo)
+        for(let i = 0; i < this.allInfo.length; i++) {
+          
+          if(this.allInfo[i].cat_id == id) {
+            this.subInfo.push(this.allInfo[i])
           }
-        })
-      }, 500)
+          
+        }
+      })
+      this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())
+      .subscribe(res=> {
+        console.log('all Descriptions ', res)
+        this.displayTitle = [...new Set(res.map(item => item.outcome_description))];
+      })
     }
-    console.log("subinfo ", this.subInfo)
+
     return this.subInfo
   }
 
