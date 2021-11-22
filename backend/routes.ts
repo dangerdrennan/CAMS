@@ -398,7 +398,7 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log('/past_outcome_reqs/:sem/:year ', sem, year)
         const past_outcome_reqs = await pool.query(`SELECT * FROM get_reqs($1, $2)`,
         [sem,year]);
-        res.json(past_outcome_reqs.rows[0]);
+        //res.json(past_outcome_reqs.rows[0]);
     }
     catch(err ){
         console.log(err, 'error has occurred in backend function "past_outcome_reqs"')
