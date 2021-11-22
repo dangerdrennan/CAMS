@@ -81,6 +81,10 @@ export class PastAssessmentsComponent implements OnInit {
     })
   }
 
+  silenceForm(){
+    this.displayPast = false
+  }
+
   // trigger to find outcome trends
   findTrends() {
     this.pastForm.reset({
@@ -248,21 +252,35 @@ export class PastAssessmentsComponent implements OnInit {
     
     }
     // cse sub outcome descriptions(evaluation criteria)
-    else if(degree === 'CSE') {
-      this.resultsService.getAllPast(term, Number(year), degree).pipe(first()).subscribe( res=> {
-        return this.allCSEInfo = res
-      })
-
-      // give the subscription time to finish before using its returned value
-      setTimeout(() => {
-        this.allCSEInfo.filter((item) => {
-          if(Number(item.cat_id) == id) {
-            this.subInfo.push(item)
+    if(degree === 'CSE') {
+      console.log("in get descrip")
+      this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
+      .subscribe(res=> {
+        console.log("all csE info", res)
+        this.allCSEInfo = res
+        this.unique = [...new Set(res.map(x => x.cat_id))];
+        console.log("ALLLL ", this.allCSEInfo)
+        for(let i = 0; i < this.allCSEInfo.length; i++) {
+          
+          if(this.allCSEInfo[i].cat_id == id) {
+            this.subInfo.push(this.allCSEInfo[i])
           }
-        })
-      }, 500)
+          
+        }
+      })
+      this.resultsService.getOutcomeTrends(term, year, degree).pipe(first())
+      .subscribe(res=> {
+        console.log('all Descriptions ', res)
+        this.displayTitle = res
+        for(let i = 0; i < this.displayTitle.length; i++) {
+          if(this.displayTitle[i].cat_id == id) {
+            let inText = document.getElementById('outcomeDescription')
+            inText.innerText = this.displayTitle[i].cat_description
+          }
+        }
+      })
     }
-    console.log("subinfo ", this.subInfo)
+
     return this.subInfo
   }
 

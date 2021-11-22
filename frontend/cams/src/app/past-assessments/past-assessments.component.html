@@ -53,7 +53,7 @@
               <div class="select-container">
                 <div class="container" style="display: flex; justify-content: center;">
                   <div class="dropdown" style="margin-right: 8px;">
-                    <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
+                    <select (change)= "silenceForm()"class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
                       <option value="">Select Term</option>
                       <option value="Fall">Fall</option>
                       <option value="Spring">Spring</option>
@@ -61,7 +61,7 @@
                   </div>
 
                   <div class="dropdown">
-                    <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
+                    <select (change)= "silenceForm()" class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
                       <option value="">Select Year</option>
                       <option value="2018">2018</option>
                       <option value="2019">2019</option>
@@ -71,11 +71,11 @@
                   </div>
                 </div>
                 <div class="form-check form-check-inline" style="margin-left: 14px;">
-                  <input class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+                  <input (change)= "silenceForm()" class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
                   <label class="form-check-label">CS</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+                  <input (change)= "silenceForm()" class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
                   <label class="form-check-label">CSE</label>
                 </div>
                 <div *ngIf="this.pastForm.get('degree')?.invalid && pastForm.valid">Select CS or CSE.</div>
@@ -99,7 +99,7 @@
                 
                   <div class="d-flex justify-content-start">
                     <div id="title">
-                        <strong id="outcomeDescription">hello</strong>
+                        <strong id="outcomeDescription"></strong>
                     </div>
                   </div>
                   
@@ -122,7 +122,7 @@
               <ng-template #cse>
                 <div class="d-flex justify-content-start">
                   <div id="title">
-                    <strong *ngFor="let title of this.displayTitle">{{title}}</strong>
+                    <strong id="outcomeDescription"></strong>
                   </div>
                 </div>
 
@@ -131,7 +131,7 @@
                     <form [formGroup]="categoryForm" (change)="changeOutcomes2($event)">
                       <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
                         <ng-container >
-                          <option id = "change" *ngFor="let i of this.out_names_cse" [ngValue]= "i" >Outcome {{i}}</option>
+                          <option id = "change" *ngFor="let i of this.unique" [ngValue]= "i" >Outcome {{i}}</option>
                         </ng-container>
                       </select>
                     </form>
