@@ -113,9 +113,8 @@ export class AssessmentService {
     return this.http.post<{ score_id: number}>(url, grade, httpOptions);
   }
 
-  getOutcomeDescription(ids: number[]): Observable<OutcomeDescriptions[]>{
-    console.log('what is this id type? ', typeof(ids), ' what is this')
-    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outcome_desc/${this.assessment.degree}/${ids}`)
+  getOutcomeDescription(): Observable<OutcomeDescriptions[]>{
+    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outcome_desc/${this.assessment.degree}/${this.assessment.semester}/${this.assessment.year}`)
   }
 
   getSuboutcomes(outcome_name: number): Observable<Suboutcome[]>{

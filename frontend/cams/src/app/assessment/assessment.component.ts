@@ -33,13 +33,13 @@ export class AssessmentComponent implements OnInit {
       if (this.assessmentInfo.degree =='CS'){
       this.outcome_cats = res.outcome_cats_cs
       this.outcome_names = res.out_name_cs
-      this.setDescriptions(this.outcome_cats, 'CS')
+      this.setDescriptions('CS')
 
     }
     else if (this.assessmentInfo.degree =='CSE'){
       this.outcome_cats = res.outcome_cats_cse
       this.outcome_names = res.out_name_cse
-      this.setDescriptions(this.outcome_cats, 'CSE')
+      this.setDescriptions('CSE')
     }
     })
     if (this.assessmentService.assID == undefined){
@@ -65,8 +65,8 @@ export class AssessmentComponent implements OnInit {
   }
 
 
-  setDescriptions(arr : number[], degree: 'CS' | 'CSE'){
-    this.assessmentService.getOutcomeDescription(arr).pipe(take(1)).subscribe(res =>{
+  setDescriptions(degree: 'CS' | 'CSE'){
+    this.assessmentService.getOutcomeDescription().pipe(take(1)).subscribe(res =>{
       this.outcome_des = res
     })
   }
