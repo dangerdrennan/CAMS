@@ -34,6 +34,8 @@ export class PastAssessmentsComponent implements OnInit {
   out_names_cs: number[]
   out_names_cse: number[]
   allInfo: PastAssessmentDisplay[]
+  unique: number[]
+  num: number
 
   allCSInfo: PastAssessmentDisplay[]
   allCSEInfo: PastAssessmentDisplay[]
@@ -43,7 +45,7 @@ export class PastAssessmentsComponent implements OnInit {
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) {
-
+    this.num = 1
   }
 
   ngOnInit(): void {
@@ -143,16 +145,10 @@ export class PastAssessmentsComponent implements OnInit {
         res => {
           console.log("res ", res)
           this.out_names_cs = res.out_name_cs
-          this.out_names_cse = res.out_name_cse
-          this.outcome_cats_cs = res.outcome_cats_cs
-          this.outcome_cats_cse = res.outcome_cats_cse
-          this.suboutcomes_cs = res.suboutcomes_cs
-          this.suboutcomes_cse = res.suboutcomes_cse
-
           this.resultsService
           .getPastOutcomeDescription(degree, this.outcome_cats_cs)
           .pipe(first()).subscribe((res) => {
-            return this.outcomeTitle.push(res);
+            this.outcomeTitle.push(res);
           });
 
           // give the subscription time to finish before using its returned value
@@ -162,6 +158,7 @@ export class PastAssessmentsComponent implements OnInit {
               item.filter((i) => {
                 if(i.cat_id == id) {
                   this.displayTitle.push(i.outcome_description)
+                  console.log(this.displayTitle)
                 }
               })
             })
@@ -181,9 +178,9 @@ export class PastAssessmentsComponent implements OnInit {
           this.suboutcomes_cse = res.suboutcomes_cse
 
           this.resultsService
-          .getPastOutcomeDescription(degree, this.outcome_cats_cse)
+          .getOutcomeTrends(term, year, degree)
           .subscribe((res) => {
-            return this.outcomeTitle.push(res);
+            this.outcomeTitle.push(res);
           });
 
           // give the subscription time to finish before using its returned value
@@ -199,7 +196,7 @@ export class PastAssessmentsComponent implements OnInit {
         }
       )
     }
-    return this.displayTitle
+    this.displayTitle
   }
 
   // get the evaluation criteria from each past assessment sub outcome
@@ -217,13 +214,20 @@ export class PastAssessmentsComponent implements OnInit {
       .subscribe(res=> {
         console.log("all cs info", res)
         this.allCSInfo = res
+        this.unique = [...new Set(res.map(item => item.cat_id))];
         console.log("ALLLL ", this.allCSInfo)
         for(let i = 0; i < this.allCSInfo.length; i++) {
           
-          if(Number(this.allCSInfo[i].cat_id) == id) {
+          if(this.allCSInfo[i].cat_id == id) {
             this.subInfo.push(this.allCSInfo[i])
           }
+          
         }
+      })
+      this.resultsService.getOutcomeTrends(term, year, degree).pipe(first())
+      .subscribe(res=> {
+        console.log('all Descriptions ', res)
+        this.displayTitle = res
       })
 
       // give the subscription time to finish before using its returned value

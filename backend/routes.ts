@@ -395,7 +395,7 @@ usersRouter.get('/all_profs', async (req, res) => {
   usersRouter.get('/past_outcome_reqs/:sem/:year', async (req, res) => {
     try{
         const {sem, year} = req.params
-        console.log('/past_outcome_reqs/:sem/:year ', sem, year)
+        // console.log('/past_outcome_reqs/:sem/:year ', sem, year)
         const past_outcome_reqs = await pool.query(`SELECT * FROM get_reqs($1, $2)`,
         [sem,year]);
         //res.json(past_outcome_reqs.rows[0]);
@@ -408,7 +408,7 @@ usersRouter.get('/all_profs', async (req, res) => {
   usersRouter.get('/all_past_info/:sem/:year/:degree', async (req, res) => {
     try{
         const {sem, year,degree} = req.params
-        console.log('sem at ', sem, ' year at ', year, ' degree at ', degree)
+        // console.log('sem at ', sem, ' year at ', year, ' degree at ', degree)
         const all_past_info = await pool.query(`
         SELECT * from super_cs_grader($1, $2, $3)`, [sem, year, degree]);
         res.json(all_past_info.rows);

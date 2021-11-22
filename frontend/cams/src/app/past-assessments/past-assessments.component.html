@@ -97,24 +97,24 @@
           <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
               <div *ngIf="this.pastForm.get('degree')?.value ==='CS';else cse">
                 
-                <div class="d-flex justify-content-start">
-                  <div id="title">
-                      <strong *ngFor="let title of this.displayTitle">{{title}}</strong>
-                  </div>
-                </div>
-                
-                  <div class="d-flex justify-content-end">
-                    <div class="dropdown">
-                      <form [formGroup]="categoryForm" (change)="changeOutcomes2($event)">
-                      <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
-                        <ng-container >
-                          <option id = "change" *ngFor="let i of this.out_names_cs" [ngValue]= "i" >Outcome {{i}}</option>
-                        </ng-container>
-                      </select>
-                    </form>
+                  <div class="d-flex justify-content-start">
+                    <div id="title">
+                        <strong id="outcomeDescription">hello</strong>
                     </div>
                   </div>
-                </div>
+                  
+                    <div class="d-flex justify-content-end">
+                      <div class="dropdown">
+                        <form [formGroup]="categoryForm" (change)="changeOutcomes2($event)">
+                        <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
+                          <ng-container >
+                            <option id = "change" *ngFor="let i of this.unique" [ngValue]= "i" >Outcome {{i}}</option>
+                          </ng-container>
+                        </select>
+                      </form>
+                      </div>
+                    </div>
+                  </div>
                 
               
 
