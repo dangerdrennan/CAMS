@@ -40,7 +40,7 @@ import { CommentModalComponent } from './comment-modal/comment-modal.component';
     ManageAssessorsComponent,
     SuboutcomeComponent,
     AssessmentCompletedComponent,
-    PastProjectsComponent
+    PastProjectsComponent,
     OutcomeTrendsComponent,
     CommentModalComponent
   ],
