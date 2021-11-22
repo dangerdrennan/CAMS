@@ -19,6 +19,7 @@ import { ManageProjectsComponent } from './manage-projects/manage-projects.compo
 import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.component';
 import { SuboutcomeComponent } from './suboutcome/suboutcome.component';
 import { AssessmentCompletedComponent } from './assessment-completed/assessment-completed.component';
+import { PastProjectsComponent } from './shared/past-projects/past-projects.component'
 import { OutcomeTrendsComponent } from './outcome-trends/outcome-trends.component';
 import { CommentModalComponent } from './comment-modal/comment-modal.component';
 
@@ -39,6 +40,7 @@ import { CommentModalComponent } from './comment-modal/comment-modal.component';
     ManageAssessorsComponent,
     SuboutcomeComponent,
     AssessmentCompletedComponent,
+    PastProjectsComponent
     OutcomeTrendsComponent,
     CommentModalComponent
   ],

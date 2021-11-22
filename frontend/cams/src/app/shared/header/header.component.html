@@ -1,9 +1,40 @@
 <div class="header">
-    <div class="header_title">Assessments</div>
-    <div class="divider">
-        <div class="vertical_line"></div>
+  <div *ngFor="let name of this.headerService.titles">
+    <div *ngIf="title==='past-results'">
+      <div class="header_title">{{name.past_results}}</div>
     </div>
-    <div class="name" *ngFor="let item of this.profService.professor">{{item.l_name}}</div>
+
+    <div *ngIf="title==='manage-admins'">
+      <div class="header_title">{{name.manage_admins}}</div>
+    </div>
+
+    <div *ngIf="title==='manage-projects'">
+      <div class="header_title">{{name.manage_projects}}</div>
+    </div>
+
+    <div *ngIf="title==='projects'">
+      <div class="header_title">{{name.projects}}</div>
+    </div>
+
+    <div *ngIf="title==='past-projects'">
+      <div class="header_title">{{name.past_projects}}</div>
+    </div>
+
+    <div *ngIf="title==='logout'">
+      <div class="header_title">{{name.logout}}</div>
+    </div>
+
+    <div *ngIf="title==='assessment'">
+      <div class="header_title">{{name.assessment}}</div>
+    </div>
+
+  </div>
+
+
+    <!-- <div class="divider">
+        <div class="vertical_line"></div>
+    </div> -->
+    <div class="name" *ngFor="let item of this.profService.professor">Hello Dr.{{item.l_name}}</div>
     <div class="avi">
         <img class="avi_icon" src="../../../assets/images/user.png" alt="avi_icon">
     </div>

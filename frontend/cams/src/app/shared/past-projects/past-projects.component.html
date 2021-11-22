@@ -1,0 +1,32 @@
+<div class="main">
+
+  <div class="table-scroll">
+    <div style="text-align: center;font-size: large;"><strong *ngFor="let item of this.pS.semYear">{{item.semester}} {{item.year }} Capstone - Dr. Mock</strong></div>
+      <table class="table table-hover" style="border-radius: 8px;">
+        <thead>
+          <tr>
+            <th scope="col">Project Name</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Term</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody >
+          <tr *ngFor="let proj of pastAssessments" (click)="assessments(proj)" onmouseover="" style="cursor: pointer;">
+            <td scope="row">{{proj.title}}</td>
+            <td>{{proj.f_name}} {{proj.l_name}}</td>
+            <td>{{proj.semester}} {{proj.year}}</td>
+
+            <td *ngIf="proj.graded==true;else notGraded">
+              <button disabled class="btn btn-outline-success btn-sm">Graded</button>
+            </td>
+            <ng-template #notGraded>
+              <td>
+                <button disabled class="btn btn-outline-danger btn-sm">Not Graded</button>
+              </td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
