@@ -377,8 +377,44 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+
   // Here's the old SQL call for getting the current outcome reqs I'm keeping until the database refactor is 100% implemented -- Phillip
   // SELECT outcome_cats_cs, outcome_cats_cse, suboutcomes_cs, suboutcomes_cse FROM sem_req WHERE term_id = get_current_term();
+
+  usersRouter.get('/past_assessments_by_prof/:email', async (req, res) => {
+    try{
+        const {email} = req.params
+        const past_assessments_by_prof = await pool.query(`
+        SELECT
+        p.title,
+        s.f_name,
+        s.l_name,
+        t.semester,
+        t.year,
+        a.graded,
+        a.assessment_id,
+        a.degree
+        FROM
+            prof pr
+        INNER JOIN assessment a 
+            ON pr.prof_email = a.prof_email
+        INNER JOIN student s 
+            ON s.student_id = a.student_id
+        INNER JOIN project p
+            ON s.proj_id = p.proj_id
+        INNER JOIN term t
+            ON t.term_id = a.term_id
+        WHERE
+            pr.prof_email = $1 and p.term_id <> get_current_term()`,
+        [email]);
+        res.json(past_assessments_by_prof.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "past_assessments_by_prof"')
+    }
+  });
+
+
   usersRouter.get('/current_outcome_reqs', async (req, res) => {
     try{
         const current_outcome_reqs = await pool.query(`

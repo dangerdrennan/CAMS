@@ -75,7 +75,7 @@
 
   .header_title {
     position: absolute;
-    font-size: xx-small;
+    font-size: 18px !important;
     margin-left: 0px;
   }
 
