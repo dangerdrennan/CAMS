@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class SuboutcomeComponent implements OnInit {
 
-  @Input() outcome_cat!: string
+  @Input() outcome_cat!: number
   @Input() outcome_description!: string
   @Input() assID!: number
   @Input() assessmentInfo!: AssessmentDisplay

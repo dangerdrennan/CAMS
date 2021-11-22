@@ -16,7 +16,7 @@ import { ScoreComment } from '../ScoreComment';
 export class AssessmentComponent implements OnInit {
   grades: { score_id: string, grade: number}[] = []
   outcome_des: OutcomeDescriptions[] = []
-  outcome_cats?: string[]
+  outcome_cats?: number[]
   assessmentInfo: AssessmentDisplay
   submissionStatus: boolean
   comments:ScoreComment[] = []
@@ -63,13 +63,8 @@ export class AssessmentComponent implements OnInit {
   }
 
 
-  setDescriptions(arr : string[], degree: 'CS' | 'CSE'){
-    const num_array:number[] = []
-    console.log(arr)
-    arr.forEach(val => {
-      num_array.push(parseInt(val))
-    })
-    this.assessmentService.getOutcomeDescription(num_array).pipe(take(1)).subscribe(res =>{
+  setDescriptions(arr : number[], degree: 'CS' | 'CSE'){
+    this.assessmentService.getOutcomeDescription(arr).pipe(take(1)).subscribe(res =>{
       this.outcome_des = res
     })
   }

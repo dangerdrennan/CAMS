@@ -19,6 +19,8 @@ import { ManageProjectsComponent } from './manage-projects/manage-projects.compo
 import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.component';
 import { SuboutcomeComponent } from './suboutcome/suboutcome.component';
 import { AssessmentCompletedComponent } from './assessment-completed/assessment-completed.component';
+import { OutcomeTrendsComponent } from './outcome-trends/outcome-trends.component';
+import { CommentModalComponent } from './comment-modal/comment-modal.component';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { AssessmentCompletedComponent } from './assessment-completed/assessment-
     ManageProjectsComponent,
     ManageAssessorsComponent,
     SuboutcomeComponent,
-    AssessmentCompletedComponent
+    AssessmentCompletedComponent,
+    OutcomeTrendsComponent,
+    CommentModalComponent
   ],
   imports: [
     BrowserModule,
