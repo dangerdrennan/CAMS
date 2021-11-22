@@ -253,17 +253,3 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
         'Exceptional learning strategy',
         17.0
         );
-
-INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
-    VALUES (
-        1,
-        6,
-        '7.2',
-        'score_7_2',
-        '2.	Utilizes appropriate learning strategies',
-        'No or inappropriate learning strategy',
-        'Some appropriate learning strategy',
-        'Appropriate learning strategy',
-        'Exceptional learning strategy',
-        18.0
-        );

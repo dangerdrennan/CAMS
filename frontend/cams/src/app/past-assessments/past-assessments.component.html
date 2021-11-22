@@ -108,7 +108,7 @@
                       <form [formGroup]="categoryForm" (change)="changeOutcomes2($event)">
                       <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
                         <ng-container >
-                          <option id = "change" *ngFor="let i of this.outcome_cats_cs" [ngValue]= "i" >Outcome {{i}}</option>
+                          <option id = "change" *ngFor="let i of this.out_names_cs" [ngValue]= "i" >Outcome {{i}}</option>
                         </ng-container>
                       </select>
                     </form>
@@ -128,9 +128,13 @@
 
                 <div class="d-flex justify-content-end">
                   <div class="dropdown">
-                    <select class="btn btn-secondary btn-sm dropdown-toggle">
-                      <option *ngFor="let i of this.outcome_cats_cse" [value]="i" (click)="changeOutcomes(i)" >Outcome {{i}}</option>
-                    </select>
+                    <form [formGroup]="categoryForm" (change)="changeOutcomes2($event)">
+                      <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
+                        <ng-container >
+                          <option id = "change" *ngFor="let i of this.out_names_cse" [ngValue]= "i" >Outcome {{i}}</option>
+                        </ng-container>
+                      </select>
+                    </form>
                   </div>
                 </div>
               </ng-template>

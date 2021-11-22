@@ -31,6 +31,8 @@ export class PastAssessmentsComponent implements OnInit {
   outcome_cats_cse: number[]
   suboutcomes_cs: string[]
   suboutcomes_cse:string[]
+  out_names_cs: number[]
+  out_names_cse: number[]
   allInfo: PastAssessmentDisplay[]
 
   allCSInfo: PastAssessmentDisplay[]
@@ -59,7 +61,7 @@ export class PastAssessmentsComponent implements OnInit {
       degree: ['', Validators.required]
     })
     this.categoryForm = this.builder.group({
-      selected: ["1", Validators.required]
+      selected: [1, Validators.required]
     })
   }
 
@@ -73,7 +75,7 @@ export class PastAssessmentsComponent implements OnInit {
     this.displayPast = true;
     this.changeOutcomes(this.defaultOutcome)
     this.categoryForm.setValue({
-      selected: "1"
+      selected: 1
     })
   }
 
@@ -140,6 +142,8 @@ export class PastAssessmentsComponent implements OnInit {
       this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(first()).subscribe(
         res => {
           console.log("res ", res)
+          this.out_names_cs = res.out_name_cs
+          this.out_names_cse = res.out_name_cse
           this.outcome_cats_cs = res.outcome_cats_cs
           this.outcome_cats_cse = res.outcome_cats_cse
           this.suboutcomes_cs = res.suboutcomes_cs
@@ -169,6 +173,8 @@ export class PastAssessmentsComponent implements OnInit {
     else if(degree === 'CSE') {
       this.resultsService.getPastSemesterRequirements(term, Number(year)).pipe(last()).subscribe(
         res => {
+          this.out_names_cs = res.out_name_cs
+          this.out_names_cse = res.out_name_cse
           this.outcome_cats_cs = res.outcome_cats_cs
           this.outcome_cats_cse = res.outcome_cats_cse
           this.suboutcomes_cs = res.suboutcomes_cs
