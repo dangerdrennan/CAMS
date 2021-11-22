@@ -165,7 +165,7 @@ export class ManageProjectsComponent implements OnInit {
   generateAssessments(stud: Student) {
     this.projectService.addAssessment(stud).subscribe(() => {
     })
-    location.reload()
+    // location.reload()
   }
 
   getSemYear(){

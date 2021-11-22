@@ -436,7 +436,7 @@ usersRouter.get('/all_profs', async (req, res) => {
         INNER JOIN term t
             ON t.term_id = a.term_id
         INNER JOIN get_current_term()
-            ON t.term_id <> (select * from get_current_term())
+            ON t.term_id = (select * from get_current_term())
         WHERE
             pr.prof_email = ($1);`,
         [email]);
