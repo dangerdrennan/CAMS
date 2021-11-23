@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS comment (
     comment_id serial PRIMARY KEY,
+    cat_id int,
     assessment_id int REFERENCES assessment(assessment_id) ON DELETE CASCADE,
     comment text,
     score_id text

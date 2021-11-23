@@ -107,6 +107,19 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(err, 'error has occurred in backend function "outcome_trends"')
     }
   });
+
+  usersRouter.get('/show_comments/:sem/:year/:degree', async (req, res) => {
+    try{
+        const {sem, year, degree} = req.params
+        const show_comments = await pool.query(`
+        SELECT * from get_comments($1,$2,$3)`, [sem,year,degree]);
+        console.log(show_comments.rows);
+        res.json(show_comments.rows);
+    }
+    catch(err ){
+        console.log(err, 'error has occurred in backend function "show_comments"')
+    }
+  });
   
     usersRouter.post("/add_project/:project", async(req, res) => {
         try{
@@ -156,14 +169,14 @@ usersRouter.get('/all_profs', async (req, res) => {
 
     usersRouter.post("/record_comment", async(req, res) => {
         try{
-            const {assessment_id, score_id, comment} = req.body;
+            const {cat_id, assessment_id, score_id, comment} = req.body;
             console.log('what are the variables at? ', assessment_id, score_id, comment)
             const record_comment = await pool.query(`
-            INSERT INTO comment (assessment_id, score_id, comment)
-            VALUES ($1, $2, $3)
+            INSERT INTO comment (cat_id, assessment_id, score_id, comment)
+            VALUES ($1, $2, $3, $4)
             ON CONFLICT (assessment_id, score_id) DO UPDATE
             SET comment = $3`,
-            [assessment_id, score_id, comment]);
+            [cat_id, assessment_id, score_id, comment]);
             res.json(record_comment.rows);
         }
         catch(err ){

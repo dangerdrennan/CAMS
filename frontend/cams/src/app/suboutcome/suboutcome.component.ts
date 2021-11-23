@@ -6,6 +6,7 @@ import { Suboutcome } from '../Suboutcome';
 import { AssessmentService } from '../services/assessment.service';
 import { ScoreComment } from '../ScoreComment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { OutcomeDescriptions } from '../OutcomeDescriptions';
 
 @Component({
   selector: 'app-suboutcome',
@@ -15,7 +16,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class SuboutcomeComponent implements OnInit {
 
   @Input() outcome_cat!: number
-  @Input() outcome_description!: string
+  @Input() outcome_description: OutcomeDescriptions
   @Input() assID!: number
   @Input() assessmentInfo!: AssessmentDisplay
   @Output() newGrade = new EventEmitter<[string, number]>();
@@ -37,6 +38,8 @@ export class SuboutcomeComponent implements OnInit {
     this.setCommentForm = this.fB.group({
       comment: ['']
     })
+    console.log('this.outcome_cat is at ', this.outcome_description)
+    console.log('this.ass is at ', this.assID)
 
    }
 
@@ -113,6 +116,7 @@ export class SuboutcomeComponent implements OnInit {
   addComment(score_id:string, twoCents:string){
 
     this.comment = {
+      cat_id: this.outcome_cat,
       assessment_id: this.assID,
       comment: twoCents,
       score_id: score_id

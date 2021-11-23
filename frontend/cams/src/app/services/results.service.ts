@@ -5,6 +5,7 @@ import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutcomeTrends } from '../OutcomeTrends';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { SemesterReqs } from '../SemesterReqs';
+import { ShowComment } from '../ShowComments';
 import { Suboutcome } from '../Suboutcome';
 import { TotesPers } from '../TotesPers';
 
@@ -54,4 +55,8 @@ export class ResultsService {
 
   }
 
+  getPastComments(sem:string,year:number,degree:string): Observable<ShowComment[]>{
+    console.log("in service")
+    return this.http.get<ShowComment[]>(`${this.endPoint}/show_comments/${sem}/${year}/${degree}`)
+  }
 }

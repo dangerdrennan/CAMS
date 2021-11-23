@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, } from 'rxjs';
+import { BehaviorSubject, Observable, } from 'rxjs';
 import { last, first } from 'rxjs/operators';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { ResultsService } from '../services/results.service';
@@ -9,6 +9,7 @@ import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutcomeTrends } from '../OutcomeTrends';
 import { Total } from '../Total';
 import { TotesPers } from '../TotesPers';
+import { ShowComment } from '../ShowComments';
 @Component({
   selector: 'app-past-assessments',
   templateUrl: './past-assessments.component.html',
@@ -37,6 +38,7 @@ export class PastAssessmentsComponent implements OnInit {
   allInfo: PastAssessmentDisplay[]
   unique: number[]
   num: number
+  id: number
   oldDegree: 'CS' | 'CSE'
   allCSInfo: PastAssessmentDisplay[]
   allCSEInfo: PastAssessmentDisplay[]
@@ -44,6 +46,12 @@ export class PastAssessmentsComponent implements OnInit {
   totals: number[] = []
   percents: number[] = []
   switchDegree: boolean = true
+  degree: string
+  sem:string
+  year:number
+  comments:ShowComment[]
+  comments$:Observable<ShowComment[]>
+  num$: BehaviorSubject<number> = new BehaviorSubject<number>(0)
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) {
@@ -81,6 +89,15 @@ export class PastAssessmentsComponent implements OnInit {
     this.categoryForm.setValue({
       selected: 1
     })
+
+    let degree = this.pastForm.get('degree').value
+    let sem = this.pastForm.get('term').value
+    let year = this.pastForm.get('year').value
+    this.resultsService.getPastComments(sem,year,degree).subscribe(res=>{
+      this.comments = res
+      console.log(res)
+    })
+   
     this.changeOutcomes(this.defaultOutcome)
   }
 
@@ -126,6 +143,8 @@ export class PastAssessmentsComponent implements OnInit {
   // updates the outcome titles and sub descriptions being viewed
   dataChange(id: number) {
     // this.getTitles(id)
+    this.id = id
+    this.num$.next(id)
     this.getDescription(id)
     this.calculateTotals()
     this.switchDegree = false
@@ -134,9 +153,10 @@ export class PastAssessmentsComponent implements OnInit {
 
   // check if data is current or if we need new service calls
   changeOutcomes(e) {
-
+    
     let id = this.categoryForm.get('selected').value
     const eventToNum = parseInt(id)
+    this.id = eventToNum
     console.log('switchDegree is at ', this.switchDegree)
     if (this.switchDegree == true){
       this.dataChange(id)

@@ -186,8 +186,15 @@
 
 
               </tbody>
-
+<!-- num is past component is an index, id is a category -->
             </table>
+              <app-comment-modal
+              [comments]= "comments"
+              [id] = "this.id"
+              [sem] = "sem"
+              [year] = "year"
+              [degree] = "degree"
+              ></app-comment-modal>
           </div>
         </div>
         
@@ -230,6 +237,7 @@
                     </tr>
                     </tbody>
               </table>
+              
           </ng-container>
             </div>
           </div>
