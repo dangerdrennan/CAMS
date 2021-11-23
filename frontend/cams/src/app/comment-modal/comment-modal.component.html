@@ -11,14 +11,18 @@
         <h5 class="modal-title" id="staticBackdropLabel">Comments</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <ul *ngFor="let comment of this.outcomeComments">
-          <li>{{comment}}</li>
+      
+        <div  class="modal-body">
+        <ul *ngFor="let comment of outcomeComments">
+          <h6>{{comment.sub_name}}</h6>
+          <div>"{{comment.comment}}"</div>
+          <h6>Comment made by Dr. {{comment.prof_l_name}}</h6>
         </ul>
-      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
+      </div>
+      
     </div>
   </div>
 </div>
