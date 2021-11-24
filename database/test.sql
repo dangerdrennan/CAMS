@@ -1,136 +1,55 @@
-SELECT
-        o.cse_cat_id,
-        s.suboutcome_name,
-        c.comment,
-        pr.f_name,
-        pr.l_name,
-        st.f_name,
-        st.l_name,
-        a.degree
-        FROM
-            prof pr
-        INNER JOIN assessment a 
-            ON pr.prof_email = a.prof_email
-        INNER JOIN comment c
-            ON a.assessment_id = c.assessment_id
-        INNER JOIN suboutcome_details_cse s
-            ON c.score_id = s.score_id
-        INNER JOIN outcome_details_cse o
-            ON c.cat_id = o.id
-        INNER JOIN student st 
-            ON st.student_id = a.student_id
-        INNER JOIN term t
-            ON t.term_id = a.term_id
-        INNER JOIN get_current_term()
-            ON t.term_id = (select * from get_term_id('Fall', 2021))
-        where st.degree = 'CSE'
-        order by o.order_float, s.order_float;
-        
-
--- create or replace function get_comments (sem text, year INT, degree TEXT)
-
--- RETURNS TABLE(
---     total BIGINT,
---     poor_count BIGINT,
---     developing_count BIGINT,
---     satisfactory_count BIGINT,
---     excellent_count BIGINT,
---     poor_percent float,
---     developing_percent float,
---     satis_percent float,
---     ex_percent float
--- )
--- AS $$
--- declare s_id text;
--- p_t bigint:= 0;
--- p_t_c bigint;
--- d_t bigint:= 0;
--- d_t_c bigint;
--- s_t bigint:= 0;
--- s_t_c bigint;
--- e_t bigint:= 0;
--- e_t_c bigint;
--- tot bigint;
--- major text := (SELECT lower(degree));
--- category int;
--- all_reqs int[];
--- score_ids text[];
--- past_term int:= (select get_term_id(sem, year));
--- begin
-
--- drop table if exists p;
--- create temporary table if not exists p (
---     totes BIGINT,
---     p_count BIGINT,
---     d_count BIGINT,
---     s_count BIGINT,
---     e_count BIGINT,
---     p_percent float,
---     d_percent float,
---     s_percent float,
---     e_percent float
--- );
-
--- execute 'select array(select id from outcome_details_'|| major ||' 
---     join term on outcome_details_'|| major ||'.reqs_id = term.reqs_id where term.term_id = '|| past_term ||' order by outcome_details_'|| major ||'.order_float);' into all_reqs;
--- foreach category in array all_reqs
---     loop
---     execute 'select array(select score_id from suboutcome_details_'|| major ||' 
---         join term on term.reqs_id = suboutcome_details_'|| major ||'.reqs_id 
---         where term.term_id = '|| past_term ||' and suboutcome_details_'|| major ||'.outcome_cat_id = '|| category ||'order by suboutcome_details_'|| major ||'.order_float);' into score_ids;
---     raise notice 'category is at %', category;
---     foreach s_id in array score_ids
---         loop
---             raise notice 's_id is at %', s_id;
---             execute 'select count('|| s_id ||') from assessment where '|| s_id ||' = 1 and term_id = '|| past_term ||' and degree = '''|| degree ||''';' into p_t_c;
---             p_t:= p_t + p_t_c;
---             raise notice '%', p_t;
---             execute 'select count('|| s_id ||') from assessment where '|| s_id ||' = 2 and term_id = '|| past_term ||' and degree = '''|| degree ||''';' into d_t_c;
---             d_t:= d_t + d_t_c;
---             raise notice '%', d_t;
---             execute 'select count('|| s_id ||') from assessment where '|| s_id ||' = 3 and term_id = '|| past_term ||' and degree = '''|| degree ||''';' into s_t_c;
---             s_t:= s_t + s_t_c;
---             raise notice '%', s_t;
---             execute 'select count('|| s_id ||') from assessment where '|| s_id ||' = 4 and term_id = '|| past_term ||' and degree = '''|| degree ||''';' into e_t_c;
---             e_t:= e_t + e_t_c;
---             raise notice '%', e_t;
---         end loop;
-
-
-
---     select p_t + d_t + s_t + e_t into tot;
---     raise notice 'total is at %', tot;
-
---     insert into p(totes, p_count, d_count, s_count, e_count, p_percent, d_percent, s_percent, e_percent)
---         values(
---             tot,
---             p_t, 
---             d_t, 
---             s_t, 
---             e_t, 
---             coalesce(ROUND(p_t/NULLIF(tot::numeric,0) * 100,2),0), 
---             coalesce(ROUND(d_t/NULLIF(tot::numeric,0) * 100,2),0), 
---             coalesce(ROUND(s_t/NULLIF(tot::numeric,0) * 100,2),0), 
---             coalesce(ROUND(e_t/NULLIF(tot::numeric,0) * 100,2),0)
---             );
---         p_t:= 0;
---         d_t:= 0;
---         s_t:= 0;
---         e_t:= 0;
---         tot:=0;
---     end loop;
-
--- return query select * from p;
--- end; $$ language plpgsql;
-
--- for 
--- RETURN QUERY EXECUTE '(SELECT '''||score_id||''',
---             count(*),
---             sum(case when ' || score_id || ' = 1 then 1 else 0 end),
---             sum(case when ' || score_id || ' = 2 then 1 else 0 end),
---             sum(case when ' || score_id || ' = 3 then 1 else 0 end),
---             sum(case when ' || score_id || ' = 4 then 1 else 0 end)
---             from assessment where 
---             '|| score_id || ' is not null and 
---             degree = '''|| degree ||'''  
---             and graded = true and term_id = '|| past_term ||');';
+create or replace function post_reqs(outs int[], subs int[]) returns void
+-- create or replace function post_reqs(outs int[]) returns void
+AS $$
+declare
+outcome int;
+sub int;
+new_req_id int;
+new_id int;
+old_cat int;
+begin
+    drop table if exists key_values;
+    CREATE TABLE key_values (k int primary key, v int);
+    insert into sem_req values (DEFAULT);
+    select MAX(id) from sem_req into new_req_id;
+    raise notice 'new_req_id is at %', new_req_id;
+    foreach outcome in array outs
+        loop
+            raise notice 'outcome is at %', outcome;
+            
+            insert into outcome_details_cs (
+                reqs_id,
+                cs_cat_id,
+                outcome_description,
+                order_float
+            )
+            select new_req_id, cs_cat_id, outcome_description, order_float from outcome_details_cs where id = outcome
+            returning id into new_id;
+            raise notice 'new_id is at %', new_id;
+            insert into key_values(k,v) VALUES (outcome, new_id);
+    end loop;
+    
+    foreach sub in array subs
+        loop
+            raise notice 'sub is at %', sub;
+            insert into suboutcome_details_cs (
+                
+                suboutcome_name,
+                reqs_id,
+                score_id,
+                outcome_cat_id,
+                suboutcome_description,
+                poor_description,
+                developing_description,
+                satisfactory_description,
+                excellent_description,
+                order_float
+                        )
+            select suboutcome_name, reqs_id, score_id, outcome_cat_id, suboutcome_description, 
+                poor_description, developing_description, satisfactory_description, excellent_description, 
+                order_float from suboutcome_details_cs where id = sub returning outcome_cat_id into old_cat;
+                raise notice 'old_cat is at %', old_cat;
+            update suboutcome_details_cs set outcome_cat_id = (select v from key_values where k = old_cat) where id = sub;
+    end loop;
+    
+end; $$ language plpgsql;

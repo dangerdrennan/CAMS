@@ -1,5 +1,7 @@
 import { Router } from "express";
-import { Pool } from "pg";
+import { Pool, Client } from "pg";
+
+const cli = new Client;
 
 const usersRouter = Router();
 
@@ -134,6 +136,27 @@ usersRouter.get('/all_profs', async (req, res) => {
             console.error('error has occurred in backend function "new_project"');
         }
     });
+
+    usersRouter.post("/add_subs", async(req, res) => {
+        try{
+            const {score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
+                poor_description, developing_description, satisfatory_description, 
+                excellent_description} = req.body;
+            const add_subs = await pool.query(`
+            select post_suboutcome(($1, $2, $3, $4, $5, $6, $7 , $8, $9), 'CS');`,
+            [score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
+                poor_description, developing_description, satisfatory_description, 
+                excellent_description, outcome_cat_id]);
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "add_subs"');
+        }
+    });
+
+
+             // let query = `
+            // select post_suboutcome(}, 'CS');`
+            // console.log('this query is at ', query)
 
     usersRouter.post("/add_prof", async(req, res) => {
         try{
@@ -354,6 +377,8 @@ usersRouter.get('/all_profs', async (req, res) => {
             console.error(err, "error has occured in backend function 'delete_student'");
         }
     });
+
+
 
   usersRouter.get('/current_assessments_by_prof/:email', async (req, res) => {
     try{

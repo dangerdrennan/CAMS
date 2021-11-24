@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS outcome_details_cse;
+
 
 CREATE TABLE outcome_details_cse  (
     id serial primary key,

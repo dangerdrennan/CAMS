@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS student (
+CREATE TABLE student (
     student_id SERIAL PRIMARY KEY,
     degree TEXT,
     f_name TEXT,

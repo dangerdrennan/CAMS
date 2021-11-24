@@ -1,4 +1,3 @@
-DROP TABLE suboutcome_details_cs;
 
 CREATE TABLE suboutcome_details_cs (
     id serial primary key,
@@ -67,7 +66,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Makes a start on a final product but is unable to meet final specifications',
         'Creates a satisfactory final product which meets defined specifications',
         'Creates an exceptional final product which exceeds expectations',
-        3.0
+        4.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -81,7 +80,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Basic evaluation but has gaps',
         'Satisfactory evaluation of solution, some utilization of computing principles (e.g. Big-O analysis, testing methodologies)',
         'Exceptional and comprehensive evaluation of solution with strong tie to computing principles',
-        4.0
+        5.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -95,7 +94,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Some structure but erratic jumps in topic',
         'Most information presented logically',
         'All information presented logically',
-        5.0
+        6.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -109,7 +108,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Only rudimentary knowledge demonstrated',
         'At ease with content and provides some detail',
         'Full command of subject matter',
-        6.0
+        7.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -123,7 +122,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Only able to answer/explain in a limited manner; limited detail',
         'Provides sufficient detail to describe/answer questions',
         'Communicates  details exceptionally well',
-        7.0
+        8.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -137,7 +136,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Weak support of the material, text or diagrams hard to see or understand',
         'Mostly supports the material, most text and diagrams understandable',
         'Text and diagrams strongly reinforce the presentation',
-        8.0
+        9.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -151,7 +150,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Several errors',
         'Minor errors',
         'Negligible errors',
-        9.0
+        10.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -165,7 +164,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Several mispronunciation, occasional audience contact; too long or too short',
         'Clear voice, steady rate, some audience contact; slightly too long or too short',
         'Clear voice, steady rate, strong audience contact, enthusiastic, confident; on time',
-        10.0
+        11.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -179,7 +178,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Fulfills some, but not all, team role duties',
         'Fulfills team role duties',
         'Exceeds expectations with respect to team role duties',
-        11.0
+        12.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -193,7 +192,7 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Sometimes considers other team members'' ideas or concerns',
         'Often addresses other team members'' ideas or concerns',
         'Is exceptionally adept at addressing other team members'' ideas or concerns',
-        12.0
+        13.0
     );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
@@ -207,5 +206,5 @@ INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_c
         'Provides terse outline of status of the project and relevant updates',
         'Provides updates on a regular basis',
         'Works exceptionally well to provide documentation of progress',
-        13.0
+        14.0
     );

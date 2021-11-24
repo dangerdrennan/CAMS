@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS assessment;
 
  CREATE TABLE assessment (
     assessment_id SERIAL PRIMARY KEY,

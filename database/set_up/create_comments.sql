@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS comment (
+CREATE TABLE comment (
     comment_id serial PRIMARY KEY,
     cat_id int,
     assessment_id int REFERENCES assessment(assessment_id) ON DELETE CASCADE,

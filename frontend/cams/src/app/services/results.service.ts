@@ -26,7 +26,19 @@ export class ResultsService {
   assessment: any // change
   pastSemReq: any
 
-  constructor(private http: HttpClient) {  }
+  constructor(private http: HttpClient) { 
+    const sub:Suboutcome = {
+      score_id: 'a',
+      outcome_cat_id: 1,
+      suboutcome_name: '1',
+      suboutcome_description: 'a',
+      poor_description: 'a',
+      developing_description: 'a',
+      satisfactory_description: 'a',
+      excellent_description: 'a',
+    }
+    this.updateReqsTest(sub).subscribe()
+   }
 
   getPastSemesterRequirements(sem:string,year:number): Observable<SemesterReqs>{
     console.log(' in getPastSemesterRequirements', sem, year)
@@ -58,5 +70,12 @@ export class ResultsService {
   getPastComments(sem:string,year:number,degree:string): Observable<ShowComment[]>{
     console.log("in service")
     return this.http.get<ShowComment[]>(`${this.endPoint}/show_comments/${sem}/${year}/${degree}`)
+  }
+
+
+  updateReqsTest(sub:Suboutcome){
+    console.log('in update_req_test:', sub)
+    const url = `${this.endPoint}/add_subs`
+    return this.http.post<Suboutcome>(url, sub, httpOptions);
   }
 }

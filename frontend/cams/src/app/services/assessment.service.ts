@@ -116,7 +116,7 @@ export class AssessmentService {
   getOutcomeDescription(): Observable<OutcomeDescriptions[]>{
     return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outcome_desc/${this.assessment.degree}/${this.assessment.semester}/${this.assessment.year}`)
   }
-
+//////NOTE: Look at this
   getSuboutcomes(outcome_name: number): Observable<Suboutcome[]>{
     return this.http.get<Suboutcome[]>(`${this.endPoint}/get_suboutcomes/${this.assessment.degree}/${outcome_name}`)
   }
