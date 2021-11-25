@@ -1,4 +1,4 @@
--- select post_outcome(('text',1,'text',1,'text','text','text','text','text',99.0),'CS')
+-- execute 'select post_outcome(('text','1'::INT,'text',1::INT,'text','text','text','text','text',99.0),'CS');';
 
 CREATE TYPE new_sub AS (
     score_id TEXT,

@@ -2,24 +2,23 @@
 -- info from another function.
 
 
-create or replace function post_suboutcome(s json, degree TEXT) returns void
+create or replace function post_suboutcome(degree TEXT, s json ) returns void
 AS $$
 declare
-order_float float:= s.outcome_cat_id::float;
 test_name text;
 f record;
-g record;
+g json;
 begin
 
 
 
+    
     -- for test_name in 
     -- loop
     -- raise notice '%', g;
     -- end loop;
+
     
-
-
     if degree = 'CS' then
 
         insert into suboutcome_details_cs (
@@ -33,19 +32,20 @@ begin
         excellent_description, 
         order_float
         )
-        values(
-            s->>outcome_cat_id,
-            s->>suboutcome_name,
-            s->>score_id, 
-            s->>suboutcome_description, 
-            s->>poor_description, 
-            s->>developing_description, 
-            s->>satisfactory_description, 
-            s->>excellent_description, 
-            s->>order_float
+        select * from json_to_record(s) as x(
+            outcome_cat_id int ,
+            suboutcome_name text,
+            score_id text, 
+            suboutcome_description text, 
+            poor_description text, 
+            developing_description text, 
+            satisfactory_description text, 
+            excellent_description text, 
+            order_float float
         );
 
     else
+
         insert into suboutcome_details_cse (
             outcome_cat_id,
             suboutcome_name,
@@ -57,18 +57,17 @@ begin
             excellent_description, 
             order_float
             )
-            values(
-                s.outcome_cat_id,
-                s.suboutcome_name,
-                s.score_id, 
-                s.suboutcome_description, 
-                s.poor_description, 
-                s.developing_description, 
-                s.satisfactory_description, 
-                s.excellent_description, 
-                s.order_float
-            );
-
+            select * from json_to_record(s) as x(
+            outcome_cat_id int ,
+            suboutcome_name text,
+            score_id text, 
+            suboutcome_description text, 
+            poor_description text, 
+            developing_description text, 
+            satisfactory_description text, 
+            excellent_description text, 
+            order_float float
+        );
 
 -- select post_outcome(('text',1,'text',1,'text','text','text','text','text',99.0),'CS');
 
