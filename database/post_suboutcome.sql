@@ -2,21 +2,13 @@
 -- info from another function.
 
 
-create or replace function post_suboutcome(degree TEXT, s json ) returns void
+create or replace function post_suboutcome(degree TEXT, s json ) returns int
 AS $$
 declare
-test_name text;
+success_tracker int;
 f record;
 g json;
 begin
-
-
-
-    
-    -- for test_name in 
-    -- loop
-    -- raise notice '%', g;
-    -- end loop;
 
     
     if degree = 'CS' then
@@ -42,8 +34,9 @@ begin
             satisfactory_description text, 
             excellent_description text, 
             order_float float
-        );
+        ) returning id into success_tracker;
 
+        return success_tracker;
     else
 
         insert into suboutcome_details_cse (
@@ -67,7 +60,8 @@ begin
             satisfactory_description text, 
             excellent_description text, 
             order_float float
-        );
+        ) returning id into success_tracker;
+        return success_tracker;
 
 -- select post_outcome(('text',1,'text',1,'text','text','text','text','text',99.0),'CS');
 

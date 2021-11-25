@@ -28,16 +28,26 @@ export class ResultsService {
 
   constructor(private http: HttpClient) { 
     const sub:Suboutcome = {
-      score_id: 'a',
-      outcome_cat_id: 1,
-      suboutcome_name: '1',
-      suboutcome_description: 'a',
-      poor_description: 'a',
-      developing_description: 'a',
-      satisfactory_description: 'a',
-      excellent_description: 'a',
+      score_id: 'bbbbbbbbbbbbbbbbbb',
+      outcome_cat_id: 2,
+      suboutcome_name: '3',
+      suboutcome_description: 'bbbbbbbbbbbbbbbbbb',
+      poor_description: 'bbbbbbbbbbbbbbbbbb',
+      developing_description: 'bbbbbbbbbbbbbbbbbb',
+      satisfactory_description: 'bbbbbbbbbbbbbbbbbb',
+      excellent_description: 'bbbbbbbbbbbbbbbbbb',
     }
-    this.updateReqsTest([sub,sub]).subscribe()
+    const sub2:Suboutcome = {
+      score_id: 'c',
+      outcome_cat_id: 3,
+      suboutcome_name: '1',
+      suboutcome_description: 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
+      poor_description: 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
+      developing_description: 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
+      satisfactory_description: 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
+      excellent_description: 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
+    }
+    this.updateReqsTest([sub,sub2]).subscribe()
    }
 
   getPastSemesterRequirements(sem:string,year:number): Observable<SemesterReqs>{

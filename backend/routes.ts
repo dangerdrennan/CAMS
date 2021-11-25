@@ -140,20 +140,31 @@ usersRouter.get('/all_profs', async (req, res) => {
     usersRouter.post("/add_subs", async(req, res) => {
         try{
             let attempts = req.body.length
+            let sub_ids = []
+            let p = []
             for(let i = 0; i < req.body.length; i++){
                 
                 const {score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
                     poor_description, developing_description, satisfatory_description, 
                     excellent_description} = req.body[i]
                     console.log('score_id, outcome_cat_id = ', [score_id, outcome_cat_id])
-            const add_subs = await pool.query(`
-            select post_suboutcome('CS',
-                json_build_object('score_id',$1::TEXT, 'outcome_cat_id',$2::INT, 'suboutcome_name', $3::TEXT, 'suboutcome_description', $4::TEXT,
-                'poor_description', $5::TEXT, 'developing_description', $6::TEXT,
-                'satisfatory_description',$7::TEXT , 'excellent_description', $8::TEXT, 'outcome_cat_id',$2::FLOAT));`,
-            [JSON.stringify(score_id), JSON.stringify(outcome_cat_id), JSON.stringify(suboutcome_name), JSON.stringify(suboutcome_description), 
-                JSON.stringify(poor_description), JSON.stringify(developing_description), JSON.stringify(satisfatory_description), 
-                JSON.stringify(excellent_description)])
+                    p.push({score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
+                        poor_description, developing_description, satisfatory_description, 
+                        excellent_description})
+                    }
+                    for(let i = 0; i < p.length; i++){
+                    const add_subs = await pool.query(`
+                    select post_suboutcome('CSE',
+                        json_build_object('score_id',$1::TEXT, 'outcome_cat_id',$2::INT, 'suboutcome_name', $3::TEXT, 'suboutcome_description', $4::TEXT,
+                        'poor_description', $5::TEXT, 'developing_description', $6::TEXT,
+                        'satisfatory_description',$7::TEXT , 'excellent_description', $8::TEXT, 'outcome_cat_id',$2::FLOAT));`,
+                    [JSON.stringify(p[i].score_id), JSON.stringify(p[i].outcome_cat_id), JSON.stringify(p[i].suboutcome_name), JSON.stringify(p[i].suboutcome_description), 
+                        JSON.stringify(p[i].poor_description), JSON.stringify(p[i].developing_description), JSON.stringify(p[i].satisfatory_description), 
+                        JSON.stringify(p[i].excellent_description)])
+                        console.log(add_subs.rows[0])
+                        sub_ids.push(add_subs.rows[0])
+            
+                // res.json(add_subs.rows[0])
             }
             // const {score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
             //     poor_description, developing_description, satisfatory_description, 
