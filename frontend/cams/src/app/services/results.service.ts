@@ -37,7 +37,7 @@ export class ResultsService {
       satisfactory_description: 'a',
       excellent_description: 'a',
     }
-    this.updateReqsTest(sub).subscribe()
+    this.updateReqsTest([sub,sub]).subscribe()
    }
 
   getPastSemesterRequirements(sem:string,year:number): Observable<SemesterReqs>{
@@ -73,9 +73,9 @@ export class ResultsService {
   }
 
 
-  updateReqsTest(sub:Suboutcome){
+  updateReqsTest(sub:Suboutcome[]){
     console.log('in update_req_test:', sub)
     const url = `${this.endPoint}/add_subs`
-    return this.http.post<Suboutcome>(url, sub, httpOptions);
+    return this.http.post<Suboutcome[]>(url, sub, httpOptions);
   }
 }

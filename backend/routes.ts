@@ -139,14 +139,33 @@ usersRouter.get('/all_profs', async (req, res) => {
 
     usersRouter.post("/add_subs", async(req, res) => {
         try{
-            const {score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
-                poor_description, developing_description, satisfatory_description, 
-                excellent_description} = req.body;
+            let attempts = req.body.length
+            for(let i = 0; i < req.body.length; i++){
+                
+                const {score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
+                    poor_description, developing_description, satisfatory_description, 
+                    excellent_description} = req.body[i]
+                    console.log('score_id, outcome_cat_id = ', [score_id, outcome_cat_id])
             const add_subs = await pool.query(`
-            select post_suboutcome(($1, $2, $3, $4, $5, $6, $7 , $8, $9), 'CS');`,
-            [score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
-                poor_description, developing_description, satisfatory_description, 
-                excellent_description, outcome_cat_id]);
+            select post_suboutcome('CS',
+                json_build_object('score_id',$1::TEXT, 'outcome_cat_id',$2::INT, 'suboutcome_name', $3::TEXT, 'suboutcome_description', $4::TEXT,
+                'poor_description', $5::TEXT, 'developing_description', $6::TEXT,
+                'satisfatory_description',$7::TEXT , 'excellent_description', $8::TEXT, 'outcome_cat_id',$2::FLOAT));`,
+            [JSON.stringify(score_id), JSON.stringify(outcome_cat_id), JSON.stringify(suboutcome_name), JSON.stringify(suboutcome_description), 
+                JSON.stringify(poor_description), JSON.stringify(developing_description), JSON.stringify(satisfatory_description), 
+                JSON.stringify(excellent_description)])
+            }
+            // const {score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
+            //     poor_description, developing_description, satisfatory_description, 
+            //     excellent_description} = x
+            
+            // [score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
+            //     poor_description, developing_description, satisfatory_description, 
+            //     excellent_description, outcome_cat_id]);
+
+            // if (attempts !== 0){
+            //     throw new Error('did not update, rollback called')
+            // }
         }
         catch(err ){
             console.error(err, 'error has occurred in backend function "add_subs"');
