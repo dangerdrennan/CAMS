@@ -81,12 +81,7 @@
 
                           <form [formGroupName]="i">
                             <div class="mb-3">
-                              <!-- <div *ngIf="i > 1">
-
-                              </div> -->
-                              <!-- <button class="btn btn-danger btn-sm" (click)="deleteOutcome(i)" style="float: right;">
-                                <img src="../../assets/images/delete_outline_white_24dp.svg" alt="">
-                              </button> -->
+                          
 
 
                               <label class="col-form-label">Outcome Title:</label>
@@ -143,6 +138,11 @@
 
                         </div>
                       </form>
+                      <div *ngIf = "this.csOut | async as outs;">
+                   <div *ngFor="let o of outs">  
+                     {{o.out_desc}}
+                   </div>
+                    </div>
                     </div>
 
 
@@ -218,16 +218,6 @@
                       <img src="../../assets/images/add_white_24dp.svg" alt="">
                     </button>
 
-                    <!-- <div *ngIf="(csOutcomes.length < 1 || cseOutcomes.length < 1);else subOnly">
-                      <button class="btn btn-success btn-sm" (click)="addSuboutcome();addOutcome()" style="margin-top: 4%;">
-                        <img src="../../assets/images/add_white_24dp.svg" alt="">
-                      </button>
-                    </div>
-                    <ng-template #subOnly>
-                      <button class="btn btn-success btn-sm" (click)="addSuboutcome()" style="margin-top: 4%;">
-                        <img src="../../assets/images/add_white_24dp.svg" alt="">
-                      </button>
-                    </ng-template> -->
 
 
                   </div>

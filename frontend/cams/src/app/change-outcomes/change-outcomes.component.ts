@@ -3,8 +3,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, last, take } from 'rxjs/operators';
 import { AssessmentDisplay } from '../AssessmentDisplay';
+import { NewRequirement } from '../NewRequirement';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutDesc } from '../outDesc';
 import { ScoreComment } from '../ScoreComment';
@@ -32,11 +34,16 @@ export class ChangeOutcomesComponent implements OnInit {
 
   outcomeCSForm!: FormGroup
   outcomeCSEForm!: FormGroup
+  outform!: FormGroup
   displayTable: boolean = false
   outcomes = []
   suboutcomes = []
   csNums = []
   cseNums = []
+  csOut: Observable<OutDesc[]>
+  cseOut = []
+  currentOutcomeIDs: number[]
+  
 
   possibleOutcomes = [1,2,3,4,5,6,7,8,9]
   possibleSuboutcomes = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9,
@@ -51,9 +58,28 @@ export class ChangeOutcomesComponent implements OnInit {
 
   constructor(private router: Router, public auth:AuthService, public assessmentService: AssessmentService, public builder: FormBuilder, public updateOutService: UpdateOutcomesService) {
     // this.submissionStatus= this.assessmentService.submissionStatus
+    this.updateOutService.getOutcomesOnly('CS').subscribe( res =>{
+      console.log('res is at, ', res)
+    })
+    
     this.degreeChangeForm = this.builder.group({
       degree: ['', Validators.required]
     })
+
+    this.outform = this.builder.group({
+      outcome: ['', Validators.required],
+      outcome_description:['', Validators.required],
+      suboutcome: this.builder.group({
+        suboutcome_description: [''],
+        poor_description: [''],
+        developing_description: [''],
+        satisfactory_description: [''],
+        excellent_description: ['']
+      }),
+      aliases: this.builder.array([
+        this.builder.control('')
+      ])
+    });
 
     this.outcomeCSForm = this.builder.group({
       outcome_1: ['Outcome 1: Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.', Validators.required],
@@ -276,7 +302,9 @@ export class ChangeOutcomesComponent implements OnInit {
    }
 
   ngOnInit(): void {
-
+    this.updateOutService.getOutcomesOnly('CS').subscribe(res=> {
+      console.log('res it at ', res)
+    })
   }
 
   get csOutcomes() {
@@ -423,9 +451,48 @@ export class ChangeOutcomesComponent implements OnInit {
     else if(degree == 'CSE') {
       console.log("submitted this form", this.outcomeCSEForm.value)
     }
+    console.log('is this keeping track of old outcomes?: ',this.currentOutcomeIDs)
+    const reqs = this.cleanUpEntry(degree)
+    this.updateOutService.update(this.currentOutcomeIDs, degree, reqs)
 
   }
 
+  cleanUpEntry(degree:string){
+    
+    let form = (degree == 'CS') ? this.outcomeCSForm : this.outcomeCSEForm
+
+    const newOuts: OutcomeDescriptions[] = []
+    const newSubs: Suboutcome[] = []
+    
+    for (let i = 0; i < form.get('newOutcome').value.length; i++){
+      newOuts.push(
+        {
+          cat_id: form.get('newOutcome').value[i].outcome_num,
+          outcome_description: form.get('newOutcome').value[i].outcome_des,
+          out_id: this.possibleOutcomes[-1] + i
+        }
+      )
+      for (let j = 0; j < form.get('newSubutcome').value.length; j++){
+        let cat_id = form.get('newOutcome').value[i].outcome_num
+        form.get('newSubutcome').value[i].suboutcome_desc
+        newSubs.push(
+          {
+            score_id: `score_${cat_id}_${j+1}`,
+            suboutcome_name: `${cat_id}.${j+1}`,
+            outcome_cat_id: form.get('newOutcome').value[i].outcome_num,
+            suboutcome_description: form.get('newSubutcome').value[j].suboutcome_desc,
+            poor_description: form.get('newSubutcome').value[j].suboutcome_poor,
+            developing_description: form.get('newSubutcome').value[j].suboutcome_dev,
+            satisfactory_description: form.get('newSubutcome').value[j].suboutcome_sat,
+            excellent_description: form.get('newSubutcome').value[j].suboutcome_ex
+          }
+        )
+      }
+    }
+    
+    const reqs: NewRequirement = {new_outcome: newOuts, new_subs: newSubs}
+    return reqs;
+  }
 
   // trigger to display outcomes and suboutcomes for specified degree
   getDegreeOutcomes() {
@@ -441,10 +508,14 @@ export class ChangeOutcomesComponent implements OnInit {
       this.updateOutService.getOutcomesOnly(degree).subscribe((res: any) => {
 
         this.outcomes = res
+        const cat_ids = res.map(x=> {return x.cat_id})
+        const out_ids = res.map(x=> {return x.out_id})
+        this.currentOutcomeIDs = out_ids
+        this.possibleOutcomes = this.possibleOutcomes.filter(x=> !cat_ids.includes(x))
         res.filter((item: OutDesc) => {
-
+          
           this.updateOutService.getsuboutcomesOnly(item.out_id, degree).subscribe((res: any) => {
-            // console.log("res", res)
+            console.log("in get_degree_outcomes-- res=", res)
             this.suboutcomes.push(res)
           })
 
@@ -457,7 +528,12 @@ export class ChangeOutcomesComponent implements OnInit {
       this.displayTable = true
     }
     else if(degree == 'CSE') {
+      
       this.updateOutService.getOutcomesOnly(degree).subscribe((res: any) => {
+      const cat_ids = res.map(x=> {return x.cat_id})
+      const out_ids = res.map(x=> {return x.out_id})
+      this.currentOutcomeIDs = out_ids
+      this.possibleOutcomes = this.possibleOutcomes.filter(x=> !cat_ids.includes(x))
         console.log("ress", res)
         this.outcomes = res
         res.filter((item: OutDesc) => {
