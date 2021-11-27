@@ -130,7 +130,7 @@ export class ResultsService {
   sampleUpdate(toKeep: number[], degree:string, newRequirements:NewRequirement){
     try{
       console.log('toKeep is at: ', toKeep)
-      //this.startNew(toKeep,degree).pipe().subscribe()
+      this.startNew(toKeep,degree).pipe().subscribe()
       this.updateReqsAndOutsTest(newRequirements,degree)
     
   }

@@ -79,7 +79,7 @@ select MAX(id) from sem_req into new_reqs_id;
                 excellent_descriptions[i], 
                 outcome_cat_ids[i]
             ) returning id into success_tracker;
-            select id from outcome_details_ces where cse_cat_id = outcome_cat_ids[i] into new_cat;
+            select id from outcome_details_cse where cse_cat_id = outcome_cat_ids[i] into new_cat;
             update suboutcome_details_cse set outcome_cat_id = new_cat where id = success_tracker;
              execute 'ALTER TABLE assessment ADD COLUMN IF NOT EXISTS '|| score_ids[i] ||' INT default 0;';
             i = i + 1;

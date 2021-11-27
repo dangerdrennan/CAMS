@@ -157,7 +157,7 @@ export class CommentModalComponent implements OnInit {
 
     
    test(){
-     this.resService.sampleUpdate([1,2,3,4],'CS',this.new_req1)
+     this.resService.sampleUpdate([1,2,3,4],'CSE',this.new_req1)
 
    
   }
