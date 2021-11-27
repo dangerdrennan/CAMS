@@ -229,9 +229,11 @@ usersRouter.get('/all_profs', async (req, res) => {
             let outcome_descriptions = []
             for(let i = 0; i < req.body.length; i++){
                 cat_ids.push(req.body[i].cat_id)
+                
                 outcome_descriptions.push(req.body[i].outcome_description)
             }  
-            console.log(degree, cat_ids, outcome_descriptions)
+            console.log(`Description in service is at ${outcome_descriptions}`)
+            
             const add_outs = await pool.query(`
                 select post_outcomes($1::TEXT, $2::INT[], $3::TEXT[]);`,
                 [

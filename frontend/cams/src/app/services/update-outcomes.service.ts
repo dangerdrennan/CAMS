@@ -37,14 +37,13 @@ export class UpdateOutcomesService {
   update(toKeep: number[], degree:string, newRequirements:NewRequirement){
     try{
       console.log('toKeep is at: ', toKeep)
-      this.startNew(toKeep,degree).pipe().subscribe()
-      this.updateReqsAndOutsTest(newRequirements,degree)
+      const task1 = this.startNew(toKeep,degree)
     
   }
     catch(e){
-
+      throw Error('Semester data was not updated. Please double check the current requirements and resubmit.q')
     }
-
+    const task2 = this.updateReqsAndOutsTest(newRequirements,degree)
   }
 
 
@@ -71,6 +70,7 @@ export class UpdateOutcomesService {
     let allOuts = reqs.new_outcome
     let task1 = this.updateOuts(allOuts, degree)
     let task2 = this.updateReqs(allSubs, degree)
+    console.log(`Description in service is at ${reqs.new_outcome[0].outcome_description}`)
     concat(task1,task2).subscribe()
     //task1.subscribe()
     
@@ -79,6 +79,7 @@ export class UpdateOutcomesService {
 
   updateOuts(out:OutcomeDescriptions[], degree:string): Observable<any>{
     console.log('in update_out_test:', out)
+    console.log(`Description in service is at ${out[0].outcome_description}`)
     const url = `${this.endPoint}/add_outs/${degree}`
     return this.http.post<any>(url, out, httpOptions);
   }
