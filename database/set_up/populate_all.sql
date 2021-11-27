@@ -22,6 +22,7 @@
 \i get_term_comments.sql
 \i add_subs.sql
 \i post_outcome.sql
+\i post_outcomes.sql
 \i results_functions/get_totes_pers.sql
 \i results_functions/get_term_id.sql
 \i results_functions/sub_grades.sql

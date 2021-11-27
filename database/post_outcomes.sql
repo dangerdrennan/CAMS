@@ -1,5 +1,5 @@
 
-create or replace function post_outcome(
+create or replace function post_outcomes(
     degree TEXT,
     new_cat INT[],
     new_description text[]
@@ -8,12 +8,14 @@ AS $$
 declare
 id_tracker int;
 new_reqs_id int;
-i int;
+i int:=1;
 c int;
 begin
+
     select MAX(id) from sem_req into new_reqs_id;
-    select array_length(score_ids,1) into c;
-    while i <= c
+    
+    select array_length(new_cat, 1) into c;
+    
     if degree = 'CS' then
         while i <= c
         loop
@@ -25,11 +27,13 @@ begin
         )
         values(
             new_reqs_id,
-            new_cat,
-            new_description,
-            new_cat::FLOAT
+            new_cat[i]::INT,
+            new_description[i]::TEXT,
+            new_cat[i]::FLOAT
         )returning id into id_tracker;
+        i:= i +1;
         end loop;
+        
     else
         while i <= c 
         loop
@@ -41,11 +45,14 @@ begin
         )
         values(
             new_reqs_id,
-            new_cat,
-            new_description,
-            new_cat::FLOAT
+            new_cat[i],
+            new_description[i],
+            new_cat[i]::FLOAT
         ) returning id into id_tracker;
+        i:= i + 1;
+
         end loop;
-    end if; 
-    return id_tracker;      
+        
+    end if;   
+    return id_tracker;
 end; $$ language plpgsql;

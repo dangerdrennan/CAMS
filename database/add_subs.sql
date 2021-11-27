@@ -1,6 +1,7 @@
 create or replace function add_subs(
+    
     degree TEXT,
-    o_id int,
+    cat_ids int[],
     score_ids text[],
     suboutcome_names text[],
     suboutcome_descriptions text[],
@@ -13,7 +14,7 @@ AS $$
 declare
 c int;
 new_reqs_id int;
-
+new_cat int;
 i int:=1;
 success_tracker int;
 begin
@@ -37,7 +38,7 @@ select MAX(id) from sem_req into new_reqs_id;
                 order_float
                 )
                 values (
-                o_id,
+                cats_id[i],
                 new_reqs_id,
                 suboutcome_names[i],
                 score_ids[i], 
@@ -46,9 +47,10 @@ select MAX(id) from sem_req into new_reqs_id;
                 developing_descriptions[i], 
                 satisfactory_descriptions[i], 
                 excellent_descriptions[i], 
-                o_id::FLOAT
+                cats_id[i]
             ) returning id into success_tracker;
-            update suboutcome_details_cs set order_float = success_tracker where id = success_tracker;
+
+            -- update suboutcome_details_cs set order_float = success_tracker where id = success_tracker;
             execute 'ALTER TABLE assessment ADD COLUMN IF NOT EXISTS '|| score_ids[i] ||' INT default 0;';
             i = i + 1;
             
@@ -71,7 +73,7 @@ select MAX(id) from sem_req into new_reqs_id;
                 order_float
                 )
                 values (
-                o_id,
+                cats_id[i],
                 new_reqs_id,
                 suboutcome_names[i],
                 score_ids[i], 
@@ -80,9 +82,9 @@ select MAX(id) from sem_req into new_reqs_id;
                 developing_descriptions[i], 
                 satisfactory_descriptions[i], 
                 excellent_descriptions[i], 
-                o_id::FLOAT
+                cats_id[i]
             ) returning id into success_tracker;
-            update suboutcome_details_cs set order_float = success_tracker where id = success_tracker;
+            update suboutcome_details_cs set outcome_cat_id = success_tracker where id = success_tracker;
              execute 'ALTER TABLE assessment ADD COLUMN IF NOT EXISTS '|| score_ids[i] ||' INT default 0;';
             i = i + 1;
         end loop;

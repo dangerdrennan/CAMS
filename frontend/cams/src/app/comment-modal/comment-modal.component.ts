@@ -116,13 +116,13 @@ export class CommentModalComponent implements OnInit {
     excellent_description: 'newest4',
   }
   new_req1 = {
-    new_outcome: this.out,
-    new_subs: [this.sub,this.sub2]
+    new_outcome: [this.out,this.out2],
+    new_subs: [this.sub,this.sub2,this.sub3,this.sub4]
   }
-  new_req2 = {
-    new_outcome: this.out2,
-    new_subs: [this.sub3,this.sub4]
-  }
+  // new_req2 = {
+  //   new_outcome: this.out2,
+  //   new_subs: [this.sub3,this.sub4]
+  // }
 
   constructor(public resService: ResultsService) {
      //this.comments$ = this.resService.getPastComments(this.sem,this.year,this.degree)
@@ -157,7 +157,7 @@ export class CommentModalComponent implements OnInit {
 
     
    test(){
-     this.resService.sampleUpdate([1,2,3,4],'CS',[this.new_req1,this.new_req2])
+     this.resService.sampleUpdate([1,2,3,4],'CS',this.new_req1)
 
    
   }

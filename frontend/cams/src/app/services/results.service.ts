@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { observable, Observable, of } from 'rxjs';
+import { concat, observable, Observable, of } from 'rxjs';
 import { last, take } from 'rxjs/operators';
 import { NewRequirement } from '../NewRequirement';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
@@ -127,15 +127,12 @@ export class ResultsService {
     return this.http.get<ShowComment[]>(`${this.endPoint}/show_comments/${sem}/${year}/${degree}`)
   }
 
-  sampleUpdate(toKeep: number[], degree:string, newRequirements:NewRequirement[]){
+  sampleUpdate(toKeep: number[], degree:string, newRequirements:NewRequirement){
     try{
       console.log('toKeep is at: ', toKeep)
-      this.startNew(toKeep,degree).pipe().subscribe()
-      for (let i = 0; i < newRequirements.length;i++){
-        console.log(newRequirements.length)
-        console.log('hit in loop', i , 'time(s)')
-      this.updateReqsAndOutsTest(newRequirements[i],degree)
-    }
+      //this.startNew(toKeep,degree).pipe().subscribe()
+      this.updateReqsAndOutsTest(newRequirements,degree)
+    
   }
     catch(e){
 
@@ -153,23 +150,25 @@ export class ResultsService {
     return this.http.post<number[]>(url, hm, httpOptions);
   }
 
-  updateReqsTest(idTracker:number, sub:Suboutcome[], degree:string){
+  updateReqsTest(sub:Suboutcome[], degree:string){
     console.log('in update_req_test:', sub)
-    console.log('what is idTracker at?: ', idTracker)
-    const url = `${this.endPoint}/add_subs/${degree}/${idTracker}`
+    console.log('what is idTracker at?: ')
+    const url = `${this.endPoint}/add_subs/${degree}`
     return this.http.post<Suboutcome[]>(url, sub, httpOptions);
   }
 
-  updateReqsAndOutsTest(out:NewRequirement, degree:string){
-    console.log('in update reqs and outs test:', out)
-    this.updateOutsTest(out.new_outcome, degree).pipe(last()).subscribe(res=>{
-      let id_tracker = res.post_outcome
-      console.log(id_tracker)
-      this.updateReqsTest(id_tracker,out.new_subs, degree).pipe(last()).subscribe()
-    })
+  updateReqsAndOutsTest(reqs:NewRequirement, degree:string){
+    console.log('in update reqs and outs test:', reqs)
+    let allSubs = reqs.new_subs
+    let allOuts = reqs.new_outcome
+    let task1 = this.updateOutsTest(allOuts, degree)
+    //let task2 = this.updateReqsTest(allSubs, degree)
+    //concat(task2,task1).subscribe()
+    task1.subscribe()
+    
   }
 
-  updateOutsTest(out:OutcomeDescriptions, degree:string): Observable<any>{
+  updateOutsTest(out:OutcomeDescriptions[], degree:string): Observable<any>{
     console.log('in update_out_test:', out)
     const url = `${this.endPoint}/add_outs/${degree}`
     return this.http.post<any>(url, out, httpOptions);
