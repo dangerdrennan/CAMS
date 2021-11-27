@@ -162,9 +162,10 @@ export class ResultsService {
     let allSubs = reqs.new_subs
     let allOuts = reqs.new_outcome
     let task1 = this.updateOutsTest(allOuts, degree)
-    //let task2 = this.updateReqsTest(allSubs, degree)
-    //concat(task2,task1).subscribe()
-    task1.subscribe()
+    let task2 = this.updateReqsTest(allSubs, degree)
+    concat(task1,task2).subscribe()
+    //task1.subscribe()
+    
     
   }
 
