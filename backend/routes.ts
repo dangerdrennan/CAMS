@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Pool, Client } from "pg";
+import { stringifyConfiguration } from "tslint/lib/configuration";
 
 const cli = new Client;
 
@@ -138,65 +139,85 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
-    usersRouter.post("/add_subs/:degree", async(req, res) => {
+    usersRouter.post("/start_new/:degree", async(req, res) => {
         try{
             const {degree} = req.params
-            let sub_ids = []
-            let p = []
-            for(let i = 0; i < req.body.length; i++){
-                
-                const {score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
-                    poor_description, developing_description, satisfatory_description, 
-                    excellent_description} = req.body[i]
-                    console.log('score_id, outcome_cat_id = ', [score_id, outcome_cat_id])
-                    p.push({score_id, outcome_cat_id, suboutcome_name, suboutcome_description, 
-                        poor_description, developing_description, satisfatory_description, 
-                        excellent_description})
-                    }
-                    for(let i = 0; i < p.length; i++){
-                    const add_subs = await pool.query(`
-                    select post_suboutcome($9,
-                        json_build_object('score_id',$1::TEXT, 'outcome_cat_id',$2::INT, 'suboutcome_name', $3::TEXT, 'suboutcome_description', $4::TEXT,
-                        'poor_description', $5::TEXT, 'developing_description', $6::TEXT,
-                        'satisfatory_description',$7::TEXT , 'excellent_description', $8::TEXT, 'outcome_cat_id',$2::FLOAT));`,
-                    [JSON.stringify(p[i].score_id), JSON.stringify(p[i].outcome_cat_id), JSON.stringify(p[i].suboutcome_name), JSON.stringify(p[i].suboutcome_description), 
-                        JSON.stringify(p[i].poor_description), JSON.stringify(p[i].developing_description), JSON.stringify(p[i].satisfatory_description), 
-                        JSON.stringify(p[i].excellent_description),degree])
-                        console.log(add_subs.rows[0])
-                        sub_ids.push(add_subs.rows[0])
-            
+            const {toKeep} = req.body
+            // console.log('in start_new degree and toKeep are at ', degree, ' ')
+            console.log('to keep is at ', JSON.stringify(req.body))
+            const start_new = await pool.query(`
+                select post_reqs($1::INT[], $2);`,
+                [
+                    toKeep,
+                    degree
+                ])
+                    console.log(start_new.rows[0])
+                    res.json(start_new.rows[0])
             }
-
-        }
         catch(err ){
-            console.error(err, 'error has occurred in backend function "add_subs"');
+            console.error(err, 'error has occurred in backend function "start_new"');
         }
     });
 
     usersRouter.post("/add_outs/:degree", async(req, res) => {
         try{
-            let attempts = req.body.length
-            let sub_ids = []
-            let p = []
-            for(let i = 0; i < req.body.length; i++){
-                
-                const {cat_id,description} = req.body[i]
-                    p.push({cat_id,description})
-                    }
-                    for(let i = 0; i < p.length; i++){
-                    const add_outs = await pool.query(`
-                    select post_outcome('CSE',
-                        json_build_object('cat_id',$1::INT, 'description',$2::TEXT));`,
-                    [JSON.stringify(p[i].cat_id), JSON.stringify(p[i].description)])
-                        console.log(add_outs.rows[0])
-                        sub_ids.push(add_outs.rows[0])
+            const {degree} = req.params
+            const {cat_id,outcome_description} = req.body    
+            const add_outs = await pool.query(`
+                select post_outcome($1, $2, $3);`,
+                [
+                    degree,
+                    cat_id,
+                    outcome_description
+                    
+                ])
+                    console.log(add_outs.rows[0])
+                    res.json(add_outs.rows[0])
             }
-
-        }
         catch(err ){
             console.error(err, 'error has occurred in backend function "add_outs"');
         }
     });
+
+
+    usersRouter.post("/add_subs/:degree/:outcome_id", async(req, res) => {
+    try{
+        const {degree, outcome_id} = req.params
+        console.log(req.params)
+        let score_ids = []
+        let suboutcome_names = []
+        let suboutcome_descriptions = []
+        let poor_descriptions = []
+        let developing_descriptions = []
+        let satisfactory_descriptions = []
+        let excellent_descriptions = []
+        for(let i = 0; i < req.body.length; i++){
+            score_ids.push(req.body[i].score_id)
+            suboutcome_names.push(req.body[i].suboutcome_name)
+            suboutcome_descriptions.push(req.body[i].suboutcome_description)
+            poor_descriptions.push(req.body[i].poor_description)
+            developing_descriptions.push(req.body[i].developing_description)
+            satisfactory_descriptions.push(req.body[i].satisfactory_description)
+            excellent_descriptions.push(req.body[i].excellent_description)
+        }
+    const add_subs = await pool.query(`select add_subs($9::TEXT, $1::INT, $2::TEXT[], $3::TEXT[], $4::TEXT[], $5::TEXT[], $6::TEXT[],$7::TEXT[],$8::TEXT[])`,
+    [
+    outcome_id,
+    score_ids,
+    suboutcome_names,
+    suboutcome_descriptions,
+    poor_descriptions,
+    developing_descriptions,
+    satisfactory_descriptions,
+    excellent_descriptions,
+    degree])
+    
+    console.log(add_subs.rows)
+    }
+    catch(err ){
+        console.error(err, 'error has occurred in backend function "add subs (new)"');
+    }
+});
 
     usersRouter.post("/add_prof", async(req, res) => {
         try{
@@ -546,7 +567,6 @@ usersRouter.get('/all_profs', async (req, res) => {
   });
 
 
-  // We have to watch this one, since we're grabbing by id and not "cat_id"s anymore.
   usersRouter.get('/get_outcome_desc/:degree/:sem/:year', async (req, res) => {
     try{
         const {degree, sem, year} = req.params
@@ -616,38 +636,6 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
-  usersRouter.post("/ss", async(req, res) => {
-    try{
-        let attempts = req.body.length
-        let sub_ids = []
-        let p = []
-        let query = ``
-        for(let i = 0; i < req.body.length; i++){
-            let query = ``
-            const new_sub = req.body[i]
-            p.push(new_sub)
-        }
-    const add_subs = await pool.query(`select p('CS',
-        json_build_object(
-            'score_id',$1::TEXT, 'outcome_cat_id',$2::INT, 'suboutcome_name', $3::TEXT, 'suboutcome_description',
-            $4::TEXT, 'poor_description', $5::TEXT, 'developing_description', $6::TEXT,
-            'satisfatory_description',$7::TEXT , 'excellent_description', $8::TEXT, 'outcome_cat_id',$2::FLOAT),
-            json_build_object(
-                'score_id',$1::TEXT, 'outcome_cat_id',$2::INT, 'suboutcome_name', $3::TEXT, 'suboutcome_description',
-                $4::TEXT, 'poor_description', $5::TEXT, 'developing_description', $6::TEXT,
-                'satisfatory_description',$7::TEXT , 'excellent_description', $8::TEXT, 'outcome_cat_id',$2::FLOAT));`,
-      [JSON.stringify(p[0].score_id), JSON.stringify(p[0].outcome_cat_id), JSON.stringify(p[0].suboutcome_name), JSON.stringify(p[0].suboutcome_description), 
-        JSON.stringify(p[0].poor_description), JSON.stringify(p[0].developing_description), JSON.stringify(p[0].satisfatory_description), 
-        JSON.stringify(p[0].excellent_description)])
-        console.log(add_subs.rows)
-    }
-    catch(err ){
-        console.error(err, 'error has occurred in backend function "ss"');
-    }
-});
-
-
-
   export default usersRouter;
 
 
@@ -713,5 +701,45 @@ usersRouter.get('/all_profs', async (req, res) => {
 //     }
 //     catch(err ){
 //         console.error(err, 'error has occurred in backend function "s"');
+//     }
+// });
+
+
+
+// usersRouter.post("/ss", async(req, res) => {
+//     try{
+//         let attempts = req.body.length
+//         let sub_ids = []
+//         let p = []
+//         let start_query = `select p('CS'`
+//         let mid_query =``
+//         for(let i = 0; i < req.body.length; i++){
+//             const new_sub = req.body[i]
+//             mid_query = mid_query + `, json_build_object(
+//                 'score_id',${JSON.stringify(new_sub.score_id)}::TEXT, 'outcome_cat_id',${JSON.stringify(new_sub.outcome_cat_id)}::INT, 'suboutcome_name', ${JSON.stringify(new_sub.score_id)}::TEXT, 'suboutcome_description',
+//                 ${JSON.stringify(new_sub.score_id)}::TEXT, 'poor_description', ${JSON.stringify(new_sub.score_id)}::TEXT, 'developing_description', ${JSON.stringify(new_sub.score_id)}::TEXT,
+//                 'satisfatory_description',${JSON.stringify(new_sub.score_id)}::TEXT , 'excellent_description', ${JSON.stringify(new_sub.score_id)}::TEXT, 'outcome_cat_id',${JSON.stringify(new_sub.outcome_cat_id)}::FLOAT)`
+//             p.push(new_sub)
+
+//         }
+//         let query = start_query+mid_query +`)`
+//         console.log(query)
+//         const add_subs = await pool.query(query)
+//     // const add_subs = await pool.query(`select p('CS',
+//     //     json_build_object(
+//     //         'score_id',$1::TEXT, 'outcome_cat_id',$2::INT, 'suboutcome_name', $3::TEXT, 'suboutcome_description',
+//     //         $4::TEXT, 'poor_description', $5::TEXT, 'developing_description', $6::TEXT,
+//     //         'satisfatory_description',$7::TEXT , 'excellent_description', $8::TEXT, 'outcome_cat_id',$2::FLOAT),
+//     //         json_build_object(
+//     //             'score_id',$1::TEXT, 'outcome_cat_id',$2::INT, 'suboutcome_name', $3::TEXT, 'suboutcome_description',
+//     //             $4::TEXT, 'poor_description', $5::TEXT, 'developing_description', $6::TEXT,
+//     //             'satisfatory_description',$7::TEXT , 'excellent_description', $8::TEXT, 'outcome_cat_id',$2::FLOAT));`,
+//     //   [JSON.stringify(p[0].score_id), JSON.stringify(p[0].outcome_cat_id), JSON.stringify(p[0].suboutcome_name), JSON.stringify(p[0].suboutcome_description), 
+//     //     JSON.stringify(p[0].poor_description), JSON.stringify(p[0].developing_description), JSON.stringify(p[0].satisfatory_description), 
+//     //     JSON.stringify(p[0].excellent_description)])
+//         console.log(add_subs.rows)
+//     }
+//     catch(err ){
+//         console.error(err, 'error has occurred in backend function "ss"');
 //     }
 // });

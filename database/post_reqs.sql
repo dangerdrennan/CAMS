@@ -4,7 +4,7 @@ declare
 old_req_id int;
 new_req_id int;
 begin
-
+    perform set_current_term();
     drop table if exists w;
     drop table if exists x;
     drop table if exists y;
@@ -21,7 +21,7 @@ begin
         update w set reqs_id = new_req_id;
         INSERT into outcome_details_cs table w;
 
-        create table x as select * from suboutcome_details_cs
+        create table x as select distinct * from suboutcome_details_cs
             where outcome_cat_id = ANY(select unnest(outs));
         update x set id = nextval(pg_get_serial_sequence('suboutcome_details_cs', 'id'));
         update x set reqs_id = new_req_id;
@@ -47,7 +47,7 @@ begin
         update w set reqs_id = new_req_id;
         INSERT into outcome_details_cse table w;
 
-        create table x as select * from suboutcome_details_cse
+        create table x as select distinct * from suboutcome_details_cse
             where outcome_cat_id = ANY(select unnest(outs));
         update x set id = nextval(pg_get_serial_sequence('suboutcome_details_cse', 'id'));
         update x set reqs_id = new_req_id;
@@ -59,7 +59,7 @@ begin
         update y set reqs_id = new_req_id;
         INSERT into outcome_details_cs table y;
 
-        create table z as select * from suboutcome_details_cs
+        create table z as select distinct *  from suboutcome_details_cs
             where reqs_id = old_req_id;
         update z set id = nextval(pg_get_serial_sequence('suboutcome_details_cs', 'id'));
         update z set reqs_id = new_req_id;

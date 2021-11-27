@@ -8,8 +8,12 @@ declare
 success_tracker int;
 f record;
 g json;
+new_reqs_id int;
+cat text;
+only_id int;
 begin
 
+select reqs_id from term where is_current = true into new_reqs_id;
     
     if degree = 'CS' then
 
@@ -25,7 +29,6 @@ begin
         order_float
         )
         select * from json_to_record(s) as x(
-            outcome_cat_id int ,
             suboutcome_name text,
             score_id text, 
             suboutcome_description text, 
@@ -35,8 +38,11 @@ begin
             excellent_description text, 
             order_float float
         ) returning id into success_tracker;
-
-        return success_tracker;
+    select outcome_cat_id from subcoutcome_details_cs where id = success_tracker limit 1 into cat;
+    update suboutcome_details_cs set reqs_id = new_reqs_id where id = success_tracker;
+    select id from outcome_details_cs where reqs_id = new_reqs_id and cs_cat_id = cat into only_id;
+    update suboutcome_details_cs set cs_cat_id = only_id;
+        return only_id;
     else
 
         insert into suboutcome_details_cse (
@@ -61,7 +67,12 @@ begin
             excellent_description text, 
             order_float float
         ) returning id into success_tracker;
-        return success_tracker;
+        select outcome_cat_id from subcoutcome_details_cse where id = success_tracker into cat;
+        update suboutcome_details_cse set reqs_id = new_reqs_id where id = success_tracker;
+        select id from outcome_details_cs where reqs_id = new_reqs_id and cse_cat_id = cat into only_id;
+        update suboutcome_details_cs set cs_cat_id = only_id;
+
+        return only_id;
 
 -- select post_outcome(('text',1,'text',1,'text','text','text','text','text',99.0),'CS');
 

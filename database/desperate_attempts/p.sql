@@ -3,7 +3,7 @@ AS $$
 declare
 success_tracker int;
 f record;
-g record;
+g json;
 i int;
 arr_length int;
 
@@ -24,16 +24,16 @@ for i in 1..arr_length
         excellent_description, 
         order_float
         )
-        select * from json_to_record(s[i]) as x (
-            outcome_cat_id int ,
-            suboutcome_name text,
-            score_id text, 
-            suboutcome_description text, 
-            poor_description text, 
-            developing_description text, 
-            satisfactory_description text, 
-            excellent_description text, 
-            order_float float
+        values (
+            s[i]->>outcome_cat_id,
+            s[i]->>suboutcome_name,
+            s[i]->>score_id, 
+            s[i]->>suboutcome_description, 
+            s[i]->>poor_description, 
+            s[i]->>developing_description, 
+            s[i]->>satisfactory_description, 
+            s[i]->>excellent_description, 
+            s[i]->>order_float
         ) returning id into success_tracker;
     end loop;
          

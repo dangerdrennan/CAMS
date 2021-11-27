@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { observable, Observable, of } from 'rxjs';
+import { last, take } from 'rxjs/operators';
+import { NewRequirement } from '../NewRequirement';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutcomeTrends } from '../OutcomeTrends';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
@@ -26,33 +28,71 @@ export class ResultsService {
   assessment: any // change
   pastSemReq: any
 
+  out:OutcomeDescriptions = {
+    cat_id:111,
+    outcome_description:'newest description'
+  }
+  out2:OutcomeDescriptions = {
+    cat_id:111,
+    outcome_description:'newest description'
+  }
+  sub:Suboutcome = {
+    score_id: 's1',
+    outcome_cat_id: 111,
+    suboutcome_name: 'name sub 1',
+    suboutcome_description: 'desc sub 1',
+    poor_description: 'poor sub 1',
+    developing_description: 'dev sub 1',
+    satisfactory_description: 'sat sub 1',
+    excellent_description: 'ex sub 1',
+  }
+  sub2:Suboutcome = {
+    score_id: 's2',
+    outcome_cat_id: 111,
+    suboutcome_name: '1',
+    suboutcome_description: 'newes2',
+    poor_description: 'newes2',
+    developing_description: 'newes2',
+    satisfactory_description: 'newest2',
+    excellent_description: 'newest2',
+  }
+
+  sub3:Suboutcome = {
+    score_id: 's3',
+    outcome_cat_id: 111,
+    suboutcome_name: 'name sub 3',
+    suboutcome_description: 'desc sub 3',
+    poor_description: 'poor sub 3',
+    developing_description: 'dev sub 3',
+    satisfactory_description: 'sat sub 3',
+    excellent_description: 'ex sub 3',
+  }
+  sub4:Suboutcome = {
+    score_id: 's4',
+    outcome_cat_id: 111,
+    suboutcome_name: '1',
+    suboutcome_description: 'newest4',
+    poor_description: 'newest4',
+    developing_description: 'newest4',
+    satisfactory_description: 'newest4',
+    excellent_description: 'newest4',
+  }
+
   constructor(private http: HttpClient) { 
-    const out:OutcomeDescriptions = {
-      cat_id:1,
-      outcome_description:'newest description'
+    const new_req1 = {
+      new_outcome: this.out,
+      new_subs: [this.sub,this.sub2]
     }
-    const sub:Suboutcome = {
-      score_id: 'newest',
-      outcome_cat_id: 2,
-      suboutcome_name: '3',
-      suboutcome_description: 'newest',
-      poor_description: 'newest',
-      developing_description: 'newest',
-      satisfactory_description: 'newest',
-      excellent_description: 'newest',
+    const new_req2 = {
+      new_outcome: this.out,
+      new_subs: [this.sub3,this.sub4]
     }
-    const sub2:Suboutcome = {
-      score_id: 'c',
-      outcome_cat_id: 3,
-      suboutcome_name: '1',
-      suboutcome_description: 'newest',
-      poor_description: 'newest',
-      developing_description: 'newest',
-      satisfactory_description: 'newest',
-      excellent_description: 'newest',
-    }
-    this.ss([sub,sub2]).subscribe()
-    //this.updateOutsTest([out,out],'CS').subscribe()
+
+
+    //this.updateReqsTest([sub,sub2],'CS').subscribe()
+    //this.updateOutsTest(out,'CS').subscribe()
+    //this.updateReqsAndOutsTest(out,[sub,sub2],'CS')
+    //this.sampleUpdate([1,2,3,4],'CS',[new_req1,new_req2])
    }
 
   getPastSemesterRequirements(sem:string,year:number): Observable<SemesterReqs>{
@@ -87,17 +127,52 @@ export class ResultsService {
     return this.http.get<ShowComment[]>(`${this.endPoint}/show_comments/${sem}/${year}/${degree}`)
   }
 
+  sampleUpdate(toKeep: number[], degree:string, newRequirements:NewRequirement[]){
+    try{
+      console.log('toKeep is at: ', toKeep)
+      this.startNew(toKeep,degree).pipe().subscribe()
+      for (let i = 0; i < newRequirements.length;i++){
+        console.log(newRequirements.length)
+        console.log('hit in loop', i , 'time(s)')
+      this.updateReqsAndOutsTest(newRequirements[i],degree)
+    }
+  }
+    catch(e){
 
-  updateReqsTest(sub:Suboutcome[], degree:string){
+    }
+
+  }
+
+
+  startNew(toKeep:number[], degree:String){
+    const url = `${this.endPoint}/start_new/${degree}`
+    const hm = {
+      dummy: 'dummy',
+      toKeep: toKeep
+    }
+    return this.http.post<number[]>(url, hm, httpOptions);
+  }
+
+  updateReqsTest(idTracker:number, sub:Suboutcome[], degree:string){
     console.log('in update_req_test:', sub)
-    const url = `${this.endPoint}/add_subs/${degree}`
+    console.log('what is idTracker at?: ', idTracker)
+    const url = `${this.endPoint}/add_subs/${degree}/${idTracker}`
     return this.http.post<Suboutcome[]>(url, sub, httpOptions);
   }
 
-  updateOutsTest(sub:OutcomeDescriptions[], degree:string){
-    console.log('in update_out_test:', sub)
+  updateReqsAndOutsTest(out:NewRequirement, degree:string){
+    console.log('in update reqs and outs test:', out)
+    this.updateOutsTest(out.new_outcome, degree).pipe(last()).subscribe(res=>{
+      let id_tracker = res.post_outcome
+      console.log(id_tracker)
+      this.updateReqsTest(id_tracker,out.new_subs, degree).pipe(last()).subscribe()
+    })
+  }
+
+  updateOutsTest(out:OutcomeDescriptions, degree:string): Observable<any>{
+    console.log('in update_out_test:', out)
     const url = `${this.endPoint}/add_outs/${degree}`
-    return this.http.post<OutcomeDescriptions[]>(url, sub, httpOptions);
+    return this.http.post<any>(url, out, httpOptions);
   }
   ss(sub:Suboutcome[]){
     console.log('in ss:', sub)
