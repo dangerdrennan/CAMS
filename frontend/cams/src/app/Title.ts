@@ -5,5 +5,6 @@ export interface Title {
   projects: string,
   past_projects: string,
   logout: string,
-  assessment: string
+  assessment: string,
+  change_outcomes: string
 }

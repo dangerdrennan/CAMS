@@ -538,6 +538,32 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
   });
 
+  usersRouter.get('/get_outs_only/:degree', async (req, res) => {
+    try {
+        const {degree} = req.params
+        const get_outs_only = await pool.query(
+            `SELECT * FROM get_outs_only($1)`,
+            [degree]);
+            res.json(get_outs_only.rows)
+        
+    } catch (error) {
+        console.log(error, 'error has occured in backend function "get_outs_only"')
+    }
+    })
+
+    usersRouter.get('/get_sub_by_outcome/:out_id/:degree', async (req, res) => {
+        try {
+            const {degree, out_id} = req.params
+            const get_outs_only = await pool.query(
+                `SELECT * FROM get_sub_by_outcome($1, $2)`,
+                [out_id, degree]);
+                res.json(get_outs_only.rows)
+            
+        } catch (error) {
+            console.log(error, 'error has occured in backend function "get_sub_by_outcome"')
+        }
+        })
+
 
 
   export default usersRouter;

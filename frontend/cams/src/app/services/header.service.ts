@@ -17,7 +17,8 @@ export class HeaderService {
     projects: 'Projects',
     past_projects: 'Past Projects',
     logout: 'Logout',
-    assessment: 'Assessment'
+    assessment: 'Assessment',
+    change_outcomes: 'Update Outcomes'
   }]
 
   constructor() {}

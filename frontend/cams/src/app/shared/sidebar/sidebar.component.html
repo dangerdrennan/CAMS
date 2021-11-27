@@ -15,6 +15,22 @@
       </div> -->
       <div *ngFor="let i of this.headerService.titles">
         <div class="tabs">
+          <a routerLink="/projects" class="nav-link" routerLinkActive="active">
+            <div class="tabs_title ">{{i.projects}}</div>
+            <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
+          </a>
+
+        </div>
+
+        <div class="tabs">
+          <a routerLink="/past-projects" class="nav-link" routerLinkActive="active">
+            <div class="tabs_title ">{{i.past_projects}}</div>
+            <img class="tabs_icon" src="../../../assets/images/assignment_return_white_24dp.svg" alt="project_icon">
+          </a>
+
+        </div>
+
+        <div class="tabs">
           <a routerLink="/past-results" class="nav-link" routerLinkActive="active">
             <div class="tabs_title ">{{i.past_results}}</div>
             <img class="tabs_icon" src="../../../assets/images/assessment_white_24dp.svg" alt="assessment_icon">
@@ -34,17 +50,13 @@
           </a>
 
         </div>
-        <div class="tabs">
-          <a routerLink="/past-projects" class="nav-link" routerLinkActive="active">
-            <div class="tabs_title ">{{i.past_projects}}</div>
-            <img class="tabs_icon" src="../../../assets/images/assignment_return_white_24dp.svg" alt="project_icon">
-          </a>
 
-        </div>
+
+
         <div class="tabs">
-          <a routerLink="/projects" class="nav-link" routerLinkActive="active">
-            <div class="tabs_title ">{{i.projects}}</div>
-            <img class="tabs_icon" src="../../../assets/images/assignment_ind_white_24dp.svg" alt="project_icon">
+          <a routerLink="/update-outcomes" class="nav-link" routerLinkActive="active">
+            <div class="tabs_title ">{{i.change_outcomes}}</div>
+            <img class="tabs_icon" src="../../../assets/images/update_white_24dp.svg" alt="project_icon">
           </a>
 
         </div>
