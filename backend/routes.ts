@@ -209,7 +209,7 @@ usersRouter.get('/all_profs', async (req, res) => {
             console.log('in start_new degree and toKeep are at ', degree, ' ', toKeep)
             console.log('to keep is at ', JSON.stringify(req.body))
             const start_new = await pool.query(`
-                select post_reqs($1::INT[], $2);`,
+                select post_reqs($1::INT[], $2::TEXT);`,
                 [
                     toKeep,
                     degree
