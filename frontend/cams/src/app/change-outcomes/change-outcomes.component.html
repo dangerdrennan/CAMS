@@ -138,12 +138,8 @@
 
                         </div>
                       </form>
-                      <div *ngIf = "this.csOut | async as outs;">
-                   <div *ngFor="let o of outs">  
-                     {{o.out_desc}}
-                   </div>
                     </div>
-                    </div>
+
 
 
                     <!-- cse forms -->
@@ -161,7 +157,7 @@
                                 <select class="btn btn-outline-secondary " style="width: 55px;" formControlName='outcome_num'>
                                   <option *ngFor="let out of possibleOutcomes" [value]="out">{{out}}</option>
                                 </select>
-                                <input type="text" class="form-control" >
+                                <input type="text" class="form-control" formControlName='outcome_desc'>
                               </div>
 
                             </div>

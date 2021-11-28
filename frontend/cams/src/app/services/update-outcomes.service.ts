@@ -31,8 +31,8 @@ export class UpdateOutcomesService {
   }
   
 
-  getsuboutcomesOnly(out_id: number, degree: string): Observable<SuboutDesc> {
-    return this.http.get<SuboutDesc>(`${this.endPoint}/get_sub_by_outcome/${out_id}/${degree}`)
+  getsuboutcomesOnly(out_id: number, degree: string): Observable<SuboutDesc[]> {
+    return this.http.get<SuboutDesc[]>(`${this.endPoint}/get_sub_by_outcome/${out_id}/${degree}`)
   }
 
   update(toKeep: number[], degree:string, newRequirements:NewRequirement){

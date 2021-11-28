@@ -29,12 +29,11 @@ export class AssessmentService {
   assessment!: AssessmentDisplay
   outcomeDescriptions$!: Observable<OutcomeDescriptions[]>
   submissionStatus: boolean = false
-  requirements$!: Observable<SemesterReqs[]>
+  
 
 
 
   constructor(private http: HttpClient, private router: Router) {
-
   }
 
   getCurrentAssessmentsbyProf(email:string): any{
@@ -46,10 +45,17 @@ export class AssessmentService {
     const url = `${this.endPoint}/past_assessments_by_prof/${email}`
     return this.http.get<any[]>(url)
   }
-
+  // seems fine under new schema
   getCurrentSemesterRequirements(): Observable<SemesterReqs>{
     return this.http.get<SemesterReqs>(`${this.endPoint}/current_outcome_reqs`)
   }
+
+  getPastSemesterRequirements(sem:string,year:number): Observable<SemesterReqs>{
+    console.log(' in getPastSemesterRequirements', sem, year)
+    return this.http.get<SemesterReqs>(`${this.endPoint}/past_outcome_reqs/${sem}/${year}`)
+  }
+
+
 
   submitAssessment(grades: { score_id: string, grade:number}[],comments:ScoreComment[]): boolean{
     try{

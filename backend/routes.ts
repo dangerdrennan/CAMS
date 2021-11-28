@@ -582,7 +582,7 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(`hitting in get_outcome_desc with degree at ${degree}, sem at ${sem}, and year at ${year}`)
         if (degree == 'CS'){
             let query = `
-            select cs_cat_id, outcome_description from outcome_details_cs where reqs_id = (select reqs_id from term where semester='${sem}' and year=${year}) order by order_float;`
+            select cs_cat_id as cat_id, id out_id, outcome_description from outcome_details_cs where reqs_id = (select reqs_id from term where semester='${sem}' and year=${year})`
             console.log('this query is at ', query)
 
             const get_outcome_desc = await pool.query(`${query};`);
@@ -591,7 +591,7 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
         else {
             let query = `
-            select cse_cat_id, outcome_description from outcome_details_cse where reqs_id = (select reqs_id from term where semester='${sem}' and year=${year}) order by order_float;`
+            select cse_cat_id as cat_id, id out_id, outcome_description from outcome_details_cse where reqs_id = (select reqs_id from term where semester='${sem}' and year=${year})`
             console.log('this query is at ', query)
 
             const get_outcome_desc = await pool.query(`${query};`);

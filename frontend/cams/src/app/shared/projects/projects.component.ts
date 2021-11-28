@@ -33,11 +33,7 @@ export class ProjectsComponent implements OnInit {
     this.auth.user$.subscribe(res => {
       this.user = res!.email
     })
-    rS.getPastSemesterRequirements('Fall',2021).subscribe(
-      res => {
-        console.log(res)
-      }
-    )
+    
     
   }
 

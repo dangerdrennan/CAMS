@@ -265,7 +265,7 @@ export class ChangeOutcomesComponent implements OnInit {
 
   cleanUpEntry(degree:string){
     
-    let form = (degree == 'CS') ? this.outcomeCSForm : this.outcomeCSEForm
+    let form = (degree == 'CSE') ? this.outcomeCSEForm : this.outcomeCSForm
 
     const newOuts: OutcomeDescriptions[] = []
     const newSubs: Suboutcome[] = []
@@ -352,7 +352,7 @@ export class ChangeOutcomesComponent implements OnInit {
         this.currentOutcomeIDs = out_ids
         this.possibleOutcomes = this.possibleOutcomes.filter(x=> !cat_ids.includes(x))
         res.filter((item: OutDesc) => {
-          
+          console.log('this item is at, ', item)
           this.updateOutService.getsuboutcomesOnly(item.out_id, degree).subscribe((res: any) => {
             console.log("in get_degree_outcomes-- res=", res)
             this.suboutcomes.push(res)
