@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ResultsService } from '../services/results.service';
+import { ShowComment } from '../ShowComments';
 
 @Component({
   selector: 'app-comment-modal',
@@ -6,6 +9,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./comment-modal.component.css']
 })
 export class CommentModalComponent implements OnInit {
+  @Input() comments: ShowComment[]
+  @Input() id:number
+  @Input() num:number
+  @Input() degree:string
+  @Input() sem: string
+  @Input() year:number
   outcomeComments = []
 
   csOutcomes = [
@@ -53,36 +62,59 @@ export class CommentModalComponent implements OnInit {
       comments: ['comment 1 in outcome 7', 'comment 2 in outcome 7', 'comment 3 in outcome 7', 'comment 4 in outcome 7']
     }
   ]
+  comments$: Observable<ShowComment[]>;
 
-  constructor() { }
+  constructor(public resService: ResultsService) {
+     //this.comments$ = this.resService.getPastComments(this.sem,this.year,this.degree)
+     
+   }
 
   ngOnInit(): void {
-    this.getComments('CSE', 5)
+    // this.resService.getPastComments(this.sem, this.year, this.degree).subscribe(res=>{
+    //   console.log(res)
+    // })
+    console.log(`in the comment modal the comments are ${this.comments}`)
+    console.log(`in the comment modal the id is ${this.id}`)
+    this.getComments()
+  }
+  ngOnChanges() {
+    // create header using child_id
+    console.log(`in the comment modal onChanges the comments are ${this.comments}`)
+    console.log(`in the comment modal onChanges the id is ${this.id}`)
+    this.getComments()
   }
 
 
-  getComments(degree: string, id: number) {
+  getComments() {
+    if (this.id == undefined){
+      this.resService.getPastComments(this.sem,this.year,this.degree).subscribe(res=>{
+        this.comments = res
+      })
+    }
     this.outcomeComments = []
-    if(degree == 'CS') {
-      this.csOutcomes.filter((item) => {
-        if(item.cat_id === id) {
-          item.comments.forEach((data) => {
-            this.outcomeComments.push(data)
-          })
-        }
-      })
-    }
-    else if(degree == 'CSE') {
-      this.cseOutcomes.filter((item) => {
-        if(item.cat_id === id) {
-          item.comments.forEach((data) => {
-            // console.log("data", data)
-            this.outcomeComments.push(data)
-          })
+    this.outcomeComments= this.comments.filter(x => x.cat_id == this.id)
 
-        }
-      })
-    }
+
+    // if(degree == 'CS') {
+    //   this.csOutcomes.filter((item) => {
+    //     if(item.cat_id === id) {
+    //       item.comments.forEach((data) => {
+    //         this.outcomeComments.push(data)
+    //       })
+    //     }
+    //   })
+    // }
+    // else if(degree == 'CSE') {
+    //   this.cseOutcomes.filter((item) => {
+    //     if(item.cat_id === id) {
+    //       item.comments.forEach((data) => {
+    //         // console.log("data", data)
+    //         this.outcomeComments.push(data)
+    //       })
+
+    //     }
+    //   })
+    // }
   }
 
 
