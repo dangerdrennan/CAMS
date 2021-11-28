@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { take } from 'rxjs/operators';
 import { AssessmentDisplay } from '../AssessmentDisplay';
+import { NewRequirement } from '../NewRequirement';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutDesc } from '../outDesc';
 import { ScoreComment } from '../ScoreComment';
@@ -18,15 +19,15 @@ import { Suboutcome } from '../Suboutcome';
   styleUrls: ['./change-outcomes.component.css']
 })
 export class ChangeOutcomesComponent implements OnInit {
-  @Input() outcome_cat!: number
-  grades: { score_id: string, grade: number}[] = []
-  outcome_des: OutcomeDescriptions[] = []
-  outcome_names: number[] = []
-  outcome_cats: number[]
-  assessmentInfo: AssessmentDisplay
-  submissionStatus: boolean
-  comments:ScoreComment[] = []
-  suboutcomeDetails!: Suboutcome[]
+  // @Input() outcome_cat!: number
+  // grades: { score_id: string, grade: number}[] = []
+  // outcome_des: OutcomeDescriptions[] = []
+  // outcome_names: number[] = []
+  // outcome_cats: number[]
+  // assessmentInfo: AssessmentDisplay
+  // submissionStatus: boolean
+  // comments:ScoreComment[] = []
+  // suboutcomeDetails!: Suboutcome[]
 
   degreeChangeForm!: FormGroup
 
@@ -56,221 +57,13 @@ export class ChangeOutcomesComponent implements OnInit {
     })
 
     this.outcomeCSForm = this.builder.group({
-      outcome_1: ['Outcome 1: Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.', Validators.required],
-      outcome_2: ['Outcome 2: Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program\'s discipline. ', Validators.required],
-      outcome_3: ['Outcome 3: Communicate effectively in a variety of professional contexts, including technical and non-technical audiences for business, end-user, client, and computing contexts. ', Validators.required],
-      outcome_5: ['Outcome 5: Function effectively as a member or leader of a team engaged in activities appropriate to the program\'s discipline. ', Validators.required],
-
       newOutcome: this.builder.array([]),
-
-      subout_1_1: ['1.\tAnalyzes problem and formulates requirements for the problem', Validators.required],
-      subout_1_2: ['2.\tIdentifies solution by applying principles of computing', Validators.required],
-      subout_2_1: ['1.\tProduces a design strategy, including tasks and subtasks, timelines, and evaluation of progress', Validators.required],
-      subout_2_2: ['2.\tCreates a final product for evaluation', Validators.required],
-      subout_2_3: ['3.\tEvaluates computing-based solution', Validators.required],
-      subout_3_1: ['1.\tEffectively organizes and structures a presentation or document', Validators.required],
-      subout_3_2: ['2.\tProvides appropriate content to demonstrate  detailed knowledge of subject area', Validators.required],
-      subout_3_3: ['3.\tEffectively communicates details appropriate to the audience, including questions', Validators.required],
-      subout_3_4: ['None', Validators.required],
-      subout_3_5: ['5.\tWrites using proper spelling and grammar', Validators.required],
-      subout_3_6: ['6.\tDelivers oral presentation effectively', Validators.required],
-      subout_5_1: ['1.\tUnderstands and fulfills roles and responsibilities', Validators.required],
-      subout_5_2: ['2.\tListens and works with others', Validators.required],
-      subout_5_3: ['3.\tCommunicates effectively with the group ', Validators.required],
-
       newSuboutcome: this.builder.array([]),
-
-      sub_1_1_poor: ['No attempt or fails to analyze accurately', Validators.required],
-      sub_1_1_dev: ['Analyzes but key details are missing or confused', Validators.required],
-      sub_1_1_sat: ['Most details analyzed and key relationships identified', Validators.required],
-      sub_1_1_ex: ['Clearly analyzes the challenge and embedded issues', Validators.required],
-
-      sub_1_2_poor: ['Incorrect application of computing principles or fails to identify solutions', Validators.required],
-      sub_1_2_dev: ['Limited identification of solutions using computing principles', Validators.required],
-      sub_1_2_sat: ['Reasonable identification of solutions using computing principles', Validators.required],
-      sub_1_2_ex: ['In-depth and comprehensive utilization of computing principles, identification of solution well beyond expectations', Validators.required],
-
-      sub_2_1_poor: ['Does not produce a design strategy, or the design strategy is especially poor', Validators.required],
-      sub_2_1_dev: ['Limited attempts to form a design strategy', Validators.required],
-      sub_2_1_sat: ['Produces a reasonable design strategy appropriate to the project', Validators.required],
-      sub_2_1_ex: ['Produces an exceptional design strategy which exceeds expectations', Validators.required],
-
-      sub_2_2_poor: ['Does not create a final product, or the final product is especially poor', Validators.required],
-      sub_2_2_dev: ['Makes a start on a final product but is unable to meet final specifications', Validators.required],
-      sub_2_2_sat: ['Creates a satisfactory final product which meets defined specifications', Validators.required],
-      sub_2_2_ex: ['Creates an exceptional final product which exceeds expectations', Validators.required],
-
-      sub_2_3_poor: ['Limited or no evaluation', Validators.required],
-      sub_2_3_dev: ['Basic evaluation but has gaps', Validators.required],
-      sub_2_3_sat: ['Satisfactory evaluation of solution, some utilization of computing principles (e.g. Big-O analysis, testing methodologies)', Validators.required],
-      sub_2_3_ex: ['Exceptional and comprehensive evaluation of solution with strong tie to computing principles', Validators.required],
-
-      sub_3_1_poor: ['No logical structure', Validators.required],
-      sub_3_1_dev: ['Some structure but erratic jumps in topic', Validators.required],
-      sub_3_1_sat: ['Most information presented logically', Validators.required],
-      sub_3_1_ex: ['All information presented logically', Validators.required],
-
-      sub_3_2_poor: ['No grasp of topic, cannot answer questions or extremely limited content', Validators.required],
-      sub_3_2_dev: ['Only rudimentary knowledge demonstrated', Validators.required],
-      sub_3_2_sat: ['At ease with content and provides some detail', Validators.required],
-      sub_3_2_ex: ['Full command of subject matter', Validators.required],
-
-      sub_3_3_poor: ['Is unable to effectively communicate', Validators.required],
-      sub_3_3_dev: ['Only able to answer/explain in a limited manner; limited detail', Validators.required],
-      sub_3_3_sat: ['Provides sufficient detail to describe/answer questions', Validators.required],
-      sub_3_3_ex: ['Communicates  details exceptionally well', Validators.required],
-
-      sub_3_4_poor: ['Provides effective and appropriate visual aids and graphics', Validators.required],
-      sub_3_4_dev: ['Weak support of the material, text or diagrams hard to see or understand', Validators.required],
-      sub_3_4_sat: ['Mostly supports the material, most text and diagrams understandable', Validators.required],
-      sub_3_4_ex: ['Text and diagrams strongly reinforce the presentation', Validators.required],
-
-      sub_3_5_poor: ['Significant errors', Validators.required],
-      sub_3_5_dev: ['Several errors', Validators.required],
-      sub_3_5_sat: ['Minor errors', Validators.required],
-      sub_3_5_ex: ['Negligible errors', Validators.required],
-
-      sub_3_6_poor: ['Significant delivery problems, little to no audience contact; much too long or much too short', Validators.required],
-      sub_3_6_dev: ['Several mispronunciation, occasional audience contact; too long or too short', Validators.required],
-      sub_3_6_sat: ['Clear voice, steady rate, some audience contact; slightly too long or too short', Validators.required],
-      sub_3_6_ex: ['Clear voice, steady rate, strong audience contact, enthusiastic, confident; on time', Validators.required],
-
-      sub_5_1_poor: ['Does not fulfill team role duties', Validators.required],
-      sub_5_1_dev: ['Fulfills some, but not all, team role duties', Validators.required],
-      sub_5_1_sat: ['Fulfills team role duties', Validators.required],
-      sub_5_1_ex: ['Exceeds expectations with respect to team role duties', Validators.required],
-
-      sub_5_2_poor: ['Does not consider other team members\' ideas or concerns', Validators.required],
-      sub_5_2_dev: ['Sometimes considers other team members\' ideas or concerns', Validators.required],
-      sub_5_2_sat: ['Often addresses other team members\' ideas or concerns', Validators.required],
-      sub_5_2_ex: ['Is exceptionally adept at addressing other team members\' ideas or concerns', Validators.required],
-
-      sub_5_3_poor: ['Does not communicate to other members regarding the project progress', Validators.required],
-      sub_5_3_dev: ['Provides terse outline of status of the project and relevant updates', Validators.required],
-      sub_5_3_sat: ['Provides updates on a regular basis', Validators.required],
-      sub_5_3_ex: ['Works exceptionally well to provide documentation of progress', Validators.required],
-
     })
 
     this.outcomeCSEForm = this.builder.group({
-      outcome_1: ['Outcome 1: An ability to identify, formulate, and solve complex engineering problems by applying principles of engineering, science, and mathematics.', Validators.required],
-      outcome_2: ['Outcome 2: An ability to apply engineering design to produce solutions that meet specified needs with consideration of public health, safety, and welfare, as well as global, cultural, social, environmental, and economic factors. ', Validators.required],
-      outcome_3: ['Outcome 3: An ability to communicate effectively with a range of audiences, including technical and non-technical audiences for business, end-user, client, and computing contexts. ', Validators.required],
-      outcome_5: ['Outcome 5: An ability to function effectively on a team whose members together provide leadership, create a collaborative and inclusive environment, establish goals, plan tasks, and meet objectives. ', Validators.required],
-      outcome_6: ['Outcome 6: An ability to develop and conduct appropriate experimentation, analyze and interpret data, and use engineering judgment to draw conclusions. ', Validators.required],
-      outcome_7: ['Outcome 7: An ability to acquire and apply new knowledge as needed, using appropriate learning strategies. ', Validators.required],
-
       newOutcome: this.builder.array([]),
-
-      subout_1_1: ['1.\tIdentifies requirements and formulates solution by applying principles of engineering, science, and mathematics', Validators.required],
-      subout_1_2: ['2.\tSolves complex engineering problem by applying principles of engineering, science, and mathematics', Validators.required],
-
-      subout_2_1: ['1.\tCreates a final product for evaluation that meets specified needs', Validators.required],
-      subout_2_2: ['2.\tSolution considers public health, safety, welfare, human, environmental, and economic factors', Validators.required],
-
-      subout_3_1: ['1.\tEffectively organizes and structures a presentation or document', Validators.required],
-      subout_3_2: ['2.\tProvides appropriate content to demonstrate  detailed knowledge of subject area', Validators.required],
-      subout_3_3: ['3.\tEffectively communicates details appropriate to the audience, including questions', Validators.required],
-      subout_3_4: ['None', Validators.required],
-      subout_3_5: ['5.\tWrites using proper spelling and grammar', Validators.required],
-      subout_3_6: ['6.\tDelivers oral presentation effectively', Validators.required],
-
-      subout_5_1: ['1.\tUnderstands and fulfills roles and responsibilities', Validators.required],
-      subout_5_2: ['2.\tListens and works with others', Validators.required],
-      subout_5_3: ['3.\tCommunicates effectively with the group', Validators.required],
-
-      subout_6_1: ['1.\tDevelops and conducts an appropriate engineering experiment to test a hypothesis ', Validators.required],
-      subout_6_2: ['2.\tAnalyzes and interprets experimental data using engineering judgment', Validators.required],
-
-      subout_7_1: ['1.\tDemonstrates ability to independently learn the latest developments and technical issues surrounding a new topic', Validators.required],
-      subout_7_2: ['2.\tUtilizes appropriate learning strategies', Validators.required],
-
       newSuboutcome: this.builder.array([]),
-
-      subout_1_1_poor: ['No attempt or fails to formulate accurately', Validators.required],
-      subout_1_1_dev: ['Formulates but key details are missing or confused', Validators.required],
-      subout_1_1_sat: ['Most details identified and key relationships identified, appropriate solution formulated', Validators.required],
-      subout_1_1_ex: ['Clearly identifies the challenge and  embedded issues and formulates an appropriate solution', Validators.required],
-
-      subout_1_2_poor: ['Incorrect application of engineering principles or fails to implement solutions', Validators.required],
-      subout_1_2_dev: ['Limited solution or only partly applies science, math, and engineering principles', Validators.required],
-      subout_1_2_sat: ['Reasonable solution using science, math, and engineering principles', Validators.required],
-      subout_1_2_ex: ['In-depth and comprehensive utilization of science, math, and engineering principles in solution', Validators.required],
-
-      subout_2_1_poor: ['Does not create a final product, or the final product is especially poor', Validators.required],
-      subout_2_1_dev: ['Makes a start on a final product but is unable to meet final specifications', Validators.required],
-      subout_2_1_sat: ['Creates a satisfactory final product which meets defined specifications', Validators.required],
-      subout_2_1_ex: ['Creates an exceptional final product which exceeds expectations', Validators.required],
-
-      subout_2_2_poor: ['Limited or no  consideration of specified factors', Validators.required],
-      subout_2_2_dev: ['Basic evaluation and consideration but has gaps', Validators.required],
-      subout_2_2_sat: ['Satisfactory consideration of specified factors ', Validators.required],
-      subout_2_2_ex: ['Exceptional and comprehensive consideration of specified factors with strong tie to engineering design', Validators.required],
-
-      subout_3_1_poor: ['No logical structure', Validators.required],
-      subout_3_1_dev: ['Some structure but erratic jumps in topic', Validators.required],
-      subout_3_1_sat: ['Most information presented logically', Validators.required],
-      subout_3_1_ex: ['All information presented logically', Validators.required],
-
-      subout_3_2_poor: ['No grasp of topic, cannot answer questions or extremely limited content', Validators.required],
-      subout_3_2_dev: ['Only rudimentary knowledge demonstrated', Validators.required],
-      subout_3_2_sat: ['At ease with content and provides some detail', Validators.required],
-      subout_3_2_ex: ['Full command of subject matter', Validators.required],
-
-      subout_3_3_poor: ['Is unable to effectively communicate', Validators.required],
-      subout_3_3_dev: ['Only able to answer/explain in a limited manner; limited detail', Validators.required],
-      subout_3_3_sat: ['Provides sufficient detail to describe/answer questions', Validators.required],
-      subout_3_3_ex: ['Communicates  details exceptionally well', Validators.required],
-
-      subout_3_4_poor: ['Provides effective and appropriate visual aids and graphics', Validators.required],
-      subout_3_4_dev: ['Weak support of the material, text or diagrams hard to see or understand', Validators.required],
-      subout_3_4_sat: ['Mostly supports the material, most text and diagrams understandable', Validators.required],
-      subout_3_4_ex: ['Text and diagrams strongly reinforce the presentation', Validators.required],
-
-      subout_3_5_poor: ['Significant errors', Validators.required],
-      subout_3_5_dev: ['Several errors', Validators.required],
-      subout_3_5_sat: ['Minor errors', Validators.required],
-      subout_3_5_ex: ['Negligible errors', Validators.required],
-
-      subout_3_6_poor: ['Significant delivery problems, little to no audience contact; much too long or much too short', Validators.required],
-      subout_3_6_dev: ['Several mispronunciation, occasional audience contact; too long or too short', Validators.required],
-      subout_3_6_sat: ['Clear voice, steady rate, some audience contact; slightly too long or too short', Validators.required],
-      subout_3_6_ex: ['Clear voice, steady rate, strong audience contact, enthusiastic, confident; on time', Validators.required],
-
-      subout_5_1_poor: ['Does not fulfill team role duties', Validators.required],
-      subout_5_1_dev: ['Fulfills some, but not all, team role duties', Validators.required],
-      subout_5_1_sat: ['Fulfills team role duties', Validators.required],
-      subout_5_1_ex: ['Exceeds expectations with respect to team role duties', Validators.required],
-
-      subout_5_2_poor: ['Does not consider other team members\' ideas or concerns', Validators.required],
-      subout_5_2_dev: ['Sometimes considers other team members\' ideas or concerns', Validators.required],
-      subout_5_2_sat: ['Often addresses other team members\' ideas or concerns', Validators.required],
-      subout_5_2_ex: ['Is exceptionally adept at addressing other team members\' ideas or concerns', Validators.required],
-
-      subout_5_3_poor: ['Does not communicate to other members regarding the project progress', Validators.required],
-      subout_5_3_dev: ['Provides terse outline of status of the project and relevant updates', Validators.required],
-      subout_5_3_sat: ['Provides updates on a regular basis', Validators.required],
-      subout_5_3_ex: ['Works exceptionally well to provide documentation of progress', Validators.required],
-
-      subout_6_1_poor: ['Unable to develop and conduct experiment', Validators.required],
-      subout_6_1_dev: ['Partially develops and conducts experiment or flaws in experimental design', Validators.required],
-      subout_6_1_sat: ['Satisfactorily develops and conducts experiment', Validators.required],
-      subout_6_1_ex: ['Exceeds expectations in developing and conducting experiment', Validators.required],
-
-      subout_6_2_poor: ['Unable to analyze and interpret data', Validators.required],
-      subout_6_2_dev: ['Partially analyzes and interprets data, but gaps in analysis', Validators.required],
-      subout_6_2_sat: ['Satisfactorily analyzes and interprets data; uses engineering judgment', Validators.required],
-      subout_6_2_ex: ['Exceeds expectations in analysis and interpretation with engineering judgment', Validators.required],
-
-      subout_7_1_poor: ['Does not demonstrate an understanding of the technical challenges / issues surrounding the topic', Validators.required],
-      subout_7_1_dev: ['Demonstrates a vague understanding of the technical issues and the latest developments', Validators.required],
-      subout_7_1_sat: ['Demonstrates satisfactory knowledge of the technical issues and the latest developments', Validators.required],
-      subout_7_1_ex: ['Demonstrates exceptional knowledge of the technical issues and the latest developments', Validators.required],
-
-      subout_7_2_poor: ['No or inappropriate learning strategy', Validators.required],
-      subout_7_2_dev: ['Some appropriate learning strategy', Validators.required],
-      subout_7_2_sat: ['Appropriate learning strategy', Validators.required],
-      subout_7_2_ex: ['Exceptional learning strategy', Validators.required],
     })
 
    }
@@ -311,61 +104,87 @@ export class ChangeOutcomesComponent implements OnInit {
     return this.outcomeCSEForm.get('newSuboutcome')['controls']
   }
 
+  appendToOutcomes() {
+    let degree = this.degreeChangeForm.get('degree').value
+    if(degree === 'CS') {
+      console.log("pushing outcome:", this.outcomeCSForm.get('newOutcome').value[0])
+      console.log("pushing suboutcome:", this.outcomeCSForm.get('newSuboutcome').value)
+
+      this.outcomes.push(this.outcomeCSForm.get('newOutcome').value[0])
+      this.suboutcomes.push(this.outcomeCSForm.get('newSuboutcome').value)
+      // for(let i of this.outcomeCSForm.get('newSuboutcome').value) {
+      //   [i])
+      //   console.log("pushing suboutcome:", this.outcomeCSForm.get('newSuboutcome').value[i])
+
+      this.csOutcomes.reset()
+      this.csSuboutcomes.reset()
+    }
+    else if(degree === 'CSE') {
+      this.outcomes.push(this.cseOutcomes)
+      this.suboutcomes.push(this.cseSuboutcomes)
+    }
+  }
+
   // get the outcome nums that are used already
   extractOutcomeNum() {
-    let newPoss = []
+    this.possibleOutcomes = [1,2,3,4,5,6,7,8,9]
     let degree = this.degreeChangeForm.get('degree').value
-    console.log('possible ', this.possibleOutcomes)
+    console.log('possible ', this.possibleOutcomes.filter(i => {return i}))
     if(degree == 'CS') {
       this.outcomes.filter((data) => {
         console.log('outcome Nums: ', data.cat_id)
-        // this.csNums.push(data.cat_id)
-        for(let i = 1; i < this.possibleOutcomes.length; i +=1) {
-          if(data.cat_id == this.possibleOutcomes[i]) {
-            console.log("excluded ", this.possibleOutcomes[i])
-            newPoss.push(this.possibleOutcomes[i])
+
+        for(let i = 0; i < this.possibleOutcomes.length; i +=1) {
+          if(this.possibleOutcomes[i] == data.cat_id) {
+            this.possibleOutcomes.splice(i, 1)
           }
         }
-
-        console.log('possible out ', this.possibleOutcomes)
-        console.log('new poss ', newPoss)
       })
 
+      console.log('possible out ', this.possibleOutcomes)
     }
     else if(degree == 'CSE') {
-      this.outcomes.filter(data => {
-        this.cseNums.push(data.cat_id)
+      this.outcomes.filter((data) => {
+        console.log('outcome Nums: ', data.cat_id)
+
+        for(let i = 0; i < this.possibleOutcomes.length; i +=1) {
+          if(this.possibleOutcomes[i] == data.cat_id) {
+            this.possibleOutcomes.splice(i, 1)
+          }
+        }
       })
+      console.log('possible out ', this.possibleOutcomes)
     }
   }
 
   addOutcome() {
     console.log("OUTTT")
     let degree = this.degreeChangeForm.get('degree').value
-    if(degree == 'CS') {
+    if(degree === 'CS') {
       console.log("in cs add outcome")
       this.csOutcomes.push(this.createOutcome())
-      // this.createInputBox()
+      console.log("length of array ", this.csOutcomes.length)
     }
-    else if(degree == 'CSE') {
+    else if(degree === 'CSE') {
       console.log("in cse add outcome")
       this.cseOutcomes.push(this.createOutcome())
-      // this.createInputBox()
+      console.log("length of array ", this.cseOutcomes.length)
     }
   }
 
   addSuboutcome() {
     console.log("SUBB")
     let degree = this.degreeChangeForm.get('degree').value
-    if(degree == 'CS') {
+    if(degree === 'CS') {
       console.log("in cs add sub")
       this.csSuboutcomes.push(this.createSuboutcome())
-      // this.createInputBox()
+
+
     }
-    else if(degree == 'CSE') {
+    else if(degree === 'CSE') {
       console.log("in cse add sub")
       this.cseSuboutcomes.push(this.createSuboutcome())
-      // this.createInputBox()
+
     }
   }
 
@@ -397,8 +216,8 @@ export class ChangeOutcomesComponent implements OnInit {
 
   createOutcome(): FormGroup {
     return this.builder.group({
-      outcome_num: [''],
-      outcome_desc: ['']
+      outcome_num: ['', Validators.required],
+      outcome_desc: ['', Validators.required]
     })
   }
 
@@ -419,54 +238,114 @@ export class ChangeOutcomesComponent implements OnInit {
     let degree = this.degreeChangeForm.get('degree').value
     if(degree == 'CS') {
       console.log("submitted this form", this.outcomeCSForm.value)
+      // const req = this.cleanUpEntry(degree)
+      // console.log("reqs", req)
     }
     else if(degree == 'CSE') {
       console.log("submitted this form", this.outcomeCSEForm.value)
+    //   const req = this.cleanUpEntry(degree)
+    // console.log("reqs", req)
     }
 
+    const req = this.cleanUpEntry(degree)
+    console.log("reqs", req)
+
+  }
+
+  cleanUpEntry(degree:string){
+
+    let form = (degree == 'CS') ? this.outcomeCSForm : this.outcomeCSEForm
+
+    const newOuts: OutcomeDescriptions[] = []
+    const newSubs: Suboutcome[] = []
+    console.log(typeof(form.get('newOutcome').value[0].outcome_num))
+
+    for (let i = 0; i < form.get('newOutcome').value.length; i++){
+      console.log("length ", form.get('newOutcome').value.length)
+      // let cat_id = form.get('newOutcome').value[i].outcome_num.value
+      // let cat_num = form.get('newOutcome').value[i].outcome_num.value
+      console.log("cat_id", form.get('newOutcome').value as number)
+      newOuts.push(
+        {
+          cat_id:  (form.get('newOutcome').value[i].outcome_num as number),
+          outcome_description: form.get('newOutcome').value[i].outcome_des,
+          out_id: this.possibleOutcomes[-1] + i
+        }
+      )
+      for (let j = 0; j < form.get('newSuboutcome').value.length; j++){
+
+
+        console.log('type is at ', typeof(form.get('newSuboutcome').value[j].suboutcome_desc))
+        console.log('type is at ', typeof(form.get('newSuboutcome').value[j].suboutcome_poor))
+        console.log('type is at ', typeof(form.get('newSuboutcome').value[j].suboutcome_dev ))
+        console.log('type is at ', typeof(form.get('newSuboutcome').value[j].suboutcome_sat ))
+        console.log('type is at ', typeof(form.get('newSuboutcome').value[j].suboutcome_ex  ))
+       newSubs.push(
+          {
+            score_id: `score_${form.get('newOutcome').value[i].outcome_num as number}_${j+1}`,
+            suboutcome_name: `${form.get('newOutcome').value[i].outcome_num as number}.${j+1}`,
+            outcome_cat_id: (form.get('newOutcome').value[i].outcome_num as number),
+            suboutcome_description: (form.get('newSuboutcome').value[j].suboutcome_desc as string),
+            poor_description: (form.get('newSuboutcome').value[j].suboutcome_poor as string),
+            developing_description: (form.get('newSuboutcome').value[j].suboutcome_dev as string),
+            satisfactory_description: (form.get('newSuboutcome').value[j].suboutcome_sat as string),
+            excellent_description: (form.get('newSuboutcome').value[j].suboutcome_ex as string)
+          }
+        )
+      }
+    }
+
+    const reqs: NewRequirement = {new_outcome: newOuts, new_subs: newSubs}
+    form.reset
+    return reqs;
   }
 
 
   // trigger to display outcomes and suboutcomes for specified degree
   getDegreeOutcomes() {
-    this.csOutcomes.reset()
-    this.cseOutcomes.reset()
-    this.csSuboutcomes.reset()
-    this.cseSuboutcomes.reset()
     this.outcomes = []
     this.suboutcomes = []
     let degree = this.degreeChangeForm.get('degree').value
-    if (degree =='CS'){
-
+    if (degree ==='CS'){
+      this.cseOutcomes.clear()
+      this.cseSuboutcomes.clear()
       this.updateOutService.getOutcomesOnly(degree).subscribe((res: any) => {
 
         this.outcomes = res
-        res.filter((item: OutDesc) => {
+        res.filter((item: OutcomeDescriptions) => {
 
           this.updateOutService.getsuboutcomesOnly(item.out_id, degree).subscribe((res: any) => {
-            // console.log("res", res)
+            console.log("res", res)
             this.suboutcomes.push(res)
+            this.extractOutcomeNum()
           })
 
         })
-        console.log("outcomes", this.outcomes)
-        console.log("sub", this.suboutcomes)
-        this.extractOutcomeNum()
+        // console.log("outcomes", this.outcomes)
+        // console.log("sub", this.suboutcomes)
+
       })
 
       this.displayTable = true
+
     }
-    else if(degree == 'CSE') {
+    else if(degree === 'CSE') {
+      this.csOutcomes.clear()
+      this.csSuboutcomes.clear()
       this.updateOutService.getOutcomesOnly(degree).subscribe((res: any) => {
-        console.log("ress", res)
+        // console.log("ress", res)
         this.outcomes = res
-        res.filter((item: OutDesc) => {
-          this.updateOutService.getsuboutcomesOnly(item.out_id, degree).subscribe((res) => {
-            console.log("sub ", res)
+        res.filter((item: OutcomeDescriptions) => {
+          this.updateOutService.getsuboutcomesOnly(item.out_id, degree).subscribe((res: any) => {
+            // console.log("sub ", res)
             this.suboutcomes.push(res)
+            this.extractOutcomeNum()
           })
         })
+
       })
+
+
       this.displayTable = true
     }
 

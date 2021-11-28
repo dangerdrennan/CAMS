@@ -49,16 +49,13 @@
               </tbody>
             </table>
 
-
-            <div *ngIf="(csOutcomes.length == 0 || cseOutcomes.length == 0);else both">
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome" (click)="addOutcome();addSuboutcome()">
+            <div *ngIf="((this.csOutcomes.length >= 1) || (this.cseOutcomes.length >= 1));else both">
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome">
                 <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
               </button>
-
-
             </div>
             <ng-template #both>
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome" >
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome" (click)="addSuboutcome();addOutcome()">
                 <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
               </button>
             </ng-template>
@@ -76,35 +73,31 @@
 
                     <!-- cs forms -->
                     <div *ngIf="this.degreeChangeForm.get('degree').value == 'CS';else cse">
+
                       <form [formGroup]="outcomeCSForm">
                         <div formArrayName="newOutcome" *ngFor="let outcome of csOutControls; let i = index">
-
                           <form [formGroupName]="i">
                             <div class="mb-3">
-                              <!-- <div *ngIf="i > 1">
-
-                              </div> -->
                               <!-- <button class="btn btn-danger btn-sm" (click)="deleteOutcome(i)" style="float: right;">
                                 <img src="../../assets/images/delete_outline_white_24dp.svg" alt="">
                               </button> -->
 
-
                               <label class="col-form-label">Outcome Title:</label>
                               <div class="input-group mb-3">
-                                <select class="btn btn-outline-secondary " style="width: 55px;" formControlName='outcome_num'>
-                                  <option *ngFor="let out of possibleOutcomes" [value]="out" >{{out}}</option>
+                                <select class="btn btn-outline-secondary " style="width: 55px;" formControlName="outcome_num">
+                                  <option *ngFor="let out of this.possibleOutcomes" [value]="out" >{{out}}</option>
                                 </select>
-                                <input type="text" class="form-control" formControlName='outcome_desc'>
+                                <input type="text" class="form-control" formControlName="outcome_desc" [required]="true">
                               </div>
 
                             </div>
                           </form>
                         </div>
-                        <div formArrayName="newSuboutcome" *ngFor="let subout of csSubControls; let i = index">
-                          <button class="btn btn-danger btn-sm" (click)="deleteSubcome(i)" style="float: right;">
+                        <div formArrayName="newSuboutcome" *ngFor="let subout of csSubControls; let j = index">
+                          <button class="btn btn-danger btn-sm" (click)="deleteSubcome(j)" style="float: right;">
                             <img src="../../assets/images/delete_outline_white_24dp.svg" alt="">
                           </button>
-                          <form [formGroupName]="i">
+                          <form [formGroupName]="j">
                             <div class="mb-3">
                               <label class="col-form-label">Suboutcome Title: </label>
                               <div class="input-group mb-3">
@@ -152,13 +145,10 @@
                         <div formArrayName="newOutcome" *ngFor="let outcome of cseOutControls; let i = index">
                           <form [formGroupName]="i">
                             <div class="mb-3">
-                              <!-- <button class="btn btn-danger btn-sm" (click)="deleteOutcome(i)" style="float: right;">
-                                <img src="../../assets/images/delete_outline_white_24dp.svg" alt="">
-                              </button> -->
 
                               <label class="col-form-label">Outcome Title:</label>
                               <div class="input-group mb-3">
-                                <select class="btn btn-outline-secondary " style="width: 55px;" formControlName='outcome_num'>
+                                <select class="btn btn-outline-secondary " style="width: 55px;" formControlName="outcome_num">
                                   <option *ngFor="let out of possibleOutcomes" [value]="out">{{out}}</option>
                                 </select>
                                 <input type="text" class="form-control" >
@@ -234,11 +224,21 @@
 
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="appendToOutcomes()">Save</button>
                   </div>
                 </div>
               </div>
             </div>
+
+
+
+
+            <!-- <ng-template #both>
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome"   (click)="addOutcome();addSuboutcome()">
+                <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
+              </button>
+            </ng-template> -->
+
 
             <!-- <button class="btn btn-secondary" style='float: left;'(click)="goBack()">back</button> -->
             <button class='btn btn-primary' style='float: right;' (click)="this.displayTable=false;submitNewOutcome()">Submit Changes</button>

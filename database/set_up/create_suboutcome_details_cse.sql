@@ -11,7 +11,8 @@ CREATE TABLE suboutcome_details_cse (
     developing_description TEXT,
     satisfactory_description TEXT,
     excellent_description TEXT,
-    order_float float
+    order_float float,
+    CONSTRAINT unique_requirement_cse UNIQUE (reqs_id, score_id)
 );
 
 

@@ -77,7 +77,7 @@ export class PastAssessmentsComponent implements OnInit {
     })
     this.displayOutcome = false;
     this.displayPast = true;
-    
+
     this.categoryForm.setValue({
       selected: 1
     })
@@ -166,11 +166,11 @@ export class PastAssessmentsComponent implements OnInit {
         this.allInfo = res
         this.unique = [...new Set(res.map(item => item.cat_id))]
         for(let i = 0; i < this.allInfo.length; i++) {
-          
+
           if(this.allInfo[i].cat_id == id) {
             this.subInfo.push(this.allInfo[i])
           }
-          
+
         }
       })
       this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())
@@ -178,7 +178,7 @@ export class PastAssessmentsComponent implements OnInit {
         console.log('all Descriptions ', res)
         this.displayTitle = [...new Set(res.map(item => item.outcome_description))];
       })
-    
+
     }
     // cse sub outcome descriptions(evaluation criteria)
     if(degree === 'CSE') {
@@ -189,11 +189,11 @@ export class PastAssessmentsComponent implements OnInit {
         this.unique = [...new Set(res.map(item => item.cat_id))]
         console.log("ALLLL ", this.allInfo)
         for(let i = 0; i < this.allInfo.length; i++) {
-          
+
           if(this.allInfo[i].cat_id == id) {
             this.subInfo.push(this.allInfo[i])
           }
-          
+
         }
       })
       this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())

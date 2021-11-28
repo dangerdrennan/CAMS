@@ -112,7 +112,6 @@ usersRouter.get('/all_profs', async (req, res) => {
         try{
             const {project} = req.params;
             const new_project = await pool.query(`
-
             INSERT INTO project (title, term_id) VALUES ($1, get_current_term()) RETURNING *;`,[project]);
             
             res.json(new_project.rows);
@@ -171,6 +170,8 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
     });
 
+    
+
     usersRouter.post("/take_away_admin", async(req, res) => {
         try{
             const {prof_email} = req.body;
@@ -197,6 +198,95 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
         catch(err ){
             console.error(err, 'error has occurred in backend function "make_grader"');
+        }
+    });
+
+    usersRouter.post("/start_new/:degree", async(req, res) => {
+        try{
+            const {degree} = req.params
+            const {toKeep} = req.body
+            console.log('in start_new degree and toKeep are at ', degree, ' ', toKeep)
+            console.log('to keep is at ', JSON.stringify(req.body))
+            const start_new = await pool.query(`
+                select post_reqs($1::INT[], $2);`,
+                [
+                    toKeep,
+                    degree
+                ])
+                    console.log(start_new.rows[0])
+                    res.json(start_new.rows[0])
+            }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "start_new"');
+        }
+    });
+
+    usersRouter.post("/add_outs/:degree", async(req, res) => {
+        try{
+            const {degree} = req.params
+            let cat_ids = []
+            let outcome_descriptions = []
+            for(let i = 0; i < req.body.length; i++){
+                cat_ids.push(req.body[i].cat_id)
+                
+                outcome_descriptions.push(req.body[i].outcome_description)
+            }  
+            console.log(`Description in service is at ${outcome_descriptions}`)
+            
+            const add_outs = await pool.query(`
+                select post_outcomes($1::TEXT, $2::INT[], $3::TEXT[]);`,
+                [
+                    degree,
+                    cat_ids,
+                    outcome_descriptions
+                    
+                ])
+                    console.log(add_outs.rows[0])
+                    res.json(add_outs.rows[0])
+            }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "add_outs"');
+        }
+    });
+
+    usersRouter.post("/add_subs/:degree", async(req, res) => {
+        try{
+            const {degree} = req.params
+            console.log(req.params)
+            let score_ids = []
+            let outcome_cat_ids = []
+            let suboutcome_names = []
+            let suboutcome_descriptions = []
+            let poor_descriptions = []
+            let developing_descriptions = []
+            let satisfactory_descriptions = []
+            let excellent_descriptions = []
+            for(let i = 0; i < req.body.length; i++){
+                score_ids.push(req.body[i].score_id)
+                outcome_cat_ids.push(req.body[i].outcome_cat_id)
+                suboutcome_names.push(req.body[i].suboutcome_name)
+                suboutcome_descriptions.push(req.body[i].suboutcome_description)
+                poor_descriptions.push(req.body[i].poor_description)
+                developing_descriptions.push(req.body[i].developing_description)
+                satisfactory_descriptions.push(req.body[i].satisfactory_description)
+                excellent_descriptions.push(req.body[i].excellent_description)
+            }
+        const add_subs = await pool.query(`select add_subs($9::TEXT, $1::INT[], $2::TEXT[], $3::TEXT[], $4::TEXT[], $5::TEXT[], $6::TEXT[],$7::TEXT[],$8::TEXT[])`,
+        [
+        outcome_cat_ids,
+        score_ids,
+        suboutcome_names,
+        suboutcome_descriptions,
+        poor_descriptions,
+        developing_descriptions,
+        satisfactory_descriptions,
+        excellent_descriptions,
+        degree])
+        
+        console.log(add_subs.rows)
+        }
+        catch(err ){
+            console.error(err, 'error has occurred in backend function "add subs (new)"');
         }
     });
 
