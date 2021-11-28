@@ -1,5 +1,3 @@
-DROP TABLE suboutcome_details_cs;
-
 CREATE TABLE suboutcome_details_cs (
     id serial primary key,
     suboutcome_name TEXT,

@@ -1,0 +1,241 @@
+<div class="main" style="overflow-y: scroll;">
+  <div class="container">
+    <!-- Box that asks which degree outcomes and suboutcomes are being updated -->
+    <div class="row" style="margin-bottom: 2%;">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <div class="title" style="text-align: center;">Which major are you updating?</div>
+            <form [formGroup]="degreeChangeForm">
+              <div class="select-container">
+                <div class="container" style="display: flex; justify-content: center;">
+                  <div class="dropdown" style="margin-right: 8px;">
+                    <select class="btn btn-secondary btn-sm dropdown-toggle" formControlName="degree" required="required">
+                      <option value="">Select Major</option>
+                      <option value="CS">CS</option>
+                      <option value="CSE">CSE</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" [disabled]="degreeChangeForm.invalid" class="btn btn-success btn-sm" style="margin-left: 12px;float: right;" (click)="getDegreeOutcomes()">Continue</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- diplay the current outcomes and suboutcomes to update -->
+    <div class="row" *ngIf="displayTable">
+      <div class="col">
+        <div class="card" style="margin-bottom: 2%;">
+          <div class="card-body">
+            <table class="rounded table table-bordered" *ngFor="let out of this.outcomes; let i = index">
+              <thead>
+                <tr>
+                  <th style="font: 'Mulish';">{{out.out_desc}}
+                    <button class="btn btn-danger btn-sm" style="float: right;" data-bs-toggle="tooltip" title="Delete Outcome">
+                      <img src="../../assets/images/delete_outline_white_24dp.svg" alt="delete_icon"> </button>
+
+                  </th>
+                </tr>
+              </thead>
+              <tbody >
+                <tr *ngFor="let sub of this.suboutcomes[i]">
+                  <td >{{sub.sub_description}}
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+
+            <div *ngIf="(csOutcomes.length == 0 || cseOutcomes.length == 0);else both">
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome" (click)="addOutcome();addSuboutcome()">
+                <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
+              </button>
+
+
+            </div>
+            <ng-template #both>
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome" >
+                <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
+              </button>
+            </ng-template>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Outcome</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" >
+
+                    <!-- cs forms -->
+                    <div *ngIf="this.degreeChangeForm.get('degree').value == 'CS';else cse">
+                      <form [formGroup]="outcomeCSForm">
+                        <div formArrayName="newOutcome" *ngFor="let outcome of csOutControls; let i = index">
+
+                          <form [formGroupName]="i">
+                            <div class="mb-3">
+                          
+
+
+                              <label class="col-form-label">Outcome Title:</label>
+                              <div class="input-group mb-3">
+                                <select class="btn btn-outline-secondary " style="width: 55px;" formControlName='outcome_num'>
+                                  <option *ngFor="let out of possibleOutcomes" [value]="out" >{{out}}</option>
+                                </select>
+                                <input type="text" class="form-control" formControlName='outcome_desc'>
+                              </div>
+
+                            </div>
+                          </form>
+                        </div>
+                        <div formArrayName="newSuboutcome" *ngFor="let subout of csSubControls; let i = index">
+                          <button class="btn btn-danger btn-sm" (click)="deleteSubcome(i)" style="float: right;">
+                            <img src="../../assets/images/delete_outline_white_24dp.svg" alt="">
+                          </button>
+                          <form [formGroupName]="i">
+                            <div class="mb-3">
+                              <label class="col-form-label">Suboutcome Title: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_desc'>
+                              </div>
+                            </div>
+
+                            <div class="mb-3">
+                              <label class="col-form-label">Poor Description: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_poor'>
+                              </div>
+                            </div>
+
+                            <div class="mb-3">
+                              <label class="col-form-label">Developing Description: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_dev'>
+                              </div>
+                            </div>
+
+                            <div class="mb-3">
+                              <label class="col-form-label">Satisfactory Description: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_sat'>
+                              </div>
+                            </div>
+
+                            <div class="mb-3">
+                              <label class="col-form-label">Excellent Description: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_ex'>
+                              </div>
+                            </div>
+                          </form>
+
+                        </div>
+                      </form>
+                      <div *ngIf = "this.csOut | async as outs;">
+                   <div *ngFor="let o of outs">  
+                     {{o.out_desc}}
+                   </div>
+                    </div>
+                    </div>
+
+
+                    <!-- cse forms -->
+                    <ng-template #cse>
+                      <form [formGroup]="outcomeCSEForm">
+                        <div formArrayName="newOutcome" *ngFor="let outcome of cseOutControls; let i = index">
+                          <form [formGroupName]="i">
+                            <div class="mb-3">
+                              <!-- <button class="btn btn-danger btn-sm" (click)="deleteOutcome(i)" style="float: right;">
+                                <img src="../../assets/images/delete_outline_white_24dp.svg" alt="">
+                              </button> -->
+
+                              <label class="col-form-label">Outcome Title:</label>
+                              <div class="input-group mb-3">
+                                <select class="btn btn-outline-secondary " style="width: 55px;" formControlName='outcome_num'>
+                                  <option *ngFor="let out of possibleOutcomes" [value]="out">{{out}}</option>
+                                </select>
+                                <input type="text" class="form-control" >
+                              </div>
+
+                            </div>
+                          </form>
+                        </div>
+
+                        <div formArrayName="newSuboutcome" *ngFor="let sub of cseSubControls; let i = index">
+                          <button class="btn btn-danger btn-sm" (click)="deleteSubcome(i)" style="float: right;">
+                            <img src="../../assets/images/delete_outline_white_24dp.svg" alt="">
+                          </button>
+                          <form [formGroupName]="i">
+                            <div class="mb-3">
+                              <label class="col-form-label">Suboutcome Title: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_desc'>
+                              </div>
+
+                            </div>
+
+                            <div class="mb-3">
+                              <label class="col-form-label">Poor Description: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_poor'>
+                              </div>
+
+                            </div>
+                            <div class="mb-3">
+                              <label class="col-form-label">Developing Description: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_dev'>
+                              </div>
+
+                            </div>
+                            <div class="mb-3">
+                              <label class="col-form-label">Satisfactory Description: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_sat'>
+                              </div>
+
+                            </div>
+                            <div class="mb-3">
+                              <label class="col-form-label">Excellent Description: </label>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control" formControlName='suboutcome_ex'>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+
+                      </form>
+                    </ng-template>
+
+                    <button class="btn btn-success btn-sm" (click)="addSuboutcome()" style="margin-top: 4%;">
+                      <img src="../../assets/images/add_white_24dp.svg" alt="">
+                    </button>
+
+
+
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <button class="btn btn-secondary" style='float: left;'(click)="goBack()">back</button> -->
+            <button class='btn btn-primary' style='float: right;' (click)="this.displayTable=false;submitNewOutcome()">Submit Changes</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

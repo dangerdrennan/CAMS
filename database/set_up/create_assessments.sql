@@ -1,6 +1,4 @@
-DROP TABLE IF EXISTS assessment;
-
- CREATE TABLE assessment (
+CREATE TABLE assessment (
     assessment_id SERIAL PRIMARY KEY,
     prof_email TEXT REFERENCES prof(prof_email),
     student_id INT REFERENCES student(student_id) ON DELETE CASCADE,

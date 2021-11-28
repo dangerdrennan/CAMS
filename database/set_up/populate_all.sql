@@ -6,7 +6,6 @@
 \i helper_functions/student_assign.sql
 \i helper_functions/new_assessment.sql
 \i set_up/assign_capstone_prof.sql
-\i set_up/create_sem_req.sql
 \i set_up/create_outcome_details_cs.sql
 \i set_up/create_outcome_details_cse.sql
 \i set_up/create_suboutcome_details_cs.sql
@@ -16,6 +15,13 @@
 \i set_up/create_comments.sql
 \i helper_functions/set_current_term.sql
 \i get_reqs.sql
+\i add_subs.sql
+\i post_reqs.sql
+\i get_term_comments.sql
+\i add_subs.sql
+\i post_outcomes.sql
+\i get_outs_only.sql
+\i get_sub_by_outcome.sql
 \i get_term_comments.sql
 \i results_functions/get_totes_pers.sql
 \i results_functions/get_term_id.sql

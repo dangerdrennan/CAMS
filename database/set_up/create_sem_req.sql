@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS sem_req (
+CREATE TABLE sem_req (
     id SERIAL PRIMARY KEY
     
 );

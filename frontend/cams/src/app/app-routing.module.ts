@@ -10,6 +10,7 @@ import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { ManageAssessorsComponent } from './manage-assessors/manage-assessors.component';
 import { PastProjectsComponent } from './shared/past-projects/past-projects.component';
+import { ChangeOutcomesComponent } from './change-outcomes/change-outcomes.component';
 
 // home changed on assessment-service branch to display assessment component for testing
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path: 'manage-admins', component: ManageAdminsComponent, canActivate: [AuthGuard]},
   {path: 'manage-projects', component: ManageProjectsComponent, canActivate: [AuthGuard]},
   {path: 'manage-assessors', component: ManageAssessorsComponent, canActivate: [AuthGuard]},
+  {path: 'update-outcomes', component: ChangeOutcomesComponent, canActivate: [AuthGuard]},
   {path: 'successful-submission', component: AssessmentCompletedComponent, canActivate: [AuthGuard]},
   {path: 'assessment/:prof_email/:student_id',component: AssessmentComponent, canActivate: [AuthGuard]}
 

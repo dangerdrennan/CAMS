@@ -22,6 +22,7 @@ import { AssessmentCompletedComponent } from './assessment-completed/assessment-
 import { PastProjectsComponent } from './shared/past-projects/past-projects.component'
 import { OutcomeTrendsComponent } from './outcome-trends/outcome-trends.component';
 import { CommentModalComponent } from './comment-modal/comment-modal.component';
+import { ChangeOutcomesComponent } from './change-outcomes/change-outcomes.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { CommentModalComponent } from './comment-modal/comment-modal.component';
     AssessmentCompletedComponent,
     PastProjectsComponent,
     OutcomeTrendsComponent,
-    CommentModalComponent
+    CommentModalComponent,
+    ChangeOutcomesComponent
   ],
   imports: [
     BrowserModule,

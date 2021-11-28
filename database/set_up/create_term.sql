@@ -1,5 +1,4 @@
-drop TABLE term;
-CREATE TABLE IF NOT EXISTS term (
+CREATE TABLE term (
     term_id SERIAL PRIMARY KEY,
     reqs_id int REFERENCES sem_req(id),
     semester TEXT CHECK (semester = 'Summer' OR semester = 'Spring' OR semester = 'Fall'),
