@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { concat, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { NewRequirement } from '../NewRequirement';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutDesc } from '../outDesc';
@@ -37,13 +38,18 @@ export class UpdateOutcomesService {
   update(toKeep: number[], degree:string, newRequirements:NewRequirement){
     try{
       console.log('toKeep is at: ', toKeep)
-      const task1 = this.startNew(toKeep,degree)
+      this.startNew(toKeep,degree).pipe(take(1)).subscribe(x=>{
+          console.log ('what is the res at ', x)
+          this.updateReqsAndOutsTest(newRequirements,degree, x)
+          
+        
+      })
     
   }
     catch(e){
-      throw Error('Semester data was not updated. Please double check the current requirements and resubmit.q')
+      throw Error('Semester data was not updated. Please double check the current requirements and resubmit.')
     }
-    const task2 = this.updateReqsAndOutsTest(newRequirements,degree)
+    
   }
 
 
@@ -54,22 +60,21 @@ export class UpdateOutcomesService {
       toKeep: toKeep
     }
     console.log(toKeep, ' is toKeep in service')
-    return this.http.post<number[]>(url, hm, httpOptions);
+    return this.http.post<number>(url, hm, httpOptions);
   }
 
-  updateReqs(sub:Suboutcome[], degree:string){
+  updateReqs(sub:Suboutcome[], degree:string,term_id:number){
     console.log('in update_req_test:', sub)
-    console.log('what is idTracker at?: ')
-    const url = `${this.endPoint}/add_subs/${degree}`
+    const url = `${this.endPoint}/add_subs/${degree}/${term_id}`
     return this.http.post<Suboutcome[]>(url, sub, httpOptions);
   }
 
-  updateReqsAndOutsTest(reqs:NewRequirement, degree:string){
+  updateReqsAndOutsTest(reqs:NewRequirement, degree:string, term_id:number){
     console.log('in update reqs and outs test:', reqs)
     let allSubs = reqs.new_subs
     let allOuts = reqs.new_outcome
-    let task1 = this.updateOuts(allOuts, degree)
-    let task2 = this.updateReqs(allSubs, degree)
+    let task1 = this.updateOuts(allOuts, degree, term_id)
+    let task2 = this.updateReqs(allSubs, degree,term_id)
     console.log(`Description in service is at ${reqs.new_outcome[0].outcome_description}`)
     concat(task1,task2).subscribe()
     //task1.subscribe()
@@ -77,10 +82,9 @@ export class UpdateOutcomesService {
     
   }
 
-  updateOuts(out:OutcomeDescriptions[], degree:string): Observable<any>{
+  updateOuts(out:OutcomeDescriptions[], degree:string, term_id:number): Observable<any>{
     console.log('in update_out_test:', out)
-    console.log(`Description in service is at ${out[0].outcome_description}`)
-    const url = `${this.endPoint}/add_outs/${degree}`
+    const url = `${this.endPoint}/add_outs/${degree}/${term_id}`
     return this.http.post<any>(url, out, httpOptions);
   }
 

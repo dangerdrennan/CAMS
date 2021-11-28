@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS prof (
+CREATE TABLE prof (
     prof_email TEXT PRIMARY KEY,
     f_name TEXT,
     l_name TEXT,

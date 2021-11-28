@@ -215,16 +215,16 @@ usersRouter.get('/all_profs', async (req, res) => {
                     degree
                 ])
                     console.log(start_new.rows[0])
-                    res.json(start_new.rows[0])
+                    res.json(start_new.rows[0].post_reqs)
             }
         catch(err ){
             console.error(err, 'error has occurred in backend function "start_new"');
         }
     });
 
-    usersRouter.post("/add_outs/:degree", async(req, res) => {
+    usersRouter.post("/add_outs/:degree/:term_id", async(req, res) => {
         try{
-            const {degree} = req.params
+            const {degree, term_id} = req.params
             let cat_ids = []
             let outcome_descriptions = []
             for(let i = 0; i < req.body.length; i++){
@@ -235,24 +235,25 @@ usersRouter.get('/all_profs', async (req, res) => {
             console.log(`Description in service is at ${outcome_descriptions}`)
             
             const add_outs = await pool.query(`
-                select post_outcomes($1::TEXT, $2::INT[], $3::TEXT[]);`,
+                select post_outcomes($1::TEXT, $2::INT[], $3::TEXT[], $4::INT);`,
                 [
                     degree,
                     cat_ids,
-                    outcome_descriptions
+                    outcome_descriptions,
+                    term_id
                     
                 ])
                     console.log(add_outs.rows[0])
-                    res.json(add_outs.rows[0])
+                    res.json(add_outs.rows[0].rows)
             }
         catch(err ){
             console.error(err, 'error has occurred in backend function "add_outs"');
         }
     });
 
-    usersRouter.post("/add_subs/:degree", async(req, res) => {
+    usersRouter.post("/add_subs/:degree/:term_id", async(req, res) => {
         try{
-            const {degree} = req.params
+            const {degree,term_id} = req.params
             console.log(req.params)
             let score_ids = []
             let outcome_cat_ids = []
@@ -272,7 +273,7 @@ usersRouter.get('/all_profs', async (req, res) => {
                 satisfactory_descriptions.push(req.body[i].satisfactory_description)
                 excellent_descriptions.push(req.body[i].excellent_description)
             }
-        const add_subs = await pool.query(`select add_subs($9::TEXT, $1::INT[], $2::TEXT[], $3::TEXT[], $4::TEXT[], $5::TEXT[], $6::TEXT[],$7::TEXT[],$8::TEXT[])`,
+        const add_subs = await pool.query(`select add_subs($9::TEXT, $1::INT[], $2::TEXT[], $3::TEXT[], $4::TEXT[], $5::TEXT[], $6::TEXT[],$7::TEXT[],$8::TEXT[], $10::INT)`,
         [
         outcome_cat_ids,
         score_ids,
@@ -282,7 +283,9 @@ usersRouter.get('/all_profs', async (req, res) => {
         developing_descriptions,
         satisfactory_descriptions,
         excellent_descriptions,
-        degree])
+        degree,
+        term_id
+    ])
         
         console.log(add_subs.rows)
         }

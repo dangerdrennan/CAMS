@@ -1,4 +1,4 @@
-create or replace function post_reqs(outs int[], degree text) returns void
+create or replace function post_reqs(outs int[], degree text) returns int
 AS $$
 declare
 old_req_id int;
@@ -66,5 +66,5 @@ begin
         INSERT into suboutcome_details_cs table z;
 
     end if;       
-
+return new_req_id;
 end; $$ language plpgsql;

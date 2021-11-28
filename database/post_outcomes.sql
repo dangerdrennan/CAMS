@@ -2,17 +2,16 @@
 create or replace function post_outcomes(
     degree TEXT,
     new_cat INT[],
-    new_description text[]
+    new_description text[],
+    new_reqs_id int
     ) returns int
 AS $$
 declare
 id_tracker int;
-new_reqs_id int;
 i int:=1;
 c int;
 begin
 
-    select MAX(id) from sem_req into new_reqs_id;
     
     select array_length(new_cat, 1) into c;
     

@@ -1,5 +1,3 @@
-DROP TABLE suboutcome_details_cse;
-
 CREATE TABLE suboutcome_details_cse (
     id serial primary key,
     outcome_cat_id int REFERENCES outcome_details_cse(id),
@@ -11,8 +9,7 @@ CREATE TABLE suboutcome_details_cse (
     developing_description TEXT,
     satisfactory_description TEXT,
     excellent_description TEXT,
-    order_float float,
-    CONSTRAINT unique_requirement_cse UNIQUE (reqs_id, score_id)
+    order_float float
 );
 
 

@@ -1,5 +1,3 @@
-DROP TABLE suboutcome_details_cs;
-
 CREATE TABLE suboutcome_details_cs (
     id serial primary key,
     suboutcome_name TEXT,
@@ -11,8 +9,7 @@ CREATE TABLE suboutcome_details_cs (
     developing_description TEXT,
     satisfactory_description TEXT,
     excellent_description TEXT,
-    order_float float,
-    CONSTRAINT unique_requirement UNIQUE (reqs_id, score_id)
+    order_float float
 );
 
 INSERT INTO suboutcome_details_cs(suboutcome_name, reqs_id,  score_id, outcome_cat_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
