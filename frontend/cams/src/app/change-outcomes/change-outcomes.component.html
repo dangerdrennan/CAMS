@@ -38,7 +38,7 @@
               <thead>
                 <tr>
                   <th style="font: 'Mulish';">{{out.out_desc}}
-                    <button (click)= "removeOutcome(out.cat_id)" class="btn btn-danger btn-sm" style="float: right;" data-bs-toggle="tooltip" title="Delete Outcome">
+                    <button (click)= "removeOutcome(out.cat_id, i)" class="btn btn-danger btn-sm" style="float: right;" data-bs-toggle="tooltip" title="Delete Outcome">
                       <img src="../../assets/images/delete_outline_white_24dp.svg" alt="delete_icon"> </button>
 
                   </th>
@@ -70,7 +70,7 @@
 
             </div>
             <ng-template #both>
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome" >
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome" (click)="addOutcome();addSuboutcome()">
                 <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
               </button>
             </ng-template>
@@ -239,7 +239,28 @@
             </div>
 
             <!-- <button class="btn btn-secondary" style='float: left;'(click)="goBack()">back</button> -->
-            <button class='btn btn-primary' style='float: right;' (click)="this.displayTable=false;submitNewOutcome()">Submit Changes</button>
+               <!-- Button trigger modal -->
+               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  style='float: right;'>
+                Submit Changes
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to submit changes?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button class='btn btn-primary' data-bs-dismiss="modal" (click)="this.displayTable=false;submitNewOutcome()">Submit Changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
           </div>
         </div>

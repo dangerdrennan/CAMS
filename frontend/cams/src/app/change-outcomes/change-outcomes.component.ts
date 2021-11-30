@@ -136,26 +136,6 @@ export class ChangeOutcomesComponent implements OnInit {
     return this.outcomeCSEForm.get('newSuboutcome')['controls'];
   }
 
-  // get the outcome nums that are used already
-  extractOutcomeNum() {
-    let newPoss = [];
-    let degree = this.degreeChangeForm.get('degree').value;
-    if (degree == 'CS') {
-      this.outcomes.filter((data) => {
-        // this.csNums.push(data.cat_id)
-        for (let i = 1; i < this.possibleOutcomes.length; i += 1) {
-          if (data.cat_id == this.possibleOutcomes[i]) {
-            newPoss.push(this.possibleOutcomes[i]);
-          }
-        }
-      });
-    } else if (degree == 'CSE') {
-      this.outcomes.filter((data) => {
-        this.cseNums.push(data.cat_id);
-      });
-    }
-  }
-
   addOutcome() {
     console.log('OUTTT');
     let degree = this.degreeChangeForm.get('degree').value;
@@ -238,10 +218,20 @@ export class ChangeOutcomesComponent implements OnInit {
     this.updateOutService.update(this.currentOutcomeIDs, degree, reqs);
   }
 
-  removeOutcome(i:number){
+  removeOutcome(outcomeCatID:number, i:number){
     console.log('removing?? let\'s see. current outcome ids to save are now at ', this.currentOutcomeIDs)
-    this.currentOutcomeIDs = this.currentOutcomeIDs.filter(x => x != i)
+    this.currentOutcomeIDs = this.currentOutcomeIDs.filter(x => x != outcomeCatID)
     console.log('now they\'re at ', this.currentOutcomeIDs)
+    console.log(i)
+    console.log(this.outcomes.map(item => {
+      return item.cat_id !== i
+    }))
+    this.outcomes.splice(i,1)
+    // this.outcomes = this.outcomes.filter(item => {
+    //   item.cat_id === i
+    // }
+    // )
+    
   }
 
   cleanUpEntry(degree: string) {
@@ -249,11 +239,8 @@ export class ChangeOutcomesComponent implements OnInit {
     console.log('what are currentOutcomeIDs at? ', this.currentOutcomeIDs)
     const newOuts: OutcomeDescriptions[] = [];
     const newSubs: Suboutcome[] = [];
-    // console.log(typeof form.get('newOutcome').value[0].outcome_num);
 
     for (let i = 0; i < form.get('newOutcome').value.length; i++) {
-      // let cat_id = form.get('newOutcome').value[i].outcome_num.value;
-      // let cat_num = form.get('newOutcome').value[i].outcome_num.value;
       newOuts.push({
         cat_id: form.get('newOutcome').value[i].outcome_num as number,
         outcome_description: form.get('newOutcome').value[i]
@@ -305,26 +292,12 @@ export class ChangeOutcomesComponent implements OnInit {
         const cat_ids = res.map((x) => {
           return x.cat_id;
         });
-        const out_ids = res.map((x) => {
-          return x.out_id;
-        });
         this.currentOutcomeIDs = cat_ids;
-        
+
         this.possibleOutcomes = this.possibleOutcomes.filter(
           (x) => !cat_ids.includes(x)
           );
-        res.filter((item: OutDesc) => {
-          this.updateOutService
-            .getsuboutcomesOnly(item.cat_id, degree)
-            .subscribe((res: any) => {
-              console.log("in get_degree_outcomes-- cat_id=", res)
-              console.log("in get_degree_outcomes-- res=", res)
-              this.suboutcomes.push(res)
-            });
-        });
-        // console.log("outcomes", this.outcomes)
-        // console.log("sub", this.suboutcomes)
-        this.extractOutcomeNum();
+
       });
 
       this.displayTable = true;
@@ -345,64 +318,18 @@ export class ChangeOutcomesComponent implements OnInit {
         this.currentOutcomeIDs = cat_ids;
         this.possibleOutcomes = this.possibleOutcomes.filter(
           (x) => !cat_ids.includes(x)
-        );
-        res.filter((item: OutDesc) => {
-          console.log('this item is at, ', item);
-          this.updateOutService
-            .getsuboutcomesOnly(item.cat_id, degree)
-            .subscribe((res: any) => {
-              console.log('in get_degree_outcomes-- cat_id=', res);
-              console.log('in get_degree_outcomes-- res=', res);
-              this.suboutcomes.push(res);
-            });
+        );;
         });
-        console.log('outcomes', this.outcomes);
-        console.log('sub', this.suboutcomes);
-        this.extractOutcomeNum();
-      });
+      
 
       this.displayTable = true;
+      this.updateOutService
+        .getAllCurrentSuboutcomes(degree)
+        .subscribe((res) => {
+          this.suboutcomes = res;
+        });
     }
-  }
-
-  // getSubgroup(s:Suboutcome[], o:number){
-  getSubgroup(s: Suboutcome[]) {
-    // let x:any[][] = any[][]
-    let innerArr = [];
-    this.test = [
-      ...new Set(this.suboutcomesR.map((item) => item.outcome_cat_id)),
-    ];
-    console.log(this.test);
-    for (let i = 0; i < this.suboutcomesR.length; i++) {
-      innerArr = [];
-      for (let j = 0; j < this.test.length; j++) {
-        if (this.suboutcomesR[i].outcome_cat_id == this.test[j]) {
-          console.log('hit in if in getSubgroup');
-          innerArr.push(this.suboutcomesR[i].suboutcome_description);
-          console.log(`array is at${innerArr}`);
-        }
-
-        //this.dictionary[this.test[i]] = innerArr
-        //console.log(this.dictionary[this.test[i]])
-      }
-      if (typeof(innerArr) !== undefined){
-        this.x.push(innerArr);
-      }
-      
-      //this.dictionary[this.test[i]] = innerArr
-      for (let item of this.x[i]) {
-        console.log(`i is at ${i}`);
-        console.log(item.cat_id);
-        console.log(item.suboutcome_description);
-      }
-    }
-    for (let i = 0; i < this.x.length; i++) {
-      for (let j = 0; j < this.x[i].length; i++) {
-        console.log(this.x[i][j].cat_id);
-        console.log(this.x[i][j].suboutcome_description);
-      }
-    }
-    // this.newSuboutcomeList = x
+    
   }
 
   goBack() {
