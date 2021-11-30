@@ -62,8 +62,8 @@
             </table>
 
 
-            <div *ngIf="(csOutcomes.length == 0 || cseOutcomes.length == 0);else both">
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome" (click)="addOutcome();addSuboutcome()">
+            <div *ngIf="(this.csOutcomes.length >= 1 || this.cseOutcomes.length>= 1 );else both">
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: left;" title="Add Outcome">
                 <img src="../../assets/images/add_white_24dp.svg" alt="add_icon">
               </button>
 
@@ -169,7 +169,7 @@
                                 <select class="btn btn-outline-secondary " style="width: 55px;" formControlName='outcome_num'>
                                   <option *ngFor="let out of possibleOutcomes" [value]="out">{{out}}</option>
                                 </select>
-                                <input type="text" class="form-control" formControlName='outcome_desc'>
+                                <input type="text" class="form-control">
                               </div>
 
                             </div>

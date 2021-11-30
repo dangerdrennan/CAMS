@@ -287,6 +287,8 @@ export class ChangeOutcomesComponent implements OnInit {
     let degree = this.degreeChangeForm.get('degree').value;
     this.degree = degree
     if (degree == 'CS') {
+      this.cseOutcomes.clear()
+      this.cseSuboutcomes.clear()
       this.updateOutService.getOutcomesOnly(degree).subscribe((res: any) => {
         this.outcomes = res;
         const cat_ids = res.map((x) => {
@@ -307,6 +309,8 @@ export class ChangeOutcomesComponent implements OnInit {
           this.suboutcomes = res;
         });
     } else if (degree == 'CSE') {
+      this.cseOutcomes.clear()
+      this.cseSuboutcomes.clear()
       this.updateOutService.getOutcomesOnly(degree).subscribe((res: any) => {
         this.outcomes = res;
         const cat_ids = res.map((x) => {
