@@ -24,6 +24,10 @@
         </div>
       </div>
     </div>
+    <!-- <app-suboutcome-update-display
+                  [outcome_cat] = 1
+                  [degree] = "'CS'"
+                  ></app-suboutcome-update-display> -->
 
     <!-- diplay the current outcomes and suboutcomes to update -->
     <div class="row" *ngIf="displayTable">
@@ -39,13 +43,21 @@
 
                   </th>
                 </tr>
+                <!-- <app-suboutcome-update-display
+                    [outcome_cat]="out.cat_id"
+                    [degree]="this.degree"
+                    ></app-suboutcome-update-display> -->
               </thead>
               <tbody >
-                <tr *ngFor="let sub of this.suboutcomes[i]">
-                  <td >{{sub.sub_description}}
+                <tr>
+                  <app-suboutcome-update-display
+                    [outcome_cat]="out.cat_id"
+                    [degree]="this.degree"
+                    ></app-suboutcome-update-display>
+                  </tr>
 
-                  </td>
-                </tr>
+                  
+                  
               </tbody>
             </table>
 

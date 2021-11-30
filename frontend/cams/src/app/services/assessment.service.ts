@@ -124,7 +124,7 @@ export class AssessmentService {
   }
 
   getSuboutcomes(outcome_name: number): Observable<Suboutcome[]>{
-    return this.http.get<Suboutcome[]>(`${this.endPoint}/get_suboutcomes/${this.assessment.degree}/${outcome_name}`)
+    return this.http.get<Suboutcome[]>(`${this.endPoint}/get_suboutcomes/${this.assessment.degree}/${outcome_name}/${this.assessment.assessment_id}`)
   }
 
 }

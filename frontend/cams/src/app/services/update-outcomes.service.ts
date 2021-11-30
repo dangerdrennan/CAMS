@@ -30,9 +30,21 @@ export class UpdateOutcomesService {
     return this.http.get<OutDesc[]>(`${this.endPoint}/get_outs_only/${degree}`)
   }
   
+  
+  testOutcomesOnly(degree: string): Observable<OutcomeDescriptions[]> {
+    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outs_only/${degree}`)
+  }
 
   getsuboutcomesOnly(out_id: number, degree: string): Observable<SuboutDesc[]> {
     return this.http.get<SuboutDesc[]>(`${this.endPoint}/get_sub_by_outcome/${out_id}/${degree}`)
+  }
+
+  subsByCatID(cat_id: number, degree: string): Observable<Suboutcome[]> {
+    return this.http.get<Suboutcome[]>(`${this.endPoint}/get_sub_by_cat_id/${cat_id}/${degree}`)
+  }
+
+  getAllCurrentSuboutcomes(degree:string): Observable<Suboutcome[]>{
+    return this.http.get<Suboutcome[]>(`${this.endPoint}/get_current_subs/${degree}`)
   }
 
   update(toKeep: number[], degree:string, newRequirements:NewRequirement){

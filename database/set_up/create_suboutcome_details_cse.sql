@@ -1,6 +1,6 @@
 CREATE TABLE suboutcome_details_cse (
     id serial primary key,
-    outcome_cat_id int REFERENCES outcome_details_cse(id),
+    outcome_cat_id int,
     reqs_id int REFERENCES sem_req(id),
     suboutcome_name TEXT,
     score_id TEXT,
@@ -31,7 +31,7 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
 INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         1,
-        1,
+        2,
         '1.2',
         'score_1_2',
         '2.	Solves complex engineering problem by applying principles of engineering, science, and mathematics',
@@ -157,7 +157,7 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
 INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         1,
-        4,
+        5,
         '5.1',
         'score_5_1',
         '1.	Understands and fulfills roles and responsibilities',
@@ -171,7 +171,7 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
 INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         1,
-        4,
+        5,
         '5.2',
         'score_5_2',
         '2.	Listens and works with others',
@@ -185,7 +185,7 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
 INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         1,
-        4,
+        5,
         '5.3',
         'score_5_3',
         '3.	Communicates effectively with the group',
@@ -199,7 +199,7 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
 INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         1,
-        5,
+        6,
         '6.1',
         'score_6_1',
         '1.	Develops and conducts an appropriate engineering experiment to test a hypothesis ',
@@ -213,7 +213,7 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
 INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         1,
-        5,
+        6,
         '6.2',
         'score_6_2',
         '2.	Analyzes and interprets experimental data using engineering judgment',
@@ -227,7 +227,7 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
 INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         1,
-        6,
+        7,
         '7.1',
         'score_7_1',
         '1.	Demonstrates ability to independently learn the latest developments and technical issues surrounding a new topic',
@@ -241,7 +241,7 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
 INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         1,
-        6,
+        7,
         '7.2',
         'score_7_2',
         '2.	Utilizes appropriate learning strategies',

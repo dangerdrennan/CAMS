@@ -60,9 +60,9 @@ export class AssessmentComponent implements OnInit {
   setDescriptions(){
 
     this.outcome_des$ = this.assessmentService.getOutcomeDescription()
-    // this.assessmentService.getOutcomeDescription().subscribe(res =>{
-    //   this.outcome_des = res
-    // })
+    this.assessmentService.getOutcomeDescription().subscribe(res =>{
+      console.log('this are the outcomes we are getting back: ', res)
+    })
   }
 
   goBack() {

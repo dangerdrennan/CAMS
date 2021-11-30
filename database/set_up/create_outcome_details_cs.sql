@@ -35,5 +35,5 @@ INSERT INTO outcome_details_cs(reqs_id, cs_cat_id, outcome_description, order_fl
         1,
         5,
         'Outcome 5: Function effectively as a member or leader of a team engaged in activities appropriate to the program''s discipline.',
-        4.0
+        5.0
     );

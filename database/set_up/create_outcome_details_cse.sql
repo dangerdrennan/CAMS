@@ -35,7 +35,7 @@ INSERT INTO outcome_details_cse(reqs_id, cse_cat_id, outcome_description, order_
         1,
         5,
         'Outcome 5: An ability to function effectively on a team whose members together provide leadership, create a collaborative and inclusive environment, establish goals, plan tasks, and meet objectives.',
-        4.0
+        5.0
          );
 
 INSERT INTO outcome_details_cse(reqs_id, cse_cat_id, outcome_description, order_float)
@@ -43,7 +43,7 @@ INSERT INTO outcome_details_cse(reqs_id, cse_cat_id, outcome_description, order_
         1,
         6,
         'Outcome 6: An ability to develop and conduct appropriate experimentation, analyze and interpret data, and use engineering judgment to draw conclusions.',
-        5.0
+        6.0
     );
 
 INSERT INTO outcome_details_cse(reqs_id, cse_cat_id, outcome_description, order_float)
@@ -51,5 +51,5 @@ INSERT INTO outcome_details_cse(reqs_id, cse_cat_id, outcome_description, order_
         1,
         7,
         'Outcome 7: An ability to acquire and apply new knowledge as needed, using appropriate learning strategies.',
-        6.0
+        7.0
     );

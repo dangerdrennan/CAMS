@@ -16,7 +16,7 @@ begin
     if degree = 'CS' then
 
         create table w as select * from outcome_details_cs
-            where id = ANY(select unnest(outs)) and reqs_id = old_req_id;
+            where cs_cat_id = ANY(select unnest(outs)) and reqs_id = old_req_id;
         update w set id = nextval(pg_get_serial_sequence('outcome_details_cs', 'id'));
         update w set reqs_id = new_req_id;
         INSERT into outcome_details_cs table w;
@@ -42,7 +42,7 @@ begin
     elsif degree = 'CSE' then
 
         create table w as select * from outcome_details_cse
-            where id = ANY(select unnest(outs)) and reqs_id = old_req_id;
+            where cse_cat_id = ANY(select unnest(outs)) and reqs_id = old_req_id;
         update w set id = nextval(pg_get_serial_sequence('outcome_details_cse', 'id'));
         update w set reqs_id = new_req_id;
         INSERT into outcome_details_cse table w;
