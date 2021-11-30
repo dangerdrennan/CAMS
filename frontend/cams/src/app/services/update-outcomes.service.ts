@@ -26,13 +26,15 @@ export class UpdateOutcomesService {
 
   constructor(private http: HttpClient) {  }
 
-  getOutcomesOnly(degree: string): Observable<OutDesc[]> {
-    return this.http.get<OutDesc[]>(`${this.endPoint}/get_outs_only/${degree}`)
-  }
-  
 
-  getsuboutcomesOnly(out_id: number, degree: string): Observable<SuboutDesc> {
-    return this.http.get<SuboutDesc>(`${this.endPoint}/get_sub_by_outcome/${out_id}/${degree}`)
+  getOutcomesOnly(degree: string): Observable<OutcomeDescriptions[]> {
+    return this.http.get<OutcomeDescriptions[]>(`${this.endPoint}/get_outs_only/${degree}`)
+  }
+
+
+  getsuboutcomesOnly(out_id: number, degree: string): Observable<Suboutcome[]> {
+    console.log("in service")
+    return this.http.get<Suboutcome[]>(`${this.endPoint}/get_sub_by_outcome/${out_id}/${degree}`)
   }
 
   update(toKeep: number[], degree:string, newRequirements:NewRequirement){
@@ -41,15 +43,15 @@ export class UpdateOutcomesService {
       this.startNew(toKeep,degree).pipe(take(1)).subscribe(x=>{
           console.log ('what is the res at ', x)
           this.updateReqsAndOutsTest(newRequirements,degree, x)
-          
-        
+
+
       })
-    
+
   }
     catch(e){
       throw Error('Semester data was not updated. Please double check the current requirements and resubmit.')
     }
-    
+
   }
 
 
@@ -78,8 +80,8 @@ export class UpdateOutcomesService {
     console.log(`Description in service is at ${reqs.new_outcome[0].outcome_description}`)
     concat(task1,task2).subscribe()
     //task1.subscribe()
-    
-    
+
+
   }
 
   updateOuts(out:OutcomeDescriptions[], degree:string, term_id:number): Observable<any>{

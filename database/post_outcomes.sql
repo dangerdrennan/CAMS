@@ -1,4 +1,3 @@
-
 create or replace function post_outcomes(
     degree TEXT,
     new_cat INT[],

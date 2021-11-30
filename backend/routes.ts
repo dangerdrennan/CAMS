@@ -645,18 +645,30 @@ usersRouter.get('/all_profs', async (req, res) => {
     }
     })
 
-    usersRouter.get('/get_sub_by_outcome/:out_id/:degree', async (req, res) => {
+    usersRouter.get('/get_sub_by_outcome/:cat_id/:degree', async (req, res) => {
         try {
-            const {degree, out_id} = req.params
+            const {degree, cat_id} = req.params
             const get_outs_only = await pool.query(
                 `SELECT * FROM get_sub_by_outcome($1, $2)`,
-                [out_id, degree]);
+                [cat_id, degree]);
                 res.json(get_outs_only.rows)
             
         } catch (error) {
             console.log(error, 'error has occured in backend function "get_sub_by_outcome"')
         }
         })
+
+    usersRouter.get('/get_cs_sub_descriptions/:cat_id', async (req, res) => {
+        try {
+            const {cat_id} = req.params
+            const get_cs_sub_descriptions = await pool.query(
+                `SELECT * FROM get_cs_sub_descriptions($1)`,
+                [cat_id])
+                res.json(get_cs_sub_descriptions.rows)
+        } catch (error) {
+            console.log('error has occured in backend function "get_cs_sub_descriptions"')
+        }
+    })
 
 
 
