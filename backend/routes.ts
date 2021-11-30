@@ -582,7 +582,8 @@ usersRouter.get('/all_profs', async (req, res) => {
         console.log(`hitting in get_outcome_desc with degree at ${degree}, sem at ${sem}, and year at ${year}`)
         if (degree == 'CS'){
             let query = `
-            select cs_cat_id as cat_id, id out_id, outcome_description from outcome_details_cs where reqs_id = (select reqs_id from term where semester='${sem}' and year=${year})`
+            select cs_cat_id as cat_id, id out_id, outcome_description from outcome_details_cs where 
+                reqs_id = (select reqs_id from term where semester='${sem}' and year=${year}) order by order_float`
             console.log('this query is at ', query)
 
             const get_outcome_desc = await pool.query(`${query};`);
@@ -591,7 +592,8 @@ usersRouter.get('/all_profs', async (req, res) => {
         }
         else {
             let query = `
-            select cse_cat_id as cat_id, id out_id, outcome_description from outcome_details_cse where reqs_id = (select reqs_id from term where semester='${sem}' and year=${year})`
+            select cse_cat_id as cat_id, id out_id, outcome_description from outcome_details_cse where 
+                reqs_id = (select reqs_id from term where semester='${sem}' and year=${year})  order by order_float`
             console.log('this query is at ', query)
 
             const get_outcome_desc = await pool.query(`${query};`);
@@ -662,7 +664,7 @@ usersRouter.get('/all_profs', async (req, res) => {
             excellent_description
             FROM suboutcome_details_cs join term on term.reqs_id = suboutcome_details_cs.reqs_id
             join assessment on assessment.term_id = term.term_id where suboutcome_details_cs.outcome_cat_id
-            = $1 and assessment.assessment_id = $2;`, [outcome_name,id]);
+            = $1 and assessment.assessment_id = $2 order by order_float;`, [outcome_name,id]);
             res.json(get_suboutcomes.rows);}
         else {
             console.log('outcome name is ', outcome_name)
@@ -675,9 +677,9 @@ usersRouter.get('/all_profs', async (req, res) => {
             developing_description,
             satisfactory_description,
             excellent_description
-            FROM suboutcome_details_cse join term on term.reqs_id = suboutcome_details_cs.reqs_id
-            join assessment on assessment.term_id = term.term_id where suboutcome_details_cs.outcome_cat_id
-            = $1 and assessment.assessment_id = $2;`, [outcome_name, id]);
+            FROM suboutcome_details_cse join term on term.reqs_id = suboutcome_details_cse.reqs_id
+            join assessment on assessment.term_id = term.term_id where suboutcome_details_cse.outcome_cat_id
+            = $1 and assessment.assessment_id = $2 order by order_float`, [outcome_name, id]);
             res.json(get_suboutcomes.rows);
         }
         //console.log(get_cs_suboutcomes.rows)

@@ -30,6 +30,9 @@ export class SuboutcomeUpdateDisplayComponent implements OnInit {
 
     console.log(`in the new child componente degree is ${this.degree} and outcome_cat is at ${this.outcome_cat}`)
     this.suboutcomes$ = this.updateService.subsByCatID(this.outcome_cat, this.degree)
+    this.updateService.subsByCatID(this.outcome_cat, this.degree).subscribe(x=>
+      console.log(x))
+
   }
 
 

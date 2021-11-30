@@ -74,10 +74,10 @@ BEGIN
     END LOOP;
 END;
 
-execute 'update curr set cat_id =
-    (select '|| (SELECT lower(degree)) ||'_cat_id 
-    from outcome_details_'|| (SELECT lower(degree)) ||' 
-    where curr.cat_id = outcome_details_'|| (SELECT lower(degree)) ||'.id);';
+-- execute 'update curr set cat_id =
+--     (select '|| (SELECT lower(degree)) ||'_cat_id 
+--     from outcome_details_'|| (SELECT lower(degree)) ||' 
+--     where curr.cat_id = outcome_details_'|| (SELECT lower(degree)) ||'.id);';
 
 for score in select s_id from curr
 loop

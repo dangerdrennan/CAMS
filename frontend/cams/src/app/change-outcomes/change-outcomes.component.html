@@ -38,7 +38,7 @@
               <thead>
                 <tr>
                   <th style="font: 'Mulish';">{{out.out_desc}}
-                    <button class="btn btn-danger btn-sm" style="float: right;" data-bs-toggle="tooltip" title="Delete Outcome">
+                    <button (click)= "removeOutcome(out.cat_id)" class="btn btn-danger btn-sm" style="float: right;" data-bs-toggle="tooltip" title="Delete Outcome">
                       <img src="../../assets/images/delete_outline_white_24dp.svg" alt="delete_icon"> </button>
 
                   </th>
@@ -54,7 +54,7 @@
                     [outcome_cat]="out.cat_id"
                     [degree]="this.degree"
                     ></app-suboutcome-update-display>
-                  </tr>
+                    </tr>
 
                   
                   

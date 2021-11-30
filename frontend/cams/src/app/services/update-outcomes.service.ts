@@ -87,7 +87,7 @@ export class UpdateOutcomesService {
     let allOuts = reqs.new_outcome
     let task1 = this.updateOuts(allOuts, degree, term_id)
     let task2 = this.updateReqs(allSubs, degree,term_id)
-    console.log(`Description in service is at ${reqs.new_outcome[0].outcome_description}`)
+    // console.log(`Description in service is at ${reqs.new_outcome[0].outcome_description}`)
     concat(task1,task2).subscribe()
     //task1.subscribe()
     

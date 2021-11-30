@@ -14,6 +14,7 @@
 \i helper_functions/set_grade.sql
 \i helper_functions/get_grade.sql
 \i set_up/create_comments.sql
+\i get_sub_by_cat_id.sql
 \i get_current_subs.sql
 \i helper_functions/set_current_term.sql
 \i get_reqs.sql

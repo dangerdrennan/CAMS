@@ -238,16 +238,22 @@ export class ChangeOutcomesComponent implements OnInit {
     this.updateOutService.update(this.currentOutcomeIDs, degree, reqs);
   }
 
+  removeOutcome(i:number){
+    console.log('removing?? let\'s see. current outcome ids to save are now at ', this.currentOutcomeIDs)
+    this.currentOutcomeIDs = this.currentOutcomeIDs.filter(x => x != i)
+    console.log('now they\'re at ', this.currentOutcomeIDs)
+  }
+
   cleanUpEntry(degree: string) {
     let form = degree == 'CSE' ? this.outcomeCSEForm : this.outcomeCSForm;
-
+    console.log('what are currentOutcomeIDs at? ', this.currentOutcomeIDs)
     const newOuts: OutcomeDescriptions[] = [];
     const newSubs: Suboutcome[] = [];
-    console.log(typeof form.get('newOutcome').value[0].outcome_num);
+    // console.log(typeof form.get('newOutcome').value[0].outcome_num);
 
     for (let i = 0; i < form.get('newOutcome').value.length; i++) {
-      let cat_id = form.get('newOutcome').value[i].outcome_num.value;
-      let cat_num = form.get('newOutcome').value[i].outcome_num.value;
+      // let cat_id = form.get('newOutcome').value[i].outcome_num.value;
+      // let cat_num = form.get('newOutcome').value[i].outcome_num.value;
       newOuts.push({
         cat_id: form.get('newOutcome').value[i].outcome_num as number,
         outcome_description: form.get('newOutcome').value[i]
@@ -290,6 +296,7 @@ export class ChangeOutcomesComponent implements OnInit {
     this.cseSuboutcomes.reset();
     this.outcomes = [];
     this.suboutcomes = [];
+    this.possibleOutcomes = [1,2,3,4,5,6,7,8,9]
     let degree = this.degreeChangeForm.get('degree').value;
     this.degree = degree
     if (degree == 'CS') {
@@ -302,10 +309,10 @@ export class ChangeOutcomesComponent implements OnInit {
           return x.out_id;
         });
         this.currentOutcomeIDs = cat_ids;
+        
         this.possibleOutcomes = this.possibleOutcomes.filter(
           (x) => !cat_ids.includes(x)
-        );
-
+          );
         res.filter((item: OutDesc) => {
           this.updateOutService
             .getsuboutcomesOnly(item.cat_id, degree)
