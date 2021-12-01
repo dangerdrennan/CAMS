@@ -553,7 +553,7 @@ usersRouter.get('/all_profs', async (req, res) => {
         const {sem, year,degree} = req.params
         console.log('sem at ', sem, ' year at ', year, ' degree at ', degree)
         const all_past_info = await pool.query(`
-        SELECT * from super_cs_grader($1, $2, $3)`, [sem, year, degree]);
+        SELECT * from super_cs_grader($1::TEXT, $2::INT, $3::TEXT)`, [sem, year, degree]);
         res.json(all_past_info.rows);
     }
     catch(err ){
