@@ -1,0 +1,7 @@
+
+<span  style="border: 1px; color: black" *ngIf="this.suboutcomes$ | async as subs">
+    <tr *ngFor="let sub of subs">
+      {{sub.suboutcome_description}}
+    </tr>
+  </span>
+  

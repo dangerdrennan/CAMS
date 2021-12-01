@@ -30,7 +30,7 @@ past_term int:= (select get_term_id(sem, year));
 begin
 
 drop table if exists p;
-create temporary table if not exists p (
+create table if not exists p (
     totes BIGINT,
     p_count BIGINT,
     d_count BIGINT,
@@ -42,7 +42,7 @@ create temporary table if not exists p (
     e_percent float
 );
 
-execute 'select array(select id from outcome_details_'|| major ||' 
+execute 'select array(select '|| major ||'_cat_id from outcome_details_'|| major ||' 
     join term on outcome_details_'|| major ||'.reqs_id = term.reqs_id where term.term_id = '|| past_term ||' order by outcome_details_'|| major ||'.order_float);' into all_reqs;
 foreach category in array all_reqs
     loop

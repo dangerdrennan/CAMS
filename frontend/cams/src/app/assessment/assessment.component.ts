@@ -6,6 +6,8 @@ import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { AssessmentService } from '../services/assessment.service';
 import { AssessmentDisplay } from '../AssessmentDisplay';
 import { ScoreComment } from '../ScoreComment';
+import { SemesterReqs } from '../SemesterReqs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-assessment',
@@ -15,11 +17,13 @@ import { ScoreComment } from '../ScoreComment';
 export class AssessmentComponent implements OnInit {
   grades: { score_id: string, grade: number}[] = []
   outcome_des: OutcomeDescriptions[] = []
+  outcome_des$: Observable<OutcomeDescriptions[]>
   outcome_names: number[] = []
   outcome_cats?: number[]
   assessmentInfo: AssessmentDisplay
   submissionStatus: boolean
   comments:ScoreComment[] = []
+  requirements$!: Observable<SemesterReqs[]>
 
 
 
@@ -29,19 +33,7 @@ export class AssessmentComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.assessmentService.getCurrentSemesterRequirements().pipe(take(1)).subscribe(res=> {
-      if (this.assessmentInfo.degree =='CS'){
-      this.outcome_cats = res.outcome_cats_cs
-      this.outcome_names = res.out_name_cs
-      this.setDescriptions()
-
-    }
-    else if (this.assessmentInfo.degree =='CSE'){
-      this.outcome_cats = res.outcome_cats_cse
-      this.outcome_names = res.out_name_cse
-      this.setDescriptions()
-    }
-    })
+    this.setDescriptions()
     if (this.assessmentService.assID == undefined){
       this.router.navigateByUrl('/projects');
     }
@@ -66,8 +58,10 @@ export class AssessmentComponent implements OnInit {
 
 
   setDescriptions(){
-    this.assessmentService.getOutcomeDescription().pipe(take(1)).subscribe(res =>{
-      this.outcome_des = res
+
+    this.outcome_des$ = this.assessmentService.getOutcomeDescription()
+    this.assessmentService.getOutcomeDescription().subscribe(res =>{
+      console.log('this are the outcomes we are getting back: ', res)
     })
   }
 

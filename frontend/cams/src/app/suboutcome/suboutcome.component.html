@@ -1,4 +1,6 @@
-<div class='scroll' *ngFor= "let deet of suboutcomeDetails; index as i">
+<div class='scroll' >
+
+<div *ngFor= "let deet of this.subDeets$ | async as suboutcomeDetails; index as i">
 
   <!-- <div class="card" style="margin-bottom: 10px;">
     <div class="card-body"> -->
@@ -67,7 +69,6 @@
       </div>
     <!-- </div>
   </div> -->
-
-
-
 </div>
+</div>
+

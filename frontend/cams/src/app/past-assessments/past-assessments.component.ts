@@ -51,7 +51,7 @@ export class PastAssessmentsComponent implements OnInit {
   year:number
   comments:ShowComment[]
   comments$:Observable<ShowComment[]>
-  num$: BehaviorSubject<number> = new BehaviorSubject<number>(0)
+  outDescriptions$:Observable<OutcomeDescriptions[]>
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) {
@@ -134,7 +134,7 @@ export class PastAssessmentsComponent implements OnInit {
 
     this.resultsService.getAllPast(term, Number(year), degree).subscribe( res=> {
       this.allInfo = res
-
+      console.log(this.allInfo)
     })
     this.outcomeTitle = []
 
@@ -144,7 +144,6 @@ export class PastAssessmentsComponent implements OnInit {
   dataChange(id: number) {
     // this.getTitles(id)
     this.id = id
-    this.num$.next(id)
     this.getDescription(id)
     this.calculateTotals()
     this.switchDegree = false
@@ -156,6 +155,7 @@ export class PastAssessmentsComponent implements OnInit {
     
     let id = this.categoryForm.get('selected').value
     const eventToNum = parseInt(id)
+    console.log(`id is at ${id}`)
     this.id = eventToNum
     console.log('switchDegree is at ', this.switchDegree)
     if (this.switchDegree == true){
@@ -179,24 +179,32 @@ export class PastAssessmentsComponent implements OnInit {
     let year = this.pastForm.get('year').value
     console.log(`Degree:  ${degree} Term: ${term} Year: ${year}`)
 
+    this.outDescriptions$ = this.resultsService.getPastOutcomeDescription(degree, term, year)
+
     if(degree === 'CS') {
       console.log("in get descrip")
       this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
       .subscribe(res=> {
         this.allInfo = res
         this.unique = [...new Set(res.map(item => item.cat_id))]
-        for(let i = 0; i < this.allInfo.length; i++) {
+        console.log()
+        console.log (`this. allInfo is at ${this.allInfo}`)
+
+        this.subInfo = res.filter(x=>x.cat_id == id)
+        console.log(this.subInfo)
+        // for(let i = 0; i < this.allInfo.length; i++) {
           
-          if(this.allInfo[i].cat_id == id) {
-            this.subInfo.push(this.allInfo[i])
-          }
+        //   if(this.allInfo[i].cat_id == id) {
+        //     this.subInfo.push(this.allInfo[i])
+        //   }
           
-        }
+        // }
       })
       this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())
       .subscribe(res=> {
         console.log('all Descriptions ', res)
         this.displayTitle = [...new Set(res.map(item => item.outcome_description))];
+        // console.log (`this.unique is at ${this.unique[3]}`)
       })
     
     }
@@ -206,7 +214,7 @@ export class PastAssessmentsComponent implements OnInit {
       .subscribe(res=> {
         console.log("all csE info", res)
         this.allInfo = res
-        this.unique = [...new Set(res.map(item => item.cat_id))]
+        this.unique = [...new Set(res.map(item => Number(item.cat_id)))]
         console.log("ALLLL ", this.allInfo)
         for(let i = 0; i < this.allInfo.length; i++) {
           
@@ -244,6 +252,7 @@ export class PastAssessmentsComponent implements OnInit {
     const degree = this.outcomeForm.get('degree').value
     const sem = this.outcomeForm.get('term').value
     const year = this.outcomeForm.get('year').value
+    console.log(`Degree:  ${degree} Term: ${sem} Year: ${year}`)
     this.outcomeTrends$ = this.resultsService.getOutcomeTrends(sem,year,degree)
     this.resultsService.getOutcomeTrends(sem,year,degree).pipe(last()).subscribe(res =>{
       console.log('in sub', res)

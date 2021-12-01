@@ -23,6 +23,7 @@ import { PastProjectsComponent } from './shared/past-projects/past-projects.comp
 import { OutcomeTrendsComponent } from './outcome-trends/outcome-trends.component';
 import { CommentModalComponent } from './comment-modal/comment-modal.component';
 import { ChangeOutcomesComponent } from './change-outcomes/change-outcomes.component';
+import { SuboutcomeUpdateDisplayComponent } from './suboutcome-update-display/suboutcome-update-display.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ChangeOutcomesComponent } from './change-outcomes/change-outcomes.compo
     PastProjectsComponent,
     OutcomeTrendsComponent,
     CommentModalComponent,
-    ChangeOutcomesComponent
+    ChangeOutcomesComponent,
+    SuboutcomeUpdateDisplayComponent
   ],
   imports: [
     BrowserModule,

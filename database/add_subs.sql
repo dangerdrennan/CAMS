@@ -25,6 +25,7 @@ begin
         loop
             insert into suboutcome_details_cs (
                 reqs_id,
+                outcome_cat_id,
                 suboutcome_name,
                 score_id, 
                 suboutcome_description, 
@@ -36,6 +37,7 @@ begin
                 )
                 values (
                 new_reqs_id,
+                outcome_cat_ids[i],
                 suboutcome_names[i],
                 score_ids[i], 
                 suboutcome_descriptions[i], 
@@ -45,8 +47,6 @@ begin
                 excellent_descriptions[i], 
                 outcome_cat_ids[i]
             ) returning id into success_tracker;
-            select id from outcome_details_cs where cs_cat_id = outcome_cat_ids[i] into new_cat;
-            update suboutcome_details_cs set outcome_cat_id = new_cat where id = success_tracker;
             execute 'ALTER TABLE assessment ADD COLUMN IF NOT EXISTS '|| score_ids[i] ||' INT default 0;';
             i = i + 1;
             
@@ -58,6 +58,7 @@ begin
         loop
             insert into suboutcome_details_cse (
                 reqs_id,
+                outcome_cat_id,
                 suboutcome_name,
                 score_id, 
                 suboutcome_description, 
@@ -69,6 +70,7 @@ begin
                 )
                 values (
                 new_reqs_id,
+                outcome_cat_ids[i],
                 suboutcome_names[i],
                 score_ids[i], 
                 suboutcome_descriptions[i], 
@@ -78,8 +80,6 @@ begin
                 excellent_descriptions[i], 
                 outcome_cat_ids[i]
             ) returning id into success_tracker;
-            select id from outcome_details_cse where cse_cat_id = outcome_cat_ids[i] into new_cat;
-            update suboutcome_details_cse set outcome_cat_id = new_cat where id = success_tracker;
              execute 'ALTER TABLE assessment ADD COLUMN IF NOT EXISTS '|| score_ids[i] ||' INT default 0;';
             i = i + 1;
         end loop;

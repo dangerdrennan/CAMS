@@ -24,7 +24,7 @@ export class SuboutcomeComponent implements OnInit {
 
   suboutcomeDetails!: Suboutcome[]
   subOutcomeNames: string[] = []
-  subDeets$!: Observable<Suboutcome[]>
+  subDeets$: Observable<Suboutcome[]>
   subDeets: Suboutcome[] = []
   suboutcome_grade: { score_id: number}[] = []
   comment!: ScoreComment
@@ -79,9 +79,11 @@ export class SuboutcomeComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.subDeets$ = this.assessmentService.getSuboutcomes(this.outcome_cat).pipe(shareReplay())
+    this.subDeets$ = this.assessmentService.getSuboutcomes(this.outcome_cat)
+    console.log('the id we\'re using in this suboutcome is ', this.outcome_cat)
     this.assessmentService.getSuboutcomes(this.outcome_cat).subscribe(res => {
       this.suboutcomeDetails = res
+      console.log('by using ', this.outcome_cat, ', we\'re using getting this for suboutcomes ', res)
       this.setHighlights(res)
     })
   }

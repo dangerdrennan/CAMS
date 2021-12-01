@@ -4,6 +4,7 @@
 \i helper_functions/get_current_term.sql
 \i set_up/create_assessments.sql
 \i helper_functions/student_assign.sql
+\i helper_functions/clear_assessments.sql
 \i helper_functions/new_assessment.sql
 \i set_up/assign_capstone_prof.sql
 \i set_up/create_outcome_details_cs.sql
@@ -13,6 +14,8 @@
 \i helper_functions/set_grade.sql
 \i helper_functions/get_grade.sql
 \i set_up/create_comments.sql
+\i get_sub_by_cat_id.sql
+\i get_current_subs.sql
 \i helper_functions/set_current_term.sql
 \i get_reqs.sql
 \i add_subs.sql
