@@ -48,7 +48,7 @@ begin
 end;
 
 drop table if exists curr;
-create temporary table if not exists curr(
+create table if not exists curr(
     cat_id int,
     s_id text,
     id int,
@@ -101,13 +101,13 @@ update curr set excellent_count = 0 where excellent_count is null;
 for score in select s_id from curr
 loop
 select (poor_count/total::float) from curr where s_id = score into pp;
--- -- raise notice '%', pp;
+raise notice '%', pp;
 select (developing_count/total::float) from curr where s_id = score into dp;
--- -- raise notice '%', dp;
+raise notice '%', dp;
 select (satisfactory_count/total::float) from curr where s_id = score into sp;
--- -- raise notice '%', sp;
+raise notice '%', sp;
 select (excellent_count/total::float) from curr where s_id = score into ep;
----- raise notice '%', ep;
+raise notice '%', ep;
 
 update curr set poor_percent = ROUND(pp::numeric * 100,2) where s_id = score;
 update curr set developing_percent =  ROUND(dp::numeric * 100, 2) where s_id = score;

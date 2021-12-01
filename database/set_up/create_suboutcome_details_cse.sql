@@ -31,7 +31,7 @@ INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, sco
 INSERT INTO suboutcome_details_cse(reqs_id, outcome_cat_id, suboutcome_name, score_id, suboutcome_description, poor_description, developing_description, satisfactory_description, excellent_description, order_float)
     VALUES (
         1,
-        2,
+        1,
         '1.2',
         'score_1_2',
         '2.	Solves complex engineering problem by applying principles of engineering, science, and mathematics',
