@@ -1,4 +1,3 @@
-
 <div class="main">
   <div class="container" style="max-height: fit-content;width: fit-content">
     <div class="row">
@@ -38,8 +37,8 @@
                 <div *ngIf="this.outcomeForm.get('degree')?.invalid && outcomeForm.valid">Select CS or CSE.</div>
               </div>
 
-              <button type="submit" [disabled]="outcomeForm.invalid" class="btn btn-success btn-sm" style="margin-left: 12px;"
-                  (click)="findTrends()">Find</button>
+              <button type="submit" [disabled]="outcomeForm.invalid" class="btn btn-success btn-sm"
+                style="margin-left: 12px;" (click)="findTrends()">Find</button>
             </form>
           </div>
         </div>
@@ -53,7 +52,8 @@
               <div class="select-container">
                 <div class="container" style="display: flex; justify-content: center;">
                   <div class="dropdown" style="margin-right: 8px;">
-                    <select (change)= "silenceForm()"class="btn btn-secondary btn-sm dropdown-toggle" formControlName="term" required="required">
+                    <select (change)="silenceForm()" class="btn btn-secondary btn-sm dropdown-toggle"
+                      formControlName="term" required="required">
                       <option value="">Select Term</option>
                       <option value="Fall">Fall</option>
                       <option value="Spring">Spring</option>
@@ -61,7 +61,8 @@
                   </div>
 
                   <div class="dropdown">
-                    <select (change)= "silenceForm()" class="btn btn-secondary btn-sm dropdown-toggle" formControlName="year" required="required">
+                    <select (change)="silenceForm()" class="btn btn-secondary btn-sm dropdown-toggle"
+                      formControlName="year" required="required">
                       <option value="">Select Year</option>
                       <option value="2018">2018</option>
                       <option value="2019">2019</option>
@@ -71,77 +72,80 @@
                   </div>
                 </div>
                 <div class="form-check form-check-inline" style="margin-left: 14px;">
-                  <input (click)= "changeDegree()" class="form-check-input" type="radio" value="CS" required="required" formControlName="degree">
+                  <input (click)="changeDegree()" class="form-check-input" type="radio" value="CS" required="required"
+                    formControlName="degree">
                   <label class="form-check-label">CS</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input (click)= "changeDegree()" class="form-check-input" type="radio" value="CSE" required="required" formControlName="degree">
+                  <input (click)="changeDegree()" class="form-check-input" type="radio" value="CSE" required="required"
+                    formControlName="degree">
                   <label class="form-check-label">CSE</label>
                 </div>
                 <div *ngIf="this.pastForm.get('degree')?.invalid && pastForm.valid">Select CS or CSE.</div>
               </div>
 
-              <button type="submit" [disabled]="pastForm.invalid" class="btn btn-success btn-sm" style="margin-left: 12px;"
-                  (click)="findPast();">Find</button>
+              <button type="submit" [disabled]="pastForm.invalid" class="btn btn-success btn-sm"
+                style="margin-left: 12px;" (click)="findPast();">Find</button>
             </form>
           </div>
         </div>
       </div>
     </div>
-<!-- this.num].outcome_description -->
+    <!-- this.num].outcome_description -->
     <!-- table that displays past assessments -->
-    <div class="row" *ngIf="displayPast" >
+    <div class="row" *ngIf="displayPast">
       <!-- <form [formGroup]="outcomeForm" placeholder="outcome 1"> -->
       <div class="col-12" style="align-items: center;">
-        <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
+        <div class="card" id="displayCard"
+          style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
           <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
-              <div *ngIf="this.pastForm.get('degree')?.value ==='CS';else cse">
+            <div *ngIf="this.pastForm.get('degree')?.value ==='CS';else cse">
 
-                  <div class="d-flex justify-content-start">
-                    <div id="title">
-                        <strong id="outcomeDescriptionCS">{{this.displayTitle[this.num]}}</strong>
-                    </div>
-                  </div>
-
-                    <div class="d-flex justify-content-end">
-                      <div class="dropdown">
-                        <form [formGroup]="categoryForm" (change)="changeOutcomes($event)">
-                        <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
-                          <ng-container >
-                            <option id = "change" *ngFor="let i of this.unique" [ngValue]="i" >Outcome {{i}}</option>
-                          </ng-container>
-                        </select>
-                      </form>
-                      </div>
-                    </div>
-                  </div>
-
-
-
-
-              <ng-template #cse>
-                <div class="d-flex justify-content-start">
-                  <div id="title">
-                      <strong id="outcomeDescriptionCS">{{this.displayTitle[this.num]}}</strong>
-                  </div>
+              <div class="d-flex justify-content-start">
+                <div id="title">
+                  <strong id="outcomeDescriptionCS">{{this.displayTitle[this.num]}}</strong>
                 </div>
+              </div>
 
-                  <div class="d-flex justify-content-end">
-                    <div class="dropdown">
-                      <form [formGroup]="categoryForm" (change)="changeOutcomes($event)">
-                      <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
-                        <ng-container >
-                          <option id = "change" *ngFor="let i of this.unique" [ngValue]="i" >Outcome {{i}}</option>
-                        </ng-container>
-                      </select>
-                    </form>
-                    </div>
-                  </div>
-              </ng-template>
+              <div class="d-flex justify-content-end">
+                <div class="dropdown">
+                  <form [formGroup]="categoryForm" (change)="changeOutcomes($event)">
+                    <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
+                      <ng-container>
+                        <option id="change" *ngFor="let i of this.unique" [ngValue]="i">Outcome {{i}}</option>
+                      </ng-container>
+                    </select>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <ng-template #cse>
+              <div class="d-flex justify-content-start">
+                <div id="title">
+                  <strong id="outcomeDescriptionCS">{{this.displayTitle[this.num]}}</strong>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <div class="dropdown">
+                  <form [formGroup]="categoryForm" (change)="changeOutcomes($event)">
+                    <select formControlName="selected" class="btn btn-secondary btn-sm dropdown-toggle">
+                      <ng-container>
+                        <option id="change" *ngFor="let i of this.unique" [ngValue]="i">Outcome {{i}}</option>
+                      </ng-container>
+                    </select>
+                  </form>
+                </div>
+              </div>
+            </ng-template>
 
 
             <table class="table" #resultsTable>
-              <thead >
+              <thead>
                 <tr>
                   <th scope="col">Evaluation Criteria</th>
                   <th scope="col">Poor</th>
@@ -152,57 +156,54 @@
                 </tr>
               </thead>
 
-               <tbody >
+              <tbody>
 
-                  <!-- <tr *ngFor="let item of this.allCSInfo"> -->
+                <!-- <tr *ngFor="let item of this.allCSInfo"> -->
 
-                    <!-- <div *ngFor="let o in result; index as i"> -->
-                  <tr *ngFor="let sub of this.subInfo">
-                    <td scope="col" >{{sub.s_description}}</td>
-                    <td scope="row">{{sub.poor_count}}</td>
-                    <td scope="row">{{sub.developing_count}}</td>
-                    <td scope="row">{{sub.satisfactory_count}}</td>
-                    <td scope="row">{{sub.excellent_count}}</td>
-                    <td scope="row">{{sub.total}}</td>
-                      <!-- </div> -->
-                  </tr>
+                <!-- <div *ngFor="let o in result; index as i"> -->
+                <tr *ngFor="let sub of this.subInfo">
+                  <td scope="col">{{sub.s_description}}</td>
+                  <td scope="row">{{sub.poor_count}}</td>
+                  <td scope="row">{{sub.developing_count}}</td>
+                  <td scope="row">{{sub.satisfactory_count}}</td>
+                  <td scope="row">{{sub.excellent_count}}</td>
+                  <td scope="row">{{sub.total}}</td>
+                  <!-- </div> -->
+                </tr>
 
-                  <tr>
-                    <th scope="row">Total</th>
-                    <td scope="row">{{this.totes[num].poor_count}}</td>
-                    <td scope="row">{{this.totes[num].developing_count}}</td>
-                    <td scope="row">{{this.totes[num].satisfactory_count}}</td>
-                    <td scope="row">{{this.totes[num].excellent_count}}</td>
+                <tr>
+                  <th scope="row">Total</th>
+                  <td scope="row">{{this.totes[num].poor_count}}</td>
+                  <td scope="row">{{this.totes[num].developing_count}}</td>
+                  <td scope="row">{{this.totes[num].satisfactory_count}}</td>
+                  <td scope="row">{{this.totes[num].excellent_count}}</td>
 
-                  </tr>
-                  <tr >
-                    <th scope="row">Percentages</th>
-                    <td scope="row">{{this.totes[num].poor_percent}}%</td>
-                    <td scope="row">{{this.totes[num].developing_percent}}%</td>
-                    <td scope="row">{{this.totes[num].satis_percent}}%</td>
-                    <td scope="row">{{this.totes[num].ex_percent}}%</td>
+                </tr>
+                <tr>
+                  <th scope="row">Percentages</th>
+                  <td scope="row">{{this.totes[num].poor_percent}}%</td>
+                  <td scope="row">{{this.totes[num].developing_percent}}%</td>
+                  <td scope="row">{{this.totes[num].satis_percent}}%</td>
+                  <td scope="row">{{this.totes[num].ex_percent}}%</td>
 
-                  </tr>
+                </tr>
 
 
               </tbody>
-<!-- num is past component is an index, id is a category -->
+              <!-- num is past component is an index, id is a category -->
             </table>
-              <app-comment-modal
-              [comments]= "comments"
-              [id] = "this.id"
-              [sem] = "sem"
-              [year] = "year"
-              [degree] = "degree"
-              ></app-comment-modal>
-              <button class="btn btn-warning" style="float: right;" (click)="exportTableToExcel()">Export</button>
+            <app-comment-modal [comments]="comments" [id]="this.id" [sem]="sem" [year]="year" [degree]="degree">
+            </app-comment-modal>
+            <app-export [sem]="this.pastForm.get('term').value" [year]="this.pastForm.get('year').value" [degree]="this.pastForm.get('degree').value">
+            </app-export>
+
           </div>
 
         </div>
 
       </div>
 
-</div>
+    </div>
     <!-- display outcomes table -->
     <!-- <ng-container *ngIf="(this.outcomeTrends$ | async) as result">
       <div *ngFor="let o of result; index as i">
@@ -211,16 +212,19 @@
     </ng-container> -->
     <ng-container *ngIf="displayOutcome">
 
-        <div class="col-12" style="align-items: center;">
-          <div class="card" id="displayCard" style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
-            <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
+      <div class="col-12" style="align-items: center;">
+        <div class="card" id="displayCard"
+          style="position: relative; max-height: 500px !important; max-width:1300px;margin-top: 3%;margin-bottom: 10% !important">
+          <div class="card-body" id="displayCardBody" style=" overflow-y: scroll;">
 
-              <div id="title" style="text-align: center;">
-                <strong> Outcome Trend</strong>
-              </div>
-              <ng-container *ngIf="(this.outcomeTrends$ | async)">
-              <table class="table" >
-                <thead >
+            <div id="title" style="text-align: center;">
+              <strong> Outcome Trend</strong>
+            </div>
+            <app-export [sem]="this.outcomeForm.get('term').value" [year]="this.outcomeForm.get('year').value" [degree]="this.outcomeForm.get('degree').value">
+            </app-export>
+            <ng-container *ngIf="(this.outcomeTrends$ | async)">
+              <table class="table" #trendsTable>
+                <thead>
                   <tr>
                     <th scope="col">Outcome</th>
                     <th scope="col">Poor</th>
@@ -229,18 +233,21 @@
                     <th scope="col">Excellent</th>
                   </tr>
                 </thead>
-                  <tbody>
-                    <tr *ngFor="let o of this.outcomeTrends">
-                        <td scope="row" style="max-width: 140px;">{{o.cat_description}}</td>
-                        <td scope="row">{{o.poor_percent}}%</td>
-                        <td scope="row">{{o.developing_percent}}%</td>
-                        <td scope="row">{{o.satisfactory_percent}}%</td>
-                        <td scop="row">{{o.excellent_percent}}%</td>
-                    </tr>
-                    </tbody>
+                <tbody>
+                  <tr *ngFor="let o of this.outcomeTrends">
+                    <td scope="row" style="max-width: 140px;">{{o.cat_description}}</td>
+                    <td scope="row">{{o.poor_percent}}%</td>
+                    <td scope="row">{{o.developing_percent}}%</td>
+                    <td scope="row">{{o.satisfactory_percent}}%</td>
+                    <td scop="row">{{o.excellent_percent}}%</td>
+                  </tr>
+                </tbody>
               </table>
 
-          </ng-container>
-            </div>
+            </ng-container>
           </div>
         </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

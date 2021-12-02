@@ -24,6 +24,7 @@ import { OutcomeTrendsComponent } from './outcome-trends/outcome-trends.componen
 import { CommentModalComponent } from './comment-modal/comment-modal.component';
 import { ChangeOutcomesComponent } from './change-outcomes/change-outcomes.component';
 import { SuboutcomeUpdateDisplayComponent } from './suboutcome-update-display/suboutcome-update-display.component';
+import { ExportComponent } from './export/export.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { SuboutcomeUpdateDisplayComponent } from './suboutcome-update-display/su
     OutcomeTrendsComponent,
     CommentModalComponent,
     ChangeOutcomesComponent,
-    SuboutcomeUpdateDisplayComponent
+    SuboutcomeUpdateDisplayComponent,
+    ExportComponent
   ],
   imports: [
     BrowserModule,

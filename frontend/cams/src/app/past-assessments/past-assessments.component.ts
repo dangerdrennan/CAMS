@@ -17,7 +17,6 @@ import { ExportService } from '../services/export.service';
   styleUrls: ['./past-assessments.component.css']
 })
 export class PastAssessmentsComponent implements OnInit {
-  @ViewChild('resultsTable') resultsTable: ElementRef
 
   public displayPast: boolean = false;
   public displayOutcome: boolean = false;
@@ -55,13 +54,15 @@ export class PastAssessmentsComponent implements OnInit {
   comments:ShowComment[]
   comments$:Observable<ShowComment[]>
   outDescriptions$:Observable<OutcomeDescriptions[]>
+
   // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService, private exportService: ExportService) {
-    this.num = 0
+
   }
 
   ngOnInit(): void {
+    this.num = 0
     this.displayPast = false;
     this.displayOutcome = false;
     this.outcomeForm = this.builder.group({
@@ -81,13 +82,16 @@ export class PastAssessmentsComponent implements OnInit {
   }
 
   // export table to excel sheet
-  exportTableToExcel() {
-    let degree = this.pastForm.get('degree').value
-    let sem = this.pastForm.get('term').value
-    let year = this.pastForm.get('year').value
-    let outNum = this.categoryForm.get('selected').value
-    this.exportService.exportTblToExcel(this.resultsTable, `Outcome: ${outNum}_${sem}${year}_${degree}`)
-  }
+  // exportTableToExcel() {
+  //   let trnd = []
+  //   let degree = this.pastForm.get('degree').value
+  //   let sem = this.pastForm.get('term').value
+  //   let year = this.pastForm.get('year').value
+  //   let outNum = this.categoryForm.get('selected').value
+
+
+  //   this.exportService.exportTblToExcel(this.resultsTable, `Outcome: ${outNum}_${sem}${year}_${degree}`)
+  // }
 
   // trigger to find past assessment
   findPast() {
@@ -146,7 +150,7 @@ export class PastAssessmentsComponent implements OnInit {
 
     this.resultsService.getAllPast(term, Number(year), degree).subscribe( res=> {
       this.allInfo = res
-      console.log(this.allInfo)
+      console.log("alllll info", this.allInfo)
     })
     this.outcomeTitle = []
 
@@ -199,8 +203,8 @@ export class PastAssessmentsComponent implements OnInit {
       .subscribe(res=> {
         this.allInfo = res
         this.unique = [...new Set(res.map(item => item.cat_id))]
-        console.log()
-        console.log (`this. allInfo is at ${this.allInfo}`)
+
+        console.log (`this. allInfo is at ${res}`)
 
         this.subInfo = res.filter(x=>x.cat_id == id)
         console.log(this.subInfo)
