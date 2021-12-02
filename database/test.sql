@@ -1,31 +1,108 @@
-SELECT
-        o.cse_cat_id,
-        s.suboutcome_name,
-        c.comment,
-        pr.f_name,
-        pr.l_name,
-        st.f_name,
-        st.l_name,
-        a.degree
-        FROM
-            prof pr
-        INNER JOIN assessment a 
-            ON pr.prof_email = a.prof_email
-        INNER JOIN comment c
-            ON a.assessment_id = c.assessment_id
-        INNER JOIN suboutcome_details_cse s
-            ON c.score_id = s.score_id
-        INNER JOIN outcome_details_cse o
-            ON c.cat_id = o.id
-        INNER JOIN student st 
-            ON st.student_id = a.student_id
-        INNER JOIN term t
-            ON t.term_id = a.term_id
-        INNER JOIN get_current_term()
-            ON t.term_id = (select * from get_term_id('Fall', 2021))
-        where st.degree = 'CSE'
-        order by o.order_float, s.order_float;
-        
+create or replace function test (num int, sem text, ye INT, degree TEXT)
+
+RETURNS TABLE(
+    s_name text,
+    s_desc text,
+    comments display_comment[]
+)
+AS $$
+declare
+sub text;
+subs text[];
+f record;
+comments display_comment[];
+dc display_comment;
+curr_req int:= (select reqs_id from term where semester = sem and year = ye);
+begin
+    drop table helper;
+    CREATE TABLE helper(
+        s_name text,
+        s_desc text,
+        comments display_comment[]
+    );
+
+    -- select score_id from 
+    --     suboutcome_details_cs 
+    --     where outcome_cat_id = num 
+    --     and reqs_id = curr_req
+    --     into subs;
+
+    
+
+
+
+
+    for f in select score_id, suboutcome_name, suboutcome_description
+        from suboutcome_details_cs
+        where
+        outcome_cat_id = num
+        and reqs_id = curr_req
+        loop
+
+
+        -- SELECT ARRAY_AGG(ROW(s.id, s.first_name, s.last_name)::person) FROM people s
+        -- INTO students
+        -- WHERE s.id IN (
+        --     SELECT e.student_id FROM student_class_enrollments e
+        --     WHERE e.class_id = cid
+        -- );
+        SELECT ARRAY_AGG( ROW(p.f_name, p.l_name, c.comment)::display_comment)
+
+                    FROM comment c 
+                    LEFT JOIN assessment a
+                        on a.assessment_id = c.assessment_id
+                    LEFT JOIN term t
+                        on a.term_id = t.term_id
+                    LEFT JOIN sem_req sr
+                        on sr.id = t.reqs_id
+                    LEFT JOIN suboutcome_details_cs s 
+                        on c.score_id = s.score_id
+                    LEFT JOIN
+                        prof p
+                        on a.prof_email = p.prof_email
+                    into comments
+                    where s.reqs_id = (select reqs_id from term where semester = 'Fall' and year = 2021)
+                    and t.term_id = (select term_id from term where semester = 'Fall' and year = 2021)
+                    and c.score_id = f.score_id
+                    and a.degree = 'CS';
+        if comments is not null then
+        insert into helper(s_name, s_desc, comments )
+        values
+        (
+            f.suboutcome_name::text,
+            f.suboutcome_description::text,
+            comments
+        );
+        end if;
+        end loop;
+
+    
+
+return query select * from helper;
+end; $$ language plpgsql;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- create or replace function get_comments (sem text, year INT, degree TEXT)
 
