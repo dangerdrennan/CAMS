@@ -38,18 +38,33 @@ export class ExportService {
       const outcomes: XLSX.WorkSheet = XLSX.utils.json_to_sheet(outs)
       // const outcome1: XLSX.WorkSheet = XLSX.utils.table_to_sheet(el.nativeElement);
 
-      outcomes['A1'].format_cell = {
-        font: {
-          name: 'Times New Roman',
-          bold: true
-        }
-      }
+      outcomeTrends['A1'].v = 'Outcome Description'
+      outcomeTrends['B1'].v = 'Outcome ID'
+      outcomeTrends['C1'].v = 'Poor Percent'
+      outcomeTrends['D1'].v = 'Developing Percent'
+      outcomeTrends['E1'].v = 'Satisfactory Percent'
+      outcomeTrends['F1'].v = 'Excellent Percent'
+
+
+      outcomes['A1'].v = 'Total'
+      outcomes['B1'].v = 'Poor Count'
+      outcomes['C1'].v = 'Developing Count'
+      outcomes['D1'].v = 'Satisfactory Count'
+      outcomes['E1'].v = 'Excellent Count'
+      outcomes['F1'].v = 'Poor Percent'
+      outcomes['G1'].v = 'Developing Percent'
+      outcomes['H1'].v = 'Satisfactory Percent'
+      outcomes['I1'].v = 'Excellent Percent'
+
+      console.log('hi', outcomes['A1'])
+
 
       const workBook: XLSX.WorkBook = XLSX.utils.book_new();
 
       XLSX.utils.book_append_sheet(workBook, outcomeTrends, 'Outcome Trends');
       XLSX.utils.book_append_sheet(workBook, outcomes, 'Outcomes');
       // XLSX.utils.book_append_sheet(workBook, outcome1, 'Outcome 1');
+
 
       XLSX.writeFile(workBook, `${fileName}${this.EXCEL_EXTENSION}`);
   }
