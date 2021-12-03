@@ -21,12 +21,14 @@
                 <td>{{i + 1}}</td>
                 <td>{{item.title}}</td>
 
-                <span *ngFor="let stud of allStud">
-                  <td *ngIf="item.proj_id===stud.proj_id">{{stud.f_name}} {{stud.l_name}} <button class="btn btn-warning btn-sm" style="width: 33px;height: 31px;" data-bs-toggle="modal" data-bs-target="#editStudent" (click)="editButton(item)"> <img src="../../assets/images/edit_white_24dp.svg" style="width: 20px;height: 20px;text-align: center;"alt=""> </button></td>
-                </span>
+                <section *ngFor="let stud of allStud" style="margin-top: -2%;margin-bottom: -5%;margin-right: -5%;">
+                  <td *ngIf="item.proj_id===stud.proj_id">{{stud.f_name}} {{stud.l_name}} </td>
+                </section>
 
                 <td *ngFor="let sem of semYear">{{sem.semester}} {{sem.year}}</td>
-                <td><button class="btn btn-danger btn-sm" (click)="deleteProject(item)"> <img src="../../assets/images/delete_outline_white_24dp.svg"  alt=""> </button></td>
+                <td>
+                  <button class="btn btn-warning btn-sm" style="margin-right: 4%" data-bs-toggle="modal" data-bs-target="#editStudent" (click)="editButton(item)"> <img src="../../assets/images/edit_white_24dp.svg" style="text-align: center;"alt=""> </button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteProject(item)"> <img src="../../assets/images/delete_outline_white_24dp.svg"  alt=""> </button></td>
               </tr>
             </tbody>
           </table>
@@ -124,7 +126,7 @@
                   <label for="students">Student(s)</label>
                   <ul id="students" class="list-group" *ngFor="let stud of allStud;let k = index">
 
-                      <li *ngIf=" stud.proj_id===this.projIndex" class="list-group-item" style="justify-content: space-evenly;" >{{stud.f_name}} {{stud.l_name}}<button class="btn btn-danger btn-sm" style="margin-left: 310px;" (click)="deleteStudFromProjInModal(stud)"> <img src="../../assets/images/delete_outline_white_24dp.svg"> </button></li>
+                      <li *ngIf=" stud.proj_id===this.projIndex" class="list-group-item" style="justify-content: space-evenly;" >{{stud.f_name}} {{stud.l_name}}<button class="btn btn-danger btn-sm" style="float: right;" (click)="deleteStudFromProjInModal(stud)"> <img src="../../assets/images/delete_outline_white_24dp.svg"> </button></li>
 
                   </ul>
 

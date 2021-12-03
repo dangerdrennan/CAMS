@@ -1,21 +1,28 @@
-<div class='scroll' *ngFor= "let deet of suboutcomeDetails; index as i">
+<div *ngFor= "let deet of suboutcomeDetails; index as i" style="width: fit-content;
+">
 
-  <!-- <div class="card" style="margin-bottom: 10px;">
-    <div class="card-body"> -->
-      <strong>{{prettyCat(deet.score_id)}}</strong>
-      <table class="table table-bordered ">
+  <!-- <div class="card" style="margin-bottom: 10px;"> -->
+    <!-- <div class="card-body"> -->
+
+      <div class="row" >
+        <!-- <strong>{{prettyCat(deet.score_id)}}</strong> -->
+
+        <span id="criteria" style="font-weight: 600;font-size: 18px;text-align: center;margin-top: 1%;">Evaluation Criteria {{deet.suboutcome_description}}</span>
+
+      </div>
+      <table class="table table-bordered table-sm">
         <thead>
           <tr>
-            <th scope="col" style="width: 20%">Evaluation Criteria</th>
-            <th scope="col" style="width: 20%">Poor</th>
-            <th scope="col" style="width: 20%">Developing</th>
-            <th scope="col" style="width: 20%">Satisfactory</th>
-            <th scope="col" style="width: 20%">Excellent</th>
+            <th scope="col" style="width: 20%;">Poor</th>
+            <th scope="col" style="width: 20%;">Developing</th>
+            <th scope="col" style="width: 20%;">Satisfactory</th>
+            <th scope="col" style="width: 20%;">Excellent</th>
           </tr>
         </thead>
         <tbody>
+
           <tr>
-            <td scope="col" style="font-weight: bold;">{{deet.suboutcome_description}}</td>
+
             <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_poor'"
               (click)="recordGrade(deet.score_id, 1); giveGradeToParent(deet.score_id, 1)">{{deet.poor_description}}</td>
             <td scope="row" class="scoreable" [attr.id]="deet.score_id + '_developing'"
@@ -65,8 +72,8 @@
 
         </div>
       </div>
-    <!-- </div>
-  </div> -->
+     <!-- </div> -->
+  <!-- </div> -->
 
 
 

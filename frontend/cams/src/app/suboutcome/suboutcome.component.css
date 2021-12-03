@@ -1,3 +1,15 @@
+@media (max-width: 768px) {
+  table {
+    table-layout: small;
+  }
+
+  #criteria {
+    font-size: 12px !important;
+  }
+
+}
+
+
 .scoreable:hover{
     background-color: lightgray;
     cursor: pointer;
