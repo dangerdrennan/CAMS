@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { Pool } from "pg";
+const Router = require("express");
+const {Pool} = require("pg");
 
 const usersRouter = Router();
 
@@ -744,5 +744,5 @@ usersRouter.get('/all_profs', async (req, res) => {
             })
 
 
-
-  export default usersRouter;
+            module.exports= usersRouter
+  //export default usersRouter;
