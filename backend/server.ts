@@ -4,7 +4,7 @@ const routes = require('./routes.ts')
 const cors = require('cors')
 const app = express();
 
-app.use(cors({origin: 'http://localhost:4200'}))
+app.use(cors({origin: 'https://hungry-mestorf-524598.netlify.app'}))
 
 // app.get('/*', (req, res) =>
 //     res.sendFile('index.html', {root: 'dist/capstone-management/'}),
