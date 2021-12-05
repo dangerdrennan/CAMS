@@ -16,7 +16,7 @@ const httpOptions =
   providedIn: 'root'
 })
 export class AdminService {
-  endPoint = "http://localhost:4201"
+  endPoint = "https://capstone-management.herokuapp.com"
   notifier= new Subject()
 
   constructor(private http: HttpClient) { }

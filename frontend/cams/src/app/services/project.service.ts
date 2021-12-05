@@ -22,7 +22,7 @@ export class ProjectService {
 
   projects: Project[] = []
   semYear!: {semester:string, year:number}[]
-  endPoint = "http://localhost:4201"
+  endPoint = "https://capstone-management.herokuapp.com"
 
   constructor(private http: HttpClient) {
     this.getSemYear().pipe(first()).subscribe(res =>{

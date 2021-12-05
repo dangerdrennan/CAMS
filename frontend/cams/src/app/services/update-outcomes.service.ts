@@ -22,7 +22,7 @@ const httpOptions =
 })
 export class UpdateOutcomesService {
 
-  endPoint = "http://localhost:4201"
+  endPoint = "https://capstone-management.herokuapp.com"
 
   constructor(private http: HttpClient) {  }
 
