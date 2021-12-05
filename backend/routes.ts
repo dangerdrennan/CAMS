@@ -3,13 +3,21 @@ const {Pool} = require("pg");
 
 const usersRouter = Router();
 
+// const pool = new Pool({
+//     connectionString: process.env.DATABASE_URL,
+//     user: "cams",
+//     password: 'pswd',
+//     database: "cams",
+//     host: "localhost",
+//     port: 5432
+// });
+
 const pool = new Pool({
-    user: "cams",
-    password: "pswd",
-    database: "cams",
-    host: "localhost",
-    port: 5432
-});
+    connectionString: process.env.DATABASE_URL || 'postgresql://postgres:Mushr00mM@rio@localhost:5432/cams',
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
 
 usersRouter.get('/all_profs', async (req, res) => {
     try{
@@ -17,7 +25,7 @@ usersRouter.get('/all_profs', async (req, res) => {
         res.status(200).json(get_profs.rows);
     }
     catch(err ){
-        console.log('error has occurred in backend function "all_profs"')
+        console.log(err, 'error has occurred in backend function "all_profs"')
     }
   });
   usersRouter.get('/all_graders', async (req, res) => {
