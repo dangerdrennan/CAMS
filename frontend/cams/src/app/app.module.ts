@@ -9,7 +9,7 @@ import { HeaderComponent } from './shared/header/header.component';
 import { AssessmentComponent } from './assessment/assessment.component';
 import { ProjectsComponent } from './shared/projects/projects.component';
 import { AuthModule } from '@auth0/auth0-angular';
-import { environment as env} from 'src/environments/environment.prod';
+import { environment as env} from 'src/environments/environment';
 import { LogoutButtonComponent } from './shared/logout-button/logout-button.component';
 import { CommonModule } from '@angular/common';
 import { PastAssessmentsComponent } from './past-assessments/past-assessments.component';
