@@ -20,7 +20,7 @@ const httpOptions =
   providedIn: 'root'
 })
 export class AssessmentService {
-  endPoint = "http://localhost:4201"
+  endPoint = "https://capstone-management.herokuapp.com"
   currentCSOutcomes: string[] = []
   cs_categories: string[] = []
   currentCSOutcomeDesc: OutcomeDescriptions[] = []

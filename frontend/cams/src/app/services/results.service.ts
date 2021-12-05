@@ -22,7 +22,7 @@ const httpOptions =
 })
 export class ResultsService {
 
-  endPoint = "http://localhost:4201"
+  endPoint = "https://capstone-management.herokuapp.com"
   assessment: any // change
   pastSemReq: any
 

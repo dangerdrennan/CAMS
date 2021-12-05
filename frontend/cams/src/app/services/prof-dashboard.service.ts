@@ -21,7 +21,7 @@ export class ProfDashboardService {
   professor: any = []
 
 
-  endPoint = "http://localhost:4201"
+  endPoint = "https://capstone-management.herokuapp.com"
 
   constructor(public http: HttpClient) { }
 
