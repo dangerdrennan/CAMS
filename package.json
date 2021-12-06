@@ -9,7 +9,7 @@
   "main": "server.ts",
   "scripts": {
     "serve": "ts-node-dev server.ts",
-    "start": "ts-node-dev server.ts"
+    "start": "ts-node-dev ./backend/server.ts"
   },
   "author": "",
   "license": "ISC",
