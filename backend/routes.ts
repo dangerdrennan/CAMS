@@ -1,15 +1,22 @@
-import { Router } from "express";
-import { Pool } from "pg";
+const Router = require("express");
+const {Pool} = require("pg");
 
 const usersRouter = Router();
 
+// const pool = new Pool({
+//     user: "cams",
+//     password: "pswd",
+//     database: "cams",
+//     host: "localhost",
+//     port: 5432
+// });
+
 const pool = new Pool({
-    user: "cams",
-    password: "pswd",
-    database: "cams",
-    host: "localhost",
-    port: 5432
-});
+    connectionString: process.env.DATABASE_URL || 'postgresql://postgres:Mushr00mM@rio@localhost:5432/cams',
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
 
 usersRouter.get('/all_profs', async (req, res) => {
     try{
@@ -745,4 +752,4 @@ usersRouter.get('/all_profs', async (req, res) => {
 
 
 
-  export default usersRouter;
+            module.exports= usersRouter
