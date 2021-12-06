@@ -12,7 +12,7 @@ const usersRouter = Router();
 // });
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL || 'postgresql://postgres:Mushr00mM@rio@localhost:5432/cams',
+    connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false
     }
