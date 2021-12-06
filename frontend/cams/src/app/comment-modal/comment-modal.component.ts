@@ -93,6 +93,7 @@ export class CommentModalComponent implements OnInit {
     }
     this.outcomeComments = []
     this.outcomeComments= this.comments.filter(x => x.cat_id == this.id)
+    console.log(this.outcomeComments, ' this is outcome comments')
 
 
     // if(degree == 'CS') {
