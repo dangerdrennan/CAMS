@@ -1,15 +1,11 @@
 {
-  "engines": {
-    "node": "14.17.0",
-    "npm": "7.20.0"
-  },
+  
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "server.ts",
+  "main": "index.js",
   "scripts": {
-    "serve": "ts-node-dev server.ts",
-    "start": "ts-node-dev server.ts"
+    "serve": "ts-node-dev server.ts"
   },
   "author": "",
   "license": "ISC",
