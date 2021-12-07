@@ -81,18 +81,6 @@ export class PastAssessmentsComponent implements OnInit {
     })
   }
 
-  // export table to excel sheet
-  // exportTableToExcel() {
-  //   let trnd = []
-  //   let degree = this.pastForm.get('degree').value
-  //   let sem = this.pastForm.get('term').value
-  //   let year = this.pastForm.get('year').value
-  //   let outNum = this.categoryForm.get('selected').value
-
-
-  //   this.exportService.exportTblToExcel(this.resultsTable, `Outcome: ${outNum}_${sem}${year}_${degree}`)
-  // }
-
   // trigger to find past assessment
   findPast() {
     this.outcomeForm.reset({
@@ -120,14 +108,15 @@ export class PastAssessmentsComponent implements OnInit {
   silenceForm(){
     this.displayPast = false
     this.switchDegree = true
+    this.displayOutcome = false
   }
 
   changeDegree(){
     this.displayPast = false
     this.switchDegree = true
+    this.displayOutcome = false
     this.num = 0
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('in change degree, switchDegree is at ', this.switchDegree)
+    // console.log('in change degree, switchDegree is at ', this.switchDegree)
   }
 
   // trigger to find outcome trends
@@ -144,9 +133,9 @@ export class PastAssessmentsComponent implements OnInit {
     this.displayPast = false;
     //this.displayOutcome = true;
     // give the subscription time to finish before using its returned value
-    setTimeout(() => {
+    // setTimeout(() => {
       this.getOutcomePercents()
-    },500)
+    // },500)
 
     this.resultsService.getAllPast(term, Number(year), degree).subscribe( res=> {
       this.allInfo = res

@@ -66,7 +66,7 @@ export class CommentModalComponent implements OnInit {
 
   constructor(public resService: ResultsService) {
      //this.comments$ = this.resService.getPastComments(this.sem,this.year,this.degree)
-     
+
    }
 
   ngOnInit(): void {

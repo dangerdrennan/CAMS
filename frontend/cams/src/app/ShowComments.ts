@@ -1,9 +1,7 @@
 export interface ShowComment {
-    cat_id: number,
-    sub_name: string,
-    comment: string,
-    prof_f_name: string,
-    prof_l_name: string,
-    student_f_name: string,
-    student_l_name: string
+  cat_id: number,
+  sub_name: string,
+  comment: string,
+  prof_f_name: string,
+  prof_l_name: string
 }

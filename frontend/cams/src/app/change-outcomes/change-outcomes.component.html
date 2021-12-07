@@ -55,9 +55,6 @@
                     [degree]="this.degree"
                     ></app-suboutcome-update-display>
                     </tr>
-
-                  
-                  
               </tbody>
             </table>
 
@@ -93,9 +90,6 @@
 
                           <form [formGroupName]="i">
                             <div class="mb-3">
-                          
-
-
                               <label class="col-form-label">Outcome Title:</label>
                               <div class="input-group mb-3">
                                 <select class="btn btn-outline-secondary " style="width: 55px;" formControlName='outcome_num'>
@@ -151,8 +145,6 @@
                         </div>
                       </form>
                     </div>
-
-
 
                     <!-- cse forms -->
                     <ng-template #cse>
@@ -225,15 +217,14 @@
                     <button class="btn btn-success btn-sm" (click)="addSuboutcome()" style="margin-top: 4%;">
                       <img src="../../assets/images/add_white_24dp.svg" alt="">
                     </button>
-
-
-
                   </div>
 
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+
                   </div>
+                  <small style="margin-left: auto;padding-right: 1%;">*Make sure to submit changes after saving</small>
                 </div>
               </div>
             </div>
@@ -248,7 +239,7 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                      <!-- <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5> -->
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
