@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, } from 'rxjs';
@@ -10,12 +10,14 @@ import { OutcomeTrends } from '../OutcomeTrends';
 import { Total } from '../Total';
 import { TotesPers } from '../TotesPers';
 import { ShowComment } from '../ShowComments';
+import { ExportService } from '../services/export.service';
 @Component({
   selector: 'app-past-assessments',
   templateUrl: './past-assessments.component.html',
   styleUrls: ['./past-assessments.component.css']
 })
 export class PastAssessmentsComponent implements OnInit {
+
   public displayPast: boolean = false;
   public displayOutcome: boolean = false;
   public defaultOutcome: number = 1;
@@ -52,13 +54,15 @@ export class PastAssessmentsComponent implements OnInit {
   comments:ShowComment[]
   comments$:Observable<ShowComment[]>
   outDescriptions$:Observable<OutcomeDescriptions[]>
+
   // get all assessments by term
 
-  constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService) {
-    this.num = 0
+  constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService, private exportService: ExportService) {
+
   }
 
   ngOnInit(): void {
+    this.num = 0
     this.displayPast = false;
     this.displayOutcome = false;
     this.outcomeForm = this.builder.group({
@@ -85,7 +89,7 @@ export class PastAssessmentsComponent implements OnInit {
     })
     this.displayOutcome = false;
     this.displayPast = true;
-    
+
     this.categoryForm.setValue({
       selected: 1
     })
@@ -97,21 +101,22 @@ export class PastAssessmentsComponent implements OnInit {
       this.comments = res
       console.log(res)
     })
-   
+
     this.changeOutcomes(this.defaultOutcome)
   }
 
   silenceForm(){
     this.displayPast = false
     this.switchDegree = true
+    this.displayOutcome = false
   }
 
   changeDegree(){
     this.displayPast = false
     this.switchDegree = true
+    this.displayOutcome = false
     this.num = 0
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('in change degree, switchDegree is at ', this.switchDegree)
+    // console.log('in change degree, switchDegree is at ', this.switchDegree)
   }
 
   // trigger to find outcome trends
@@ -128,13 +133,13 @@ export class PastAssessmentsComponent implements OnInit {
     this.displayPast = false;
     //this.displayOutcome = true;
     // give the subscription time to finish before using its returned value
-    setTimeout(() => {
+    // setTimeout(() => {
       this.getOutcomePercents()
-    },500)
+    // },500)
 
     this.resultsService.getAllPast(term, Number(year), degree).subscribe( res=> {
       this.allInfo = res
-      console.log(this.allInfo)
+      console.log("alllll info", this.allInfo)
     })
     this.outcomeTitle = []
 
@@ -152,7 +157,7 @@ export class PastAssessmentsComponent implements OnInit {
 
   // check if data is current or if we need new service calls
   changeOutcomes(e) {
-    
+
     let id = this.categoryForm.get('selected').value
     const eventToNum = parseInt(id)
     console.log(`id is at ${id}`)
@@ -187,17 +192,17 @@ export class PastAssessmentsComponent implements OnInit {
       .subscribe(res=> {
         this.allInfo = res
         this.unique = [...new Set(res.map(item => item.cat_id))]
-        console.log()
-        console.log (`this. allInfo is at ${this.allInfo}`)
+
+        console.log (`this. allInfo is at ${res}`)
 
         this.subInfo = res.filter(x=>x.cat_id == id)
         console.log(this.subInfo)
         // for(let i = 0; i < this.allInfo.length; i++) {
-          
+
         //   if(this.allInfo[i].cat_id == id) {
         //     this.subInfo.push(this.allInfo[i])
         //   }
-          
+
         // }
       })
       this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())
@@ -206,7 +211,7 @@ export class PastAssessmentsComponent implements OnInit {
         this.displayTitle = [...new Set(res.map(item => item.outcome_description))];
         // console.log (`this.unique is at ${this.unique[3]}`)
       })
-    
+
     }
     // cse sub outcome descriptions(evaluation criteria)
     if(degree === 'CSE') {
@@ -217,11 +222,11 @@ export class PastAssessmentsComponent implements OnInit {
         this.unique = [...new Set(res.map(item => Number(item.cat_id)))]
         console.log("ALLLL ", this.allInfo)
         for(let i = 0; i < this.allInfo.length; i++) {
-          
+
           if(this.allInfo[i].cat_id == id) {
             this.subInfo.push(this.allInfo[i])
           }
-          
+
         }
       })
       this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())

@@ -1,3 +1,19 @@
+@media (max-width: 768px) {
+  .card  {
+    margin-bottom: 15%;
+  }
+
+  .card-body {
+    margin-bottom: 3%;
+  }
+
+  ng-container {
+    height: 40%;
+  }
+
+
+}
+
 .ass-header{
     font-size: large;
     font-family: 'Mulish', sans-serif;

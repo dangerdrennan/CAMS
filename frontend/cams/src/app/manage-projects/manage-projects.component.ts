@@ -31,6 +31,7 @@ export class ManageProjectsComponent implements OnInit {
   constructor(private builder: FormBuilder, private projectService: ProjectService) { }
 
   ngOnInit(): void {
+
     // initialize project form
     this.addProjForm = this.builder.group({
       projectName: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
@@ -82,11 +83,13 @@ export class ManageProjectsComponent implements OnInit {
           res.filter((stud: Student) => {
 
             this.allStud.push(stud)
+
           })
         })
          this.allProj.push(item)
       })
     })
+
   }
   // new stuff I added, kept your same code
   currentProjects() {
@@ -157,7 +160,7 @@ export class ManageProjectsComponent implements OnInit {
   // trigger to delete a student from a project in the modal
   deleteStudFromProjInModal(student: Student) {
     this.projectService.deleteStudent(student.student_id!).subscribe(() => {
-      //location.reload()
+      location.reload()
     })
   }
 

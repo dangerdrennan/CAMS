@@ -193,12 +193,12 @@
 
                   </tr>
                 </thead>
-                <tbody *ngFor="let grader of this.graders">
-                  <tr *ngIf="grader.curr_cap_prof==true">
-                    <td scope="row">{{grader.prof_email}}</td>
-                    <td>{{grader.f_name}}</td>
-                    <td>{{grader.l_name}}</td>
-                    <td>{{grader.department}}</td>
+                <tbody >
+                  <tr *ngFor="let grader of this.graders">
+                    <td *ngIf="grader.curr_cap_prof==true" scope="row">{{grader.prof_email}}</td>
+                    <td *ngIf="grader.curr_cap_prof==true">{{grader.f_name}}</td>
+                    <td *ngIf="grader.curr_cap_prof==true">{{grader.l_name}}</td>
+                    <td *ngIf="grader.curr_cap_prof==true">{{grader.department}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -256,12 +256,12 @@
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
-                <tbody *ngFor="let grader of this.graders;let i=index">
-                  <tr *ngIf="grader.is_admin===true">
+                <tbody >
+                  <tr *ngFor="let grader of this.graders;let i=index">
                     <td scope="row">{{grader.prof_email}}</td>
-                    <td>{{grader.f_name}}</td>
-                    <td>{{grader.l_name}}</td>
-                    <td>{{grader.department}}</td>
+                    <td *ngIf="grader.is_admin===true">{{grader.f_name}}</td>
+                    <td *ngIf="grader.is_admin===true">{{grader.l_name}}</td>
+                    <td *ngIf="grader.is_admin===true">{{grader.department}}</td>
                     <td>
                       <button type="button" class="btn btn-sm btn-danger rounded" data-bs-toggle="modal"
                         data-bs-target="#staticBackdropSysAdmin" (click)="this.deleteGrader=true;this.editGrader=false;this.graderIndex=i"><img
