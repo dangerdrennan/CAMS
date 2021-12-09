@@ -6,5 +6,5 @@ export const environment = {
     clientId: "nsBtB0V9tbMr15l7Z8pDDSvhrNrHa1qx",
     redirectUri: "http://localhost:4200/home",
   },
-  API: 'http://localhost:4200'
+  API: 'http://localhost:4201'
 };

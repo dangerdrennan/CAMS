@@ -1,6 +1,6 @@
 const Router = require("express");
 const {Pool} = require("pg");
-const {dev} = require("@angular/core")
+const env = require("../frontend/cams/src/environments/environment").environment;
 
 const usersRouter = Router();
 
@@ -26,7 +26,8 @@ const usersRouter = Router();
 const pool = determineDev()
 
 function determineDev(){
-    if (dev.isDevMode()){
+    if (env.production == false){
+        console.log('hit')
         return new Pool({
             user: "cams",
             password: "pswd",
@@ -35,13 +36,17 @@ function determineDev(){
             port: 5432
         });
     }
+    console.log('hit 22222')
     return new Pool({
+        
             connectionString: process.env.DATABASE_URL,
             ssl: {
               rejectUnauthorized: false
             }
           });
 }
+
+console.log(pool.user)
 
 usersRouter.get('/all_profs', async (req, res) => {
     try{
