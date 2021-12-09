@@ -5,4 +5,5 @@ export const environment = {
     clientId: "nsBtB0V9tbMr15l7Z8pDDSvhrNrHa1qx",
     redirectUri: "https://capstone-assessments.netlify.app",
   },
+  API: 'https://capstone-management.herokuapp.com'
 };

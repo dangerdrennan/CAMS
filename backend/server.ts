@@ -4,8 +4,13 @@ const routes = require('./routes.ts')
 const cors = require('cors')
 const app = express();
 
-app.use(cors({origin: 'https://capstone-assessments.netlify.app'}))
+if (dev.isDevMode()){
+  app.use(cors({origin: 'https://capstone-assessments.netlify.app'}))
+}
 
+else{
+  app.use(cors({origin: 'http://localhost:4200'}))
+}
 
 
 express()

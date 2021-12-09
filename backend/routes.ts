@@ -1,7 +1,10 @@
 const Router = require("express");
 const {Pool} = require("pg");
+const {dev} = require("@angular/core")
 
 const usersRouter = Router();
+
+// dev.isDevMode() ?
 
 // const pool = new Pool({
 //     user: "cams",
@@ -11,12 +14,34 @@ const usersRouter = Router();
 //     port: 5432
 // });
 
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
+// :
+
+// const pool = new Pool({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//       rejectUnauthorized: false
+//     }
+//   });
+
+const pool = determineDev()
+
+function determineDev(){
+    if (dev.isDevMode()){
+        return new Pool({
+            user: "cams",
+            password: "pswd",
+            database: "cams",
+            host: "localhost",
+            port: 5432
+        });
     }
-  });
+    return new Pool({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+              rejectUnauthorized: false
+            }
+          });
+}
 
 usersRouter.get('/all_profs', async (req, res) => {
     try{

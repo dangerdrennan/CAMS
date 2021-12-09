@@ -8,6 +8,7 @@ import { SemesterReqs } from '../SemesterReqs';
 import { ShowComment } from '../ShowComments';
 import { Suboutcome } from '../Suboutcome';
 import { TotesPers } from '../TotesPers';
+import { environment as env } from 'src/environments/environment';
 
 const httpOptions =
 {
@@ -22,7 +23,7 @@ const httpOptions =
 })
 export class ResultsService {
 
-  endPoint = "https://capstone-management.herokuapp.com"
+  endPoint = env.API
   assessment: any // change
   pastSemReq: any
 
