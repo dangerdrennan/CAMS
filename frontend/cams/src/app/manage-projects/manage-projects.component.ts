@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -28,7 +28,9 @@ export class ManageProjectsComponent implements OnInit {
   termId!: number
   projId:number | undefined
   semYear!: {semester:string, year:number}[]
-  constructor(private builder: FormBuilder, private projectService: ProjectService) { }
+  constructor(private builder: FormBuilder, private projectService: ProjectService) {
+    console.log(`does dev mode check work? : ${isDevMode()}`)
+   }
 
   ngOnInit(): void {
     // initialize project form

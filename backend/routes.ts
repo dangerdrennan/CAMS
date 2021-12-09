@@ -26,7 +26,7 @@ const usersRouter = Router();
 const pool = determineDev()
 
 function determineDev(){
-    if (env.production == false){
+    if (!process.env.PROD_BOOLEAN){
         console.log('hit')
         return new Pool({
             user: "cams",
