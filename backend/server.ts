@@ -4,7 +4,7 @@ const routes = require('./routes.ts')
 const cors = require('cors')
 const app = express();
 
-app.use(cors({origin: 'capstone-assessments.netlify.app'}))
+app.use(cors({origin: 'https://capstone-assessments.netlify.app'}))
 
 
 
