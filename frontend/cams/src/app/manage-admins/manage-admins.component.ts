@@ -1,11 +1,13 @@
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { first, take, takeUntil } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Accessor } from '../Accessor';
 import { AdminService } from '../services/admin.service';
+
+/**
+ * This component is where professors are added to the database to ensure that they will have access to take an assessment. Here an adminstrator can add/remove a new professor as a grader, update the current captsone professor, and add/remove professors as administrators
+ */
 
 @Component({
   selector: 'app-manage-admins',
@@ -23,7 +25,6 @@ export class ManageAdminsComponent implements OnInit {
 
   addGraderform!: FormGroup;
   editGraderForm!: FormGroup
-  setTermForm!: FormGroup
 
   graders:Accessor[] = []
   semester!: string
@@ -40,6 +41,7 @@ export class ManageAdminsComponent implements OnInit {
   constructor(public adminService: AdminService, private builder: FormBuilder) {  }
 
   ngOnInit() {
+    // initialize the form to add graders
     this.addGraderform = this.builder.group({
       f_name: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
       l_name: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
@@ -47,23 +49,18 @@ export class ManageAdminsComponent implements OnInit {
       department: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]]
     })
 
-    // update grader name modal
+    // update grader name modal form
     this.editGraderForm = this.builder.group({
       f_name: ['', [Validators.pattern(this.regTxtPattern)]],
       l_name: ['', [Validators.pattern(this.regTxtPattern)]]
     })
-
-    this.setTermForm = this.builder.group({
-      semester: ['', [Validators.required, Validators.pattern(this.regTxtPattern)]],
-      year: ['', [Validators.required, Validators.pattern(this.yearPattern)]]
-    })
-
 
     this.submitted = false
     this.getCurrentAssessors()
     this.getCurrentTerm()
   }
 
+  /* Getters to access the form controls easily */
   get f() {
     return this.addGraderform.controls
   }
@@ -76,13 +73,11 @@ export class ManageAdminsComponent implements OnInit {
     this.editGraderForm.reset()
   }
 
-
   // trigger to add a current grader
   submitAddGrader() {
     this.submitted = true
 
     if(!this.addGraderform.valid) {
-      console.log("nope ):")
       this.addGraderform.reset()
       this.submitted = false
     }
@@ -95,17 +90,13 @@ export class ManageAdminsComponent implements OnInit {
       }
       this.graders.push(this.accessor)
       this.addProf(this.accessor)
-
     }
-
   }
 
   // trigger to update grader first name or last name or department
   submitGraderUpdate() {
     this.submitted = true
-
     if(!this.editGraderForm.valid) {
-      console.log("nope ):")
       this.editGraderForm.reset()
       this.submitted = false
     }
@@ -213,45 +204,49 @@ export class ManageAdminsComponent implements OnInit {
       res.filter((item: Accessor) => {
         this.graders.push(item)
       })
-
     })
   }
 
+  // request to update the current capstone professor
   setCurrentCapstoneProf(accessor:Accessor){
     this.adminService.setCurrentCapstoneProfessor(accessor).pipe(first()).subscribe(() => {
       location.reload()
     })
   }
 
+  // request to update the first and last name of a professor
   updateProfName(accessor:Accessor){
     this.adminService.updateProf(accessor).pipe(first()).subscribe(() => {
       this.editGraderForm.reset()
     })
   }
 
+  // request to make a professor an admin
   makeProfAdmin(accessor:Accessor){
     this.adminService.giveAdminPrivileges(accessor).pipe(first()).subscribe(() => {
       location.reload()
     })
   }
 
+  // request to remove a professor from admin
   revokePermissions(accessor:Accessor){
     this.adminService.revokeAdminPrivileges(accessor).pipe(first()).subscribe(() => {
       location.reload()
     })
   }
 
+  // request to add a new professor
   addProf(accessor:Accessor){
-
     this.adminService.addGraderAndAssessments(accessor)
     this.addGraderform.reset()
-
   }
 
+  // request to remove a professor as a grader
   makeProfNongrader(accessor:Accessor){
     this.adminService.setProfAsNongrader(accessor)
   }
 
+  // request to grab the current term
   getCurrentTerm() {
     this.adminService.getCurrentTerm().subscribe((res) => {
       this.semester = res[0].semester

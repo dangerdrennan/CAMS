@@ -1,10 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SemesterReqs } from '../SemesterReqs';
 import { ResultsService } from '../services/results.service';
-import { take } from 'rxjs/operators';
 import { SuboutcomeDescription } from '../SuboutcomeDescription';
-import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
+
+/**
+ * NOTE: not sure if this was used?
+ */
+
 @Component({
   selector: 'app-outcome-trends',
   templateUrl: './outcome-trends.component.html',
@@ -24,9 +27,9 @@ export class OutcomeTrendsComponent implements OnInit {
 
   constructor(private resultsService: ResultsService) {
       console.log(this.cats)
-      
-      
-    
+
+
+
    }
 
   ngOnInit(): void {
@@ -59,9 +62,9 @@ export class OutcomeTrendsComponent implements OnInit {
     // }
     //console.log(this.percentsArray)
   }
-    
 
-  
+
+
 
   // getSubDescriptions(cat_name: string){
   //   const cat_id = parseInt(cat_name)
@@ -93,11 +96,11 @@ export class OutcomeTrendsComponent implements OnInit {
     //         count += parseInt(categoryAvg.excellent_count)
     //         total += parseFloat(categoryAvg.total)
     //       break;
-          
+
     //     }
     //     console.log('count, total at ', count,' ', total)
     //     return (count/total)
     //   });
-      
+
   }
 }

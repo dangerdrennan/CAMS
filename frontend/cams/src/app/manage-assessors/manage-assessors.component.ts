@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+/**
+ * NOTE: dont think this was used
+ */
+
 @Component({
   selector: 'app-manage-assessors',
   templateUrl: './manage-assessors.component.html',

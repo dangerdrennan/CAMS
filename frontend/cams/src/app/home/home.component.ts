@@ -5,6 +5,10 @@ import { Professor } from '../prof';
 import { LoginService } from '../services/login.service';
 import { ProfDashboardService } from '../services/prof-dashboard.service';
 
+/**
+ * NOTE: dont think this was used
+ */
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

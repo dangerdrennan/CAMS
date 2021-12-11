@@ -21,14 +21,15 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./past-projects.component.css']
 })
 export class PastProjectsComponent implements OnInit {
-
   user: string | undefined
   pastAssessments: AssessmentDisplay[] = []
   pS:ProjectService
 
 
+
   // Constructor initializes our services and makes a call to auth service to grab user email
   // calling auth service again 
+
   constructor(private router: Router, public profDashService: ProfDashboardService, public assessmentService:AssessmentService, loginService:LoginService , public auth:AuthService, public projectService: ProjectService) {
     this.pS = projectService
     this.user = loginService.email

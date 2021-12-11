@@ -1,11 +1,13 @@
-import { Component, isDevMode, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Project } from '../Project';
 import { ProjectService } from '../services/project.service';
 import { Student } from '../Student';
+
+/**
+ * This component is where an administrator can add/remove projects along with their creators.
+ */
 
 @Component({
   selector: 'app-manage-projects',
@@ -28,9 +30,7 @@ export class ManageProjectsComponent implements OnInit {
   termId!: number
   projId:number | undefined
   semYear!: {semester:string, year:number}[]
-  constructor(private builder: FormBuilder, private projectService: ProjectService) {
-    console.log(`does dev mode check work? : ${isDevMode()}`)
-   }
+  constructor(private builder: FormBuilder, private projectService: ProjectService) {}
 
   ngOnInit(): void {
 
@@ -47,17 +47,12 @@ export class ManageProjectsComponent implements OnInit {
       status: ['Not Graded'] // by default we'll mark as not graded
     })
 
-    // // initially display all projects
-    // this.allProjects()
+
     // new code to display only current projects
     this.currentProjects()
 
-
-    // console.log("all students", this.allStud)
-
     this.projectService.getSemYear().pipe(first()).subscribe(res =>{
       this.semYear = res
-      // console.log(this.semYear)
     })
 
 
@@ -137,12 +132,10 @@ export class ManageProjectsComponent implements OnInit {
       this.allStud.push(this.student)
       this.generateAssessments(res[0])
     })
-
   }
 
   // delete an entire project
   deleteProject(project: Project) {
-
     this.projectService.deleteProject(project.title).subscribe(() => {
       location.reload()
     })
@@ -170,17 +163,8 @@ export class ManageProjectsComponent implements OnInit {
   generateAssessments(stud: Student) {
     this.projectService.addAssessment(stud).subscribe(() => {
     })
-
-    //location.reload()
-
-    // location.reload()
-
-  }
-
-  getSemYear(){
   }
 
 
-  // when you get the component to display only the current term's projects, just be aware that in the current term in the database, there's no projects for that current term, so if you see blanks, there's a chance it's working. And obviously you can play around with the files in the db to test it. I think the easiest way to do that is to go to the student csv and replace some of the term values for a specific project id
 
 }

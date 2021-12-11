@@ -9,10 +9,11 @@ import { ProjectService } from 'src/app/services/project.service';
 import { ResultsService } from 'src/app/services/results.service';
 
 
+
 /**
  * This component is in charge of populating the frontend projects tab,
  * which functions as the homepage of our application
- */
+*/
 
 @Component({
   selector: 'app-projects',
@@ -48,13 +49,10 @@ export class ProjectsComponent implements OnInit {
       this.currentAssessments.sort((a, b) => a.assessment_id - b.assessment_id)
     }
     )
-    this.getDisplayInfo()
+
   }
 
-  getDisplayInfo(){
-    // console.log(this.currentAssessments)
-  }
-
+  // grab the assessments that belong to a project
   assessments(project:AssessmentDisplay) {
     this.profDashService.isAssessing = true;
     this.assessmentService.assID = project.assessment_id

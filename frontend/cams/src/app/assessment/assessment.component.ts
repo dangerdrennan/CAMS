@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { take } from 'rxjs/operators';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { AssessmentService } from '../services/assessment.service';
 import { AssessmentDisplay } from '../AssessmentDisplay';
 import { ScoreComment } from '../ScoreComment';
 import { SemesterReqs } from '../SemesterReqs';
 import { Observable } from 'rxjs';
+
+/**
+ * This component takes care of grabbing outcome titles and giving the information to the suboutcome component to create the assessment page for professors to take the assessment
+ */
 
 @Component({
   selector: 'app-assessment',
@@ -26,12 +29,12 @@ export class AssessmentComponent implements OnInit {
   requirements$!: Observable<SemesterReqs[]>
 
 
-
   constructor(private router: Router, public auth:AuthService, public assessmentService: AssessmentService) {
     this.submissionStatus= this.assessmentService.submissionStatus
     this.assessmentInfo = this.assessmentService.assessment
    }
 
+  // load the outcome desctiptions on load or reroute back to the projects page
   ngOnInit(): void {
     this.setDescriptions()
     if (this.assessmentService.assID == undefined){
@@ -39,29 +42,28 @@ export class AssessmentComponent implements OnInit {
     }
   }
 
+  // keep a record of the score id and grades given at that score
   addScore(grade: [string, number]){
     this.grades.push({
       score_id: grade[0],
       grade: grade[1]
     })
   }
+
+  // save the comments that were left for a suboutcome
   addComment(comment:ScoreComment){
     this.comments.push(comment)
-    console.log(this.comments)
   }
 
-
+  // make a request to store the assessment scored to the database
   submitScores(){
     this.submissionStatus = this.assessmentService.submitAssessment(this.grades,this.comments)
-
   }
 
-
+  // grab the indivdual outcome descriptions
   setDescriptions(){
-
     this.outcome_des$ = this.assessmentService.getOutcomeDescription()
     this.assessmentService.getOutcomeDescription().subscribe(res =>{
-      console.log('this are the outcomes we are getting back: ', res)
     })
   }
 

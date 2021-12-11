@@ -7,6 +7,10 @@ import { ResultsService } from '../services/results.service';
 import { UpdateOutcomesService } from '../services/update-outcomes.service';
 import { TotesPers } from '../TotesPers';
 
+/**
+ * This component grabs all of the stored information to pass to the export service to be able to create a Excel workbook that holds all of the past assessment averages as well as the outcome trend averages.
+ */
+
 @Component({
   selector: 'app-export',
   templateUrl: './export.component.html',
@@ -26,35 +30,34 @@ export class ExportComponent implements OnInit {
 
   constructor(private resultService: ResultsService, private exportService: ExportService, private updateService: UpdateOutcomesService) { }
 
+  // on load grab all these function requests
   ngOnInit(): void {
-    console.log("sem year deg", this.sem, this.year, this.degree)
     this.getTrends()
     this.getOutcomesOnly()
     this.getOutcomes()
     this.getAllInfo()
   }
 
+  // request to grab the outcome desctiptions
   getOutcomesOnly() {
     this.outDesc = []
     this.resultService.getPastOutcomeDescription(this.degree, this.sem, this.year).subscribe((res: OutcomeDescriptions[]) => {
-      console.log("alll outcomes", res)
       this.outDesc = res
-      console.log("arrrrrray", this.outDesc)
     })
   }
 
+  // request to grab the outcome trends information
   getTrends() {
     this.trends = []
     this.resultService.getOutcomeTrends(this.sem, this.year, this.degree).subscribe((res: OutcomeTrends[]) => {
-      console.log("getting trends", res)
       this.trends = res
     })
   }
 
+  // request to grab all of the totals and percents pertaining to outcome trends
   getOutcomes() {
     this.outcomes = []
     this.resultService.getTotalsAndPercents(this.sem, this.year, this.degree).subscribe((res: TotesPers[]) => {
-      console.log("getting outcomes", res)
       this.outcomes = res
     })
   }
@@ -62,21 +65,14 @@ export class ExportComponent implements OnInit {
   getAllInfo() {
     this.allInfo = []
     this.resultService.getAllPast(this.sem, this.year, this.degree).subscribe((res) => {
-      console.log("infooo", res)
       this.allInfo = res
     })
   }
 
-  // export table to excel sheet
+  // export table to excel service
   exportTableToExcel() {
-
     this.exportService.exportTblToExcel(`${this.degree}_${this.sem}${this.year}`, this.trends, this.outcomes, this.outDesc, this.allInfo)
   }
-
-  // exportTrends() {
-  //   this.exportService.exportOnlyTrends(`OutcomeTrends_${this.degree}_${this.sem}${this.year}`, this.trends)
-  //   this.trend = false
-  // }
 
 
 }
