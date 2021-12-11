@@ -1,10 +1,8 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { Observable } from 'rxjs';
-import { filter, last, take } from 'rxjs/operators';
 import { AssessmentDisplay } from '../AssessmentDisplay';
 import { NewRequirement } from '../NewRequirement';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
@@ -14,7 +12,10 @@ import { ScoreComment } from '../ScoreComment';
 import { AssessmentService } from '../services/assessment.service';
 import { UpdateOutcomesService } from '../services/update-outcomes.service';
 import { Suboutcome } from '../Suboutcome';
-import { SuboutDesc } from '../suboutDesc';
+
+/**
+ * This component is where a user has the ability to update an outcome requirement. This could mean to either remove an outcome and its suboutcomes or add a new outcome with one or multiple suboutcomes.
+ */
 
 @Component({
   selector: 'app-change-outcomes',
@@ -31,11 +32,8 @@ export class ChangeOutcomesComponent implements OnInit {
   submissionStatus: boolean;
   comments: ScoreComment[] = [];
   suboutcomeDetails!: Suboutcome[];
-
   degreeChangeForm!: FormGroup;
-
   x: any[][];
-
   outcomeCSForm!: FormGroup;
   outcomeCSEForm!: FormGroup;
   outform!: FormGroup;
@@ -52,9 +50,7 @@ export class ChangeOutcomesComponent implements OnInit {
   display_list: OutcomeDisplay[];
   newSuboutcomeList = [];
   degree: string
-
   possibleOutcomes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 
   constructor(
     private router: Router,
@@ -63,12 +59,13 @@ export class ChangeOutcomesComponent implements OnInit {
     public builder: FormBuilder,
     public updateOutService: UpdateOutcomesService
   ) {
-    // this.submissionStatus= this.assessmentService.submissionStatus
 
+    // initialize the form to determine which major is being uodated
     this.degreeChangeForm = this.builder.group({
       degree: ['', Validators.required],
     });
 
+    // initialize the create outcome form
     this.outform = this.builder.group({
       outcome: ['', Validators.required],
       outcome_description: ['', Validators.required],
@@ -97,6 +94,7 @@ export class ChangeOutcomesComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /* These are grabing the form controls for easy access to a specific form control */
   get csOutcomes() {
     return this.outcomeCSForm.get('newOutcome') as FormArray;
   }
@@ -129,34 +127,27 @@ export class ChangeOutcomesComponent implements OnInit {
     return this.outcomeCSEForm.get('newSuboutcome')['controls'];
   }
 
+  // add a outcome to the UI
   addOutcome() {
-    console.log('OUTTT');
     let degree = this.degreeChangeForm.get('degree').value;
     if (degree == 'CS') {
-      console.log('in cs add outcome');
       this.csOutcomes.push(this.createOutcome());
-      // this.createInputBox()
     } else if (degree == 'CSE') {
-      console.log('in cse add outcome');
       this.cseOutcomes.push(this.createOutcome());
-      // this.createInputBox()
     }
   }
 
+  // add a suboutcome to the UI
   addSuboutcome() {
     let degree = this.degreeChangeForm.get('degree').value;
     if (degree == 'CS') {
-      console.log('in cs add sub');
       this.csSuboutcomes.push(this.createSuboutcome());
-      // this.createInputBox()
     } else if (degree == 'CSE') {
-      console.log('in cse add sub');
       this.cseSuboutcomes.push(this.createSuboutcome());
-      // this.createInputBox()
     }
   }
 
-  //
+  // remove an outcome from the UI
   deleteOutcome(i: number) {
     let degree = this.degreeChangeForm.get('degree').value;
     if (degree == 'CS') {
@@ -166,17 +157,17 @@ export class ChangeOutcomesComponent implements OnInit {
     }
   }
 
+  // remove a suboutcome from th UI
   deleteSubcome(i: number) {
     let degree = this.degreeChangeForm.get('degree').value;
     if (degree == 'CS') {
-      console.log('in cs remove sub');
       this.csSuboutcomes.removeAt(i);
     } else if (degree == 'CSE') {
-      console.log('in cse remove sub');
       this.cseSuboutcomes.removeAt(i);
     }
   }
 
+  // form to create a new outcome
   createOutcome(): FormGroup {
     return this.builder.group({
       outcome_num: [''],
@@ -184,6 +175,7 @@ export class ChangeOutcomesComponent implements OnInit {
     });
   }
 
+  // form to create a new suboutcome
   createSuboutcome(): FormGroup {
     return this.builder.group({
       suboutcome_num: ['', Validators.required],
@@ -195,41 +187,23 @@ export class ChangeOutcomesComponent implements OnInit {
     });
   }
 
+  // send the new outcome to the database to be stored
   submitNewOutcome() {
     let degree = this.degreeChangeForm.get('degree').value;
-    if (degree == 'CS') {
-      console.log('submitted this form', this.outcomeCSForm.value);
-    } else if (degree == 'CSE') {
-      console.log('submitted this form', this.outcomeCSEForm.value);
-    }
-    console.log(
-      'is this keeping track of old outcomes?: ',
-      this.currentOutcomeIDs
-    );
+
     const reqs = this.cleanUpEntry(degree);
-    console.log('right after clean up, reqs is at ', reqs);
     this.updateOutService.update(this.currentOutcomeIDs, degree, reqs);
   }
 
+  // remove an outcome from the UI
   removeOutcome(outcomeCatID:number, i:number){
-    console.log('removing?? let\'s see. current outcome ids to save are now at ', this.currentOutcomeIDs)
     this.currentOutcomeIDs = this.currentOutcomeIDs.filter(x => x != outcomeCatID)
-    console.log('now they\'re at ', this.currentOutcomeIDs)
-    console.log(i)
-    console.log(this.outcomes.map(item => {
-      return item.cat_id !== i
-    }))
     this.outcomes.splice(i,1)
-    // this.outcomes = this.outcomes.filter(item => {
-    //   item.cat_id === i
-    // }
-    // )
-
   }
 
+  // grab only the necessary information to create new assessments for the new specified degree outcome and suboutcome descriptions
   cleanUpEntry(degree: string) {
     let form = degree == 'CSE' ? this.outcomeCSEForm : this.outcomeCSForm;
-    console.log('what are currentOutcomeIDs at? ', this.currentOutcomeIDs)
     const newOuts: OutcomeDescriptions[] = [];
     const newSubs: Suboutcome[] = [];
 
@@ -268,7 +242,7 @@ export class ChangeOutcomesComponent implements OnInit {
     return reqs;
   }
 
-  // trigger to display outcomes and suboutcomes for specified degree
+  // trigger to display outcomes and suboutcomes descriptions for specified degree
   getDegreeOutcomes() {
     this.csOutcomes.reset();
     this.cseOutcomes.reset();
@@ -310,9 +284,7 @@ export class ChangeOutcomesComponent implements OnInit {
         const cat_ids = res.map((x) => {
           return x.cat_id;
         });
-        const out_ids = res.map((x) => {
-          return x.out_id;
-        });
+
         this.currentOutcomeIDs = cat_ids;
         this.possibleOutcomes = this.possibleOutcomes.filter(
           (x) => !cat_ids.includes(x)
@@ -327,7 +299,6 @@ export class ChangeOutcomesComponent implements OnInit {
           this.suboutcomes = res;
         });
     }
-
   }
 
   goBack() {
