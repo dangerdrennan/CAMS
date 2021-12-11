@@ -80,7 +80,7 @@ The only additional information you need to run our application is to invite a u
 
 [![Image from Gyazo](https://i.gyazo.com/481ff567a3dff1ba33191ccfbaf67194.png)](https://gyazo.com/481ff567a3dff1ba33191ccfbaf67194)
 
-You’ll see at the top-center-right of the next page a purple button called ‘Create User’. We already have a user in our database with admin privileges with the email address http[]()://turing@gmail.com. Create that user and set their password. You can now log into the system with that password!
+You’ll see at the top-center-right of the next page a purple button called ‘Create User’. We already have a user in our database with admin privileges with the email address <span>turing@gmail.com</span>. Create that user and set their password. You can now log into the system with that password!
 NOTE: this is intended to be an ‘invite only’ application (very fancy, we know). If you’d like to set up your application that way, click on the ‘Database’ option on the Auth0 sidebar
 
 
