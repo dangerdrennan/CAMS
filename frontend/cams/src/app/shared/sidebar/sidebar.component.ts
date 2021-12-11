@@ -1,9 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
 import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 import { HeaderService } from 'src/app/services/header.service';
+
+/**
+ * This is the component in charge of populating all the information in the sidebar
+ */
 
 @Component({
   selector: 'app-sidebar',

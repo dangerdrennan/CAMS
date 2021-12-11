@@ -6,7 +6,6 @@ import { NewRequirement } from '../NewRequirement';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutDesc } from '../outDesc';
 import { Suboutcome } from '../Suboutcome';
-import { SuboutcomeDescription } from '../SuboutcomeDescription';
 import { SuboutDesc } from '../suboutDesc';
 import { environment as env } from 'src/environments/environment';
 

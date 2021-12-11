@@ -5,9 +5,14 @@ import { AssessmentService } from 'src/app/services/assessment.service';
 import { LoginService } from 'src/app/services/login.service';
 import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 import { AssessmentDisplay } from 'src/app/AssessmentDisplay';
-
 import { ProjectService } from 'src/app/services/project.service';
 import { ResultsService } from 'src/app/services/results.service';
+
+
+/**
+ * This component is in charge of populating the frontend projects tab,
+ * which functions as the homepage of our application
+ */
 
 @Component({
   selector: 'app-projects',
@@ -38,9 +43,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log('what is this? ', this.user)
     this.assessmentService.getCurrentAssessmentsbyProf(this.user!).subscribe((res: any)=>{
-      // console.log('hit: ', res)
       this.currentAssessments = res
       this.currentAssessments.sort((a, b) => a.assessment_id - b.assessment_id)
     }

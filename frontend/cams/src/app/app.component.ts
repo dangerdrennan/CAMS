@@ -1,7 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Navigation, NavigationEnd, Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',

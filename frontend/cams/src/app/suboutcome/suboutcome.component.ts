@@ -1,12 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { shareReplay, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { AssessmentDisplay } from '../AssessmentDisplay';
 import { Suboutcome } from '../Suboutcome';
 import { AssessmentService } from '../services/assessment.service';
 import { ScoreComment } from '../ScoreComment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
+
+/**
+ * This is the suboutcome component called for populating assessments.
+ * It takes in outcome categories, gets which suboutcomes are are applicable
+ * based on information from the assessment ID and the outcome category
+ */
+
 
 @Component({
   selector: 'app-suboutcome',
@@ -30,25 +37,25 @@ export class SuboutcomeComponent implements OnInit {
   comment!: ScoreComment
   commentSubmitted=false
   setCommentForm:FormGroup
-  // formBuilder: FormBuilder
   twoCents!:string
 
   constructor(public assessmentService: AssessmentService, private fB: FormBuilder) {
-    // this.formBuilder = fB
+    // initialize this comment form to blank
     this.setCommentForm = this.fB.group({
       comment: ['']
     })
-    console.log('this.outcome_cat is at ', this.outcome_description)
-    console.log('this.ass is at ', this.assID)
 
    }
 
+   // record grad is a massive, important function that takes the suboutcomes id
+   // and dynamically uses it to tell which box is highlighted.
+   // It uses a switch case to use radio button logic for suboutcome scores on the frontend
+   // 
    recordGrade(score_id: string, grade: number){
     const poor_box = document.getElementById(score_id+'_'+'poor');
     const developing_box = document.getElementById(score_id+'_'+'developing');
     const satisfactory_box = document.getElementById(score_id+'_'+'satisfactory');
     const excellent_box = document.getElementById(score_id+'_'+'excellent');
-    //console.log('in suboutcome component: ', this.assessmentService.suboutcome_grade)
     switch(grade) {
       case 1:
         poor_box!.className = "scoreable selected"
@@ -78,16 +85,18 @@ export class SuboutcomeComponent implements OnInit {
     }
    }
 
+   // populates the suboutcomes based on outcome category.
+   // NOTE: should review in the future if we need to grab suboutcome
+   // twice in both observable and array form
   ngOnInit(): void {
     this.subDeets$ = this.assessmentService.getSuboutcomes(this.outcome_cat)
-    console.log('the id we\'re using in this suboutcome is ', this.outcome_cat)
     this.assessmentService.getSuboutcomes(this.outcome_cat).subscribe(res => {
       this.suboutcomeDetails = res
-      console.log('by using ', this.outcome_cat, ', we\'re using getting this for suboutcomes ', res)
       this.setHighlights(res)
     })
   }
 
+  // this function is used for setting highlights of a previously graded assessment
   setHighlights(outcome_arr: Suboutcome[]){
     for (let i = 0; i < outcome_arr.length; i++){
       const grade$ = this.assessmentService.getSuboutcomeGrades(this.assID,outcome_arr[i].score_id)
@@ -99,10 +108,12 @@ export class SuboutcomeComponent implements OnInit {
   }
 }
 
+// emits the grade back to the parent component
   giveGradeToParent(score_id: string, grade: number){
     this.newGrade.emit([score_id, grade])
   }
 
+  // this function cleans up the suboutcome name for html display
   prettyCat(req:string){
     let newStr = req.slice(6,7) + '.'
     for (let i = 8; i < req.length; i++){
@@ -115,6 +126,9 @@ export class SuboutcomeComponent implements OnInit {
     }
     return newStr
   }
+
+  // this function creates a comment object based on a submitted comment,
+  // and provides feedback to the user that their comment has been recorded.
   addComment(score_id:string, twoCents:string){
 
     this.comment = {
