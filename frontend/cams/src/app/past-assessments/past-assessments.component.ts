@@ -1,16 +1,20 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, } from 'rxjs';
+import { Observable, } from 'rxjs';
 import { last, first } from 'rxjs/operators';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { ResultsService } from '../services/results.service';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { OutcomeTrends } from '../OutcomeTrends';
-import { Total } from '../Total';
 import { TotesPers } from '../TotesPers';
 import { ShowComment } from '../ShowComments';
 import { ExportService } from '../services/export.service';
+
+/**
+ * This component is what holds the information to view past assessments. An adminsistrator selects either CS or CSE and a specified year and semester to view their outcomes.
+ */
+
 @Component({
   selector: 'app-past-assessments',
   templateUrl: './past-assessments.component.html',
@@ -55,7 +59,6 @@ export class PastAssessmentsComponent implements OnInit {
   comments$:Observable<ShowComment[]>
   outDescriptions$:Observable<OutcomeDescriptions[]>
 
-  // get all assessments by term
 
   constructor(private router: Router, private builder: FormBuilder, private resultsService: ResultsService, private exportService: ExportService) {
 
@@ -99,7 +102,6 @@ export class PastAssessmentsComponent implements OnInit {
     let year = this.pastForm.get('year').value
     this.resultsService.getPastComments(sem,year,degree).subscribe(res=>{
       this.comments = res
-      console.log(res)
     })
 
     this.changeOutcomes(this.defaultOutcome)
@@ -116,7 +118,6 @@ export class PastAssessmentsComponent implements OnInit {
     this.switchDegree = true
     this.displayOutcome = false
     this.num = 0
-    // console.log('in change degree, switchDegree is at ', this.switchDegree)
   }
 
   // trigger to find outcome trends
@@ -131,15 +132,10 @@ export class PastAssessmentsComponent implements OnInit {
     let year = this.outcomeForm.get('year').value
 
     this.displayPast = false;
-    //this.displayOutcome = true;
-    // give the subscription time to finish before using its returned value
-    // setTimeout(() => {
-      this.getOutcomePercents()
-    // },500)
+    this.getOutcomePercents()
 
     this.resultsService.getAllPast(term, Number(year), degree).subscribe( res=> {
       this.allInfo = res
-      console.log("alllll info", this.allInfo)
     })
     this.outcomeTitle = []
 
@@ -147,32 +143,24 @@ export class PastAssessmentsComponent implements OnInit {
 
   // updates the outcome titles and sub descriptions being viewed
   dataChange(id: number) {
-    // this.getTitles(id)
     this.id = id
     this.getDescription(id)
     this.calculateTotals()
     this.switchDegree = false
-    console.log('switchDegree is at ', this.switchDegree)
   }
 
   // check if data is current or if we need new service calls
   changeOutcomes(e) {
-
     let id = this.categoryForm.get('selected').value
     const eventToNum = parseInt(id)
-    console.log(`id is at ${id}`)
     this.id = eventToNum
-    console.log('switchDegree is at ', this.switchDegree)
+
     if (this.switchDegree == true){
       this.dataChange(id)
-      console.log('we are now switching degrees!')
     }
     else{
       this.subInfo = this.allInfo.filter(x => x.cat_id == eventToNum)
       this.num = this.unique.indexOf(eventToNum)
-      // this.num = this.displayTitle.indexOf(eventToNum)
-      console.log('what is subinfo at now? ', this.subInfo)
-
     }
   }
 
@@ -182,34 +170,20 @@ export class PastAssessmentsComponent implements OnInit {
     let degree = this.pastForm.get('degree').value
     let term = this.pastForm.get('term').value
     let year = this.pastForm.get('year').value
-    console.log(`Degree:  ${degree} Term: ${term} Year: ${year}`)
 
     this.outDescriptions$ = this.resultsService.getPastOutcomeDescription(degree, term, year)
 
     if(degree === 'CS') {
-      console.log("in get descrip")
       this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
       .subscribe(res=> {
         this.allInfo = res
         this.unique = [...new Set(res.map(item => item.cat_id))]
-
-        console.log (`this. allInfo is at ${res}`)
-
         this.subInfo = res.filter(x=>x.cat_id == id)
-        console.log(this.subInfo)
-        // for(let i = 0; i < this.allInfo.length; i++) {
 
-        //   if(this.allInfo[i].cat_id == id) {
-        //     this.subInfo.push(this.allInfo[i])
-        //   }
-
-        // }
       })
       this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())
       .subscribe(res=> {
-        console.log('all Descriptions ', res)
         this.displayTitle = [...new Set(res.map(item => item.outcome_description))];
-        // console.log (`this.unique is at ${this.unique[3]}`)
       })
 
     }
@@ -217,25 +191,19 @@ export class PastAssessmentsComponent implements OnInit {
     if(degree === 'CSE') {
       this.resultsService.getAllPast(term, Number(year), degree).pipe(first())
       .subscribe(res=> {
-        console.log("all csE info", res)
         this.allInfo = res
         this.unique = [...new Set(res.map(item => Number(item.cat_id)))]
-        console.log("ALLLL ", this.allInfo)
         for(let i = 0; i < this.allInfo.length; i++) {
-
           if(this.allInfo[i].cat_id == id) {
             this.subInfo.push(this.allInfo[i])
           }
-
         }
       })
       this.resultsService.getPastOutcomeDescription(degree, term, year).pipe(first())
       .subscribe(res=> {
-        console.log('all Descriptions ', res)
         this.displayTitle = [...new Set(res.map(item => item.outcome_description))];
       })
     }
-
     return this.subInfo
   }
 
@@ -247,20 +215,16 @@ export class PastAssessmentsComponent implements OnInit {
     let year = this.pastForm.get('year').value
     this.resultsService.getTotalsAndPercents(term, year, degree).subscribe(res=>{
       this.totes = res
-      console.log('what is this.totes at? ', this.totes)
     })
-
   }
 
+  // request to grab the percents and totals for the outcome trends
   getOutcomePercents(): any{
-    console.log('get outcome percents')
     const degree = this.outcomeForm.get('degree').value
     const sem = this.outcomeForm.get('term').value
     const year = this.outcomeForm.get('year').value
-    console.log(`Degree:  ${degree} Term: ${sem} Year: ${year}`)
     this.outcomeTrends$ = this.resultsService.getOutcomeTrends(sem,year,degree)
     this.resultsService.getOutcomeTrends(sem,year,degree).pipe(last()).subscribe(res =>{
-      console.log('in sub', res)
       this.outcomeTrends = res
 
     })

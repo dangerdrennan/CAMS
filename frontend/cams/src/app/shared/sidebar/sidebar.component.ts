@@ -5,6 +5,10 @@ import { DOCUMENT } from '@angular/common';
 import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 import { HeaderService } from 'src/app/services/header.service';
 
+/**
+ * This component holds the lefthand sidebar attributes. All of the tabs in the sidebar redirect you to that component.
+ */
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',

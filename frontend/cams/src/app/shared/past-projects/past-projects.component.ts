@@ -7,17 +7,19 @@ import { ProfDashboardService } from 'src/app/services/prof-dashboard.service';
 import { AssessmentDisplay } from 'src/app/AssessmentDisplay';
 import { ProjectService } from 'src/app/services/project.service';
 
+/**
+ * This component holds previous semesters projects and statuses to see whether or not the project was graded. If not, you still have the ability to take an assessment for that project.
+ */
+
 @Component({
   selector: 'app-past-projects',
   templateUrl: './past-projects.component.html',
   styleUrls: ['./past-projects.component.css']
 })
 export class PastProjectsComponent implements OnInit {
-
   user: string | undefined
   pastAssessments: AssessmentDisplay[] = []
   pS:ProjectService
-
 
 
   constructor(private router: Router, public profDashService: ProfDashboardService, public assessmentService:AssessmentService, loginService:LoginService , public auth:AuthService, public projectService: ProjectService) {
@@ -29,20 +31,15 @@ export class PastProjectsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log('what is this? ', this.user)
     this.assessmentService.getPastAssessmentsbyProf(this.user!).subscribe((res: any)=>{
-      // console.log('hit: ', res)
       this.pastAssessments = res
       this.pastAssessments.sort((a, b) => a.assessment_id - b.assessment_id)
     }
     )
-    this.getDisplayInfo()
+
   }
 
-  getDisplayInfo(){
-    // console.log(this.pastAssessments)
-  }
-
+  // grabs the assessments from previous semesters
   assessments(project:AssessmentDisplay) {
     this.profDashService.isAssessing = true;
     this.assessmentService.assID = project.assessment_id

@@ -1,7 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ResultsService } from '../services/results.service';
 import { ShowComment } from '../ShowComments';
+
+/**
+ * This component holds the modal that displays the stored comments in the past results tab. You can see previous comments that were left on a graded assessment along with the professor that left the comment and which outcome the commment pertains to.
+ */
 
 @Component({
   selector: 'app-comment-modal',
@@ -16,75 +20,19 @@ export class CommentModalComponent implements OnInit {
   @Input() sem: string
   @Input() year:number
   outcomeComments = []
-
-  csOutcomes = [
-    {
-      cat_id: 1,
-      comments: ['comment 1 in outcome 1', 'comment 2 in outcome 1', 'comment 3 in outcome 1', 'comment 4 in outcome 1']
-    },
-    {
-      cat_id: 2,
-      comments: ['comment 1 in outcome 2', 'comment 2 in outcome 2', 'comment 3 in outcome 2', 'comment 4 in outcome 2']
-    },
-    {
-      cat_id: 3,
-      comments: ['comment 1 in outcome 3', 'comment 2 in outcome 3', 'comment 3 in outcome 3', 'comment 4 in outcome 3']
-    },
-    {
-      cat_id: 5,
-      comments: ['comment 1 in outcome 5', 'comment 2 in outcome 5', 'comment 3 in outcome 5', 'comment 4 in outcome 5']
-    }
-  ]
-
-  cseOutcomes = [
-    {
-      cat_id: 1,
-      comments: ['comment 1 in outcome 1', 'comment 2 in outcome 1', 'comment 3 in outcome 1', 'comment 4 in outcome 1']
-    },
-    {
-      cat_id: 2,
-      comments: ['comment 1 in outcome 2', 'comment 2 in outcome 2', 'comment 3 in outcome 2', 'comment 4 in outcome 2']
-    },
-    {
-      cat_id: 3,
-      comments: ['comment 1 in outcome 3', 'comment 2 in outcome 3', 'comment 3 in outcome 3', 'comment 4 in outcome 3']
-    },
-    {
-      cat_id: 5,
-      comments: ['comment 1 in outcome 5', 'comment 2 in outcome 5', 'comment 3 in outcome 5']
-    },
-    {
-      cat_id: 6,
-      comments: ['comment 1 in outcome 6', 'comment 2 in outcome 6', 'comment 3 in outcome 6', 'comment 4 in outcome 6']
-    },
-    {
-      cat_id: 7,
-      comments: ['comment 1 in outcome 7', 'comment 2 in outcome 7', 'comment 3 in outcome 7', 'comment 4 in outcome 7']
-    }
-  ]
   comments$: Observable<ShowComment[]>;
 
-  constructor(public resService: ResultsService) {
-     //this.comments$ = this.resService.getPastComments(this.sem,this.year,this.degree)
+  constructor(public resService: ResultsService) {}
 
-   }
-
+  // on page load, grab the stored comments
   ngOnInit(): void {
-    // this.resService.getPastComments(this.sem, this.year, this.degree).subscribe(res=>{
-    //   console.log(res)
-    // })
-    console.log(`in the comment modal the comments are ${this.comments}`)
-    console.log(`in the comment modal the id is ${this.id}`)
     this.getComments()
   }
   ngOnChanges() {
-    // create header using child_id
-    console.log(`in the comment modal onChanges the comments are ${this.comments}`)
-    console.log(`in the comment modal onChanges the id is ${this.id}`)
     this.getComments()
   }
 
-
+  // request to grab the comments from the database
   getComments() {
     if (this.id == undefined){
       this.resService.getPastComments(this.sem,this.year,this.degree).subscribe(res=>{
@@ -93,28 +41,6 @@ export class CommentModalComponent implements OnInit {
     }
     this.outcomeComments = []
     this.outcomeComments= this.comments.filter(x => x.cat_id == this.id)
-
-
-    // if(degree == 'CS') {
-    //   this.csOutcomes.filter((item) => {
-    //     if(item.cat_id === id) {
-    //       item.comments.forEach((data) => {
-    //         this.outcomeComments.push(data)
-    //       })
-    //     }
-    //   })
-    // }
-    // else if(degree == 'CSE') {
-    //   this.cseOutcomes.filter((item) => {
-    //     if(item.cat_id === id) {
-    //       item.comments.forEach((data) => {
-    //         // console.log("data", data)
-    //         this.outcomeComments.push(data)
-    //       })
-
-    //     }
-    //   })
-    // }
   }
 
 
