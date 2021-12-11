@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Project } from '../Project'
 import { Student } from '../Student';
+import { environment as env } from 'src/environments/environment';
 
 
 const httpOptions =
@@ -22,7 +23,7 @@ export class ProjectService {
 
   projects: Project[] = []
   semYear!: {semester:string, year:number}[]
-  endPoint = "http://localhost:4201"
+  endPoint = env.API
 
   constructor(private http: HttpClient) {
     this.getSemYear().pipe(first()).subscribe(res =>{

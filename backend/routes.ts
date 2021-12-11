@@ -1,15 +1,52 @@
-import { Router } from "express";
-import { Pool } from "pg";
+const Router = require("express");
+const {Pool} = require("pg");
+const env = require("../frontend/cams/src/environments/environment").environment;
 
 const usersRouter = Router();
 
-const pool = new Pool({
-    user: "cams",
-    password: "pswd",
-    database: "cams",
-    host: "localhost",
-    port: 5432
-});
+// dev.isDevMode() ?
+
+// const pool = new Pool({
+//     user: "cams",
+//     password: "pswd",
+//     database: "cams",
+//     host: "localhost",
+//     port: 5432
+// });
+
+// :
+
+// const pool = new Pool({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//       rejectUnauthorized: false
+//     }
+//   });
+
+const pool = determineDev()
+
+function determineDev(){
+    if (!process.env.PROD_BOOLEAN){
+        console.log('hit')
+        return new Pool({
+            user: "cams",
+            password: "pswd",
+            database: "cams",
+            host: "localhost",
+            port: 5432
+        });
+    }
+    console.log('hit 22222')
+    return new Pool({
+        
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+              rejectUnauthorized: false
+            }
+          });
+}
+
+console.log(pool.user)
 
 usersRouter.get('/all_profs', async (req, res) => {
     try{
@@ -745,4 +782,4 @@ usersRouter.get('/all_profs', async (req, res) => {
 
 
 
-  export default usersRouter;
+            module.exports= usersRouter

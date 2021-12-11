@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { Accessor } from '../Accessor';
+import { environment as env } from 'src/environments/environment';
 
 const httpOptions =
 {
@@ -11,12 +12,12 @@ const httpOptions =
   })
 }
 
-
+// endPoint = "https://capstone-management.herokuapp.com"
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  endPoint = "http://localhost:4201"
+  endPoint = env.API
   notifier= new Subject()
 
   constructor(private http: HttpClient) { }

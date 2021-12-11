@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
@@ -8,6 +8,7 @@ import { AssessmentDisplay } from '../AssessmentDisplay';
 import { take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ScoreComment } from '../ScoreComment';
+import { environment as env } from 'src/environments/environment';
 
 const httpOptions =
 {
@@ -20,7 +21,7 @@ const httpOptions =
   providedIn: 'root'
 })
 export class AssessmentService {
-  endPoint = "http://localhost:4201"
+  endPoint = env.API
   currentCSOutcomes: string[] = []
   cs_categories: string[] = []
   currentCSOutcomeDesc: OutcomeDescriptions[] = []
