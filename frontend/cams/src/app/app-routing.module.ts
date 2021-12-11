@@ -15,7 +15,6 @@ import { ChangeOutcomesComponent } from './change-outcomes/change-outcomes.compo
 // home changed on assessment-service branch to display assessment component for testing
 const routes: Routes = [
   {path: '', redirectTo: 'projects', pathMatch: 'full'},
-  // {path: 'home', component: AssessmentComponent, canActivate: [AuthGuard]},
   {path: 'assessment', component: AssessmentComponent, canActivate: [AuthGuard]},
   {path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard]},
   {path: 'past-projects', component: PastProjectsComponent, canActivate: [AuthGuard]},

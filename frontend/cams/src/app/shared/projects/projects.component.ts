@@ -8,9 +8,12 @@ import { AssessmentDisplay } from 'src/app/AssessmentDisplay';
 import { ProjectService } from 'src/app/services/project.service';
 import { ResultsService } from 'src/app/services/results.service';
 
+
+
 /**
- * This component holds the current semesters projects along with its respective assessments depending if the students in the project were CS or CSE
- */
+ * This component is in charge of populating the frontend projects tab,
+ * which functions as the homepage of our application
+*/
 
 @Component({
   selector: 'app-projects',
