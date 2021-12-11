@@ -23,18 +23,18 @@ export class ProjectsComponent implements OnInit {
   constructor(private router: Router,
     public profDashService: ProfDashboardService,
     public assessmentService:AssessmentService,
-    loginService:LoginService, 
+    public loginService:LoginService,
     public auth:AuthService,
     public projectService: ProjectService,
-    public rS:ResultsService) 
-    
+    public rS:ResultsService)
+
     {
     this.user = loginService.email
     this.auth.user$.subscribe(res => {
       this.user = res!.email
     })
-    
-    
+
+
   }
 
   ngOnInit(): void {

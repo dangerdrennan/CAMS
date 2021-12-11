@@ -11,7 +11,7 @@ import { ProfDashboardService } from './prof-dashboard.service'
 export class LoginService{
 
 
-  public userAdmin: boolean = true;
+  public userAdmin: boolean
   public user: string = ''
   public isLoggedIn?: boolean
   // public auth: AuthService
@@ -30,9 +30,14 @@ export class LoginService{
         // console.log("res!!* ", response)
         this.profDashService.professor = response
 
+
         if(response === null) {
           // console.log("exiting")
           this.auth.logout()
+
+        }
+        else {
+          this.userAdmin = response[0].is_admin
         }
       })
     })
@@ -44,6 +49,6 @@ export class LoginService{
     })
   }
 
-  
+
 
 }
