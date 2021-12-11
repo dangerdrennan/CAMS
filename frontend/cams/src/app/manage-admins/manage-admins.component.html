@@ -258,11 +258,11 @@
                 </thead>
                 <tbody >
                   <tr *ngFor="let grader of this.graders;let i=index">
-                    <td scope="row">{{grader.prof_email}}</td>
+                    <td *ngIf="grader.is_admin===true" scope="row">{{grader.prof_email}}</td>
                     <td *ngIf="grader.is_admin===true">{{grader.f_name}}</td>
                     <td *ngIf="grader.is_admin===true">{{grader.l_name}}</td>
                     <td *ngIf="grader.is_admin===true">{{grader.department}}</td>
-                    <td>
+                    <td *ngIf="grader.is_admin===true">
                       <button type="button" class="btn btn-sm btn-danger rounded" data-bs-toggle="modal"
                         data-bs-target="#staticBackdropSysAdmin" (click)="this.deleteGrader=true;this.editGrader=false;this.graderIndex=i"><img
                           src="../../assets/images/delete_white_24dp.svg" style="width: 17px;height: 17px;"
