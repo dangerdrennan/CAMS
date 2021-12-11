@@ -8,6 +8,7 @@ import { OutDesc } from '../outDesc';
 import { Suboutcome } from '../Suboutcome';
 import { SuboutcomeDescription } from '../SuboutcomeDescription';
 import { SuboutDesc } from '../suboutDesc';
+import { environment as env } from 'src/environments/environment';
 
 const httpOptions =
 {
@@ -22,7 +23,7 @@ const httpOptions =
 })
 export class UpdateOutcomesService {
 
-  endPoint = "http://localhost:4201"
+  endPoint = env.API
 
   constructor(private http: HttpClient) {  }
 

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Professor } from '../prof';
+import { environment as env } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class ProfDashboardService {
   professor: any = []
 
 
-  endPoint = "http://localhost:4201"
+  endPoint = env.API
 
   constructor(public http: HttpClient) { }
 
