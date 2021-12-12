@@ -106,7 +106,7 @@ Everything should be all clear for you to check out the CAMS system! You should 
 
 Below is the user manual we wrote for the University of Alaska Engineering Department. The doc explains how the application is intended to be used.
 
-[CAMS User Manual](https://docs.google.com/document/d/1349ghwB87jCgqbtXg-8pQQx5EqI6P7QMIcsNknzSTo8/edit?usp=sharing)
+[CAMS User Manual](https://docs.google.com/document/d/1j_H6rC7fM7iQa1_vNSPc2B2JxPg_a22BrqT3rQbKRaM/edit?usp=sharing)
 
 # License
 
