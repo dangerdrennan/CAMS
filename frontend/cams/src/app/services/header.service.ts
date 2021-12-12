@@ -1,10 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Professor } from '../prof';
 import { Title } from '../Title';
-import { LoginService } from './login.service';
+
+/**
+ * Header service that keeps track of sidebar tab choice.
+ * Keeps track of app state.
+ */
 
 @Injectable({
   providedIn: 'root'
