@@ -5,6 +5,10 @@ import { OutcomeTrends } from '../OutcomeTrends';
 import { PastAssessmentDisplay } from '../PastAssessmentDisplay';
 import { TotesPers } from '../TotesPers';
 
+/**
+ * Export service
+ */
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +24,8 @@ export class ExportService {
 
   constructor() {}
 
+  // export function that takes in outcome trends, Totals and Percents for groups of suboutcomes, and outcome descriptions, turns them into
+  // an excel spreadsheet and allows a user to export that data.
   exportTblToExcel(fileName: string, trends: OutcomeTrends[], outs: TotesPers[], outDesc: OutcomeDescriptions[], allInfo: PastAssessmentDisplay[]) {
     this.comb = []
     this.subInfo = []

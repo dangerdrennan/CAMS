@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, isDevMode } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { OutcomeDescriptions } from '../OutcomeDescriptions';
 import { SemesterReqs } from '../SemesterReqs';
 import { Suboutcome } from '../Suboutcome'
@@ -31,12 +31,10 @@ export class AssessmentService {
   outcomeDescriptions$!: Observable<OutcomeDescriptions[]>
   submissionStatus: boolean = false
   
-
-
-
   constructor(private http: HttpClient, private router: Router) {
   }
 
+  // gets current assessments for logged in professor
   getCurrentAssessmentsbyProf(email:string): any{
     const url = `${this.endPoint}/current_assessments_by_prof/${email}`
     return this.http.get<any[]>(url)
