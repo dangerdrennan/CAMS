@@ -35,11 +35,6 @@ export class AssessmentService {
   outcomeDescriptions$!: Observable<OutcomeDescriptions[]>
   submissionStatus: boolean = false
 
-
-
-  constructor(private http: HttpClient, private router: Router) {
-  }
-
   // grab assessments information like student name, project title, semester, and year for a specified professor in the current semester
 
   
