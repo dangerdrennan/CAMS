@@ -2,32 +2,16 @@ const Router = require("express");
 const {Pool} = require("pg");
 const env = require("../frontend/cams/src/environments/environment").environment;
 
+// collects all our routes and delivers them to our server
 const usersRouter = Router();
 
-// dev.isDevMode() ?
-
-// const pool = new Pool({
-//     user: "cams",
-//     password: "pswd",
-//     database: "cams",
-//     host: "localhost",
-//     port: 5432
-// });
-
-// :
-
-// const pool = new Pool({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {
-//       rejectUnauthorized: false
-//     }
-//   });
-
+// populates pool based on whether or not we're in development mode
 const pool = determineDev()
 
+// returns a Pool object determined by if are in development or
+// production mode
 function determineDev(){
     if (!process.env.PROD_BOOLEAN){
-        console.log('hit')
         return new Pool({
             user: "cams",
             password: "pswd",
@@ -36,17 +20,13 @@ function determineDev(){
             port: 5432
         });
     }
-    console.log('hit 22222')
     return new Pool({
-        
             connectionString: process.env.DATABASE_URL,
             ssl: {
               rejectUnauthorized: false
             }
           });
 }
-
-console.log(pool.user)
 
 usersRouter.get('/all_profs', async (req, res) => {
     try{
@@ -601,7 +581,6 @@ usersRouter.get('/all_profs', async (req, res) => {
   usersRouter.get('/totals_and_percents/:sem/:year/:degree', async (req, res) => {
     try{
         const {sem, year,degree} = req.params
-        console.log('sem at ', sem, ' year at ', year, ' degree at ', degree)
         const totals_and_percents = await pool.query(`
         SELECT * from get_totes_pers($1, $2, $3)`, [sem, year, degree]);
         res.json(totals_and_percents.rows);

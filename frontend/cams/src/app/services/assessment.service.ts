@@ -36,11 +36,16 @@ export class AssessmentService {
   submissionStatus: boolean = false
 
 
+
   constructor(private http: HttpClient, private router: Router) {
   }
 
   // grab assessments information like student name, project title, semester, and year for a specified professor in the current semester
-  // we will take care of returning 'any' in our refactor
+
+  
+  constructor(private http: HttpClient, private router: Router) {
+  }
+
   getCurrentAssessmentsbyProf(email:string): any{
     const url = `${this.endPoint}/current_assessments_by_prof/${email}`
     return this.http.get<any[]>(url)
